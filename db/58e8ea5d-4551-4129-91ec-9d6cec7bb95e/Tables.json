@@ -1,0 +1,48 @@
+[
+	{
+		"Uid": "",
+		"Ad": "CariHesap",
+		"Fields": [
+			{
+				"Name": "ID",
+				"PrimaryKey": true,
+				"DataType": "INTEGER"
+			},
+			{
+				"Name": "Unvan",
+				"DataType": "TEXT",
+				"Size": "150"
+			},
+			{
+				"Name": "KrediLimit",
+				"DataType": "REAL"
+			}
+		],
+		"TabloEkOzellikler": null
+	},
+	{
+		"Uid": "",
+		"Ad": "CariHereket",
+		"Fields": [
+			{
+				"Name": "ID",
+				"PrimaryKey": true,
+				"DataType": "INTEGER"
+			},
+			{
+				"Name": "Tarih",
+				"DataType": "DATETIME"
+			},
+			{
+				"Name": "Aciklama",
+				"DataType": "TEXT",
+				"Size": "50"
+			},
+			{
+				"Name": "Tutar",
+				"DataType": "REAL"
+			}
+		],
+		"TabloEkOzellikler": null
+	}
+]

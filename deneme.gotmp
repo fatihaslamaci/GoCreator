@@ -1,0 +1,33 @@
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"time"
+	_ "github.com/mattn/go-sqlite3"
+	"os"
+	"database/sql"
+
+)
+
+var db *sql.DB
+
+func main() {
+
+	os.MkdirAll("./sqldb", os.ModePerm)
+    	const dbpath = "./sqldb/gomaker.sqlite"
+    	db = InitDB(dbpath)
+    	defer db.Close()
+    	CreateTable(db)
+        AlterDb(db)
+
+
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("111 Hello, you've requested: %s", time.Now())
+	fmt.Fprintf(w, "666 Hello, you've requested: %s\n", time.Now())
+
+
+
+	})
+	http.ListenAndServe(":8000", nil)
+}

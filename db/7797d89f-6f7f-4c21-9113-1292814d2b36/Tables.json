@@ -1,0 +1,60 @@
+[
+	{
+		"Uid": "9f3fd148-d36f-43d2-beb0-ebad7fb30e38",
+		"Ad": "aaaaa",
+		"Fields": [
+			{
+				"Name": "ID",
+				"PrimaryKey": true,
+				"DataType": "INTEGER"
+			},
+			{
+				"Name": "aaaaaa",
+				"DataType": "INTEGER"
+			},
+			{
+				"Name": "yenilana",
+				"DataType": "TEXT",
+				"Size": "12"
+			},
+			{
+				"Name": "alan3",
+				"DataType": "REAL"
+			}
+		],
+		"TabloEkOzellikler": null
+	},
+	{
+		"Uid": "6495e932-88e2-412a-a577-ca2f1c1892f7",
+		"Ad": "rrrrrr",
+		"Fields": [
+			{
+				"Name": "ID",
+				"PrimaryKey": true,
+				"DataType": "INTEGER"
+			},
+			{
+				"Name": "yyyy",
+				"DataType": "INTEGER"
+			}
+		],
+		"TabloEkOzellikler": null
+	},
+	{
+		"Uid": "3c5c3837-0e69-4b93-a1cc-69b954c3bdce",
+		"Ad": "table3",
+		"Fields": [
+			{
+				"Name": "ID",
+				"PrimaryKey": true,
+				"DataType": "INTEGER"
+			},
+			{
+				"Name": "ad",
+				"DataType": "TEXT",
+				"Size": "50"
+			}
+		],
+		"TabloEkOzellikler": null
+	}
+]
