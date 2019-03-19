@@ -13,9 +13,9 @@ CREATE TABLE IF NOT EXISTS {{$KaynakBilgi.Ad}}(
 {{ range $i, $e := $KaynakBilgi.Fields }}
 {{ if $e.Name }}
     {{ if eq $i 0 }}
-        {{$e.Name}} {{$e.DataType}}
+        {{ $e.Name }} {{ SQLiteDataType $e }}
     {{ else }}
-        ,{{$e.Name}} {{$e.DataType}}
+        ,{{ $e.Name }} {{ SQLiteDataType $e }}
     {{ end }}
 {{ end }}
 {{ end }}

@@ -6,16 +6,16 @@
 			{
 				"Name": "ID",
 				"PrimaryKey": true,
-				"DataType": "INTEGER"
+				"DataType": "int64"
 			},
 			{
 				"Name": "Unvan",
-				"DataType": "TEXT",
+				"DataType": "string",
 				"Size": "150"
 			},
 			{
 				"Name": "KrediLimit",
-				"DataType": "REAL"
+				"DataType": "float32"
 			}
 		],
 		"TabloEkOzellikler": null
@@ -27,20 +27,20 @@
 			{
 				"Name": "ID",
 				"PrimaryKey": true,
-				"DataType": "INTEGER"
+				"DataType": "int64"
 			},
 			{
 				"Name": "Tarih",
-				"DataType": "DATETIME"
+				"DataType": "time.Time"
 			},
 			{
 				"Name": "Aciklama",
-				"DataType": "TEXT",
+				"DataType": "string",
 				"Size": "50"
 			},
 			{
 				"Name": "Tutar",
-				"DataType": "REAL"
+				"DataType": "float64"
 			}
 		],
 		"TabloEkOzellikler": null

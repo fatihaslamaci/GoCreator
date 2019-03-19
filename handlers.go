@@ -117,8 +117,13 @@ func buildHandler(w http.ResponseWriter, r *http.Request) {
 	prgBuild(project.Path, w)
 
 	TamplateFile := "InitDB_oto.tmpl"
-
 	HedefeKaydet(JsonTableOku(projectId), (project.Path + "/InitDB.go"), ("./templates/" + TamplateFile), TamplateFile)
+
+	TamplateFile = "struct_oto.tmpl"
+	HedefeKaydet(JsonTableOku(projectId), (project.Path + "/" + "struct_oto.go"), ("./templates/" + TamplateFile), TamplateFile)
+
+	TamplateFile = "crud_oto.tmpl"
+	HedefeKaydet(JsonTableOku(projectId), (project.Path + "/" + "crud_oto.go"), ("./templates/" + TamplateFile), TamplateFile)
 
 	//json.NewEncoder(w).Encode(project)
 

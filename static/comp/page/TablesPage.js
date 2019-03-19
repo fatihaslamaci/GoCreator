@@ -55,7 +55,7 @@ Vue.component('TablesPage', {
                 Fields: [{
                     Name: "ID",
                     PrimaryKey: true,
-                    DataType: "INTEGER",
+                    DataType: "int64",
 
                 }]
             };
@@ -173,16 +173,16 @@ Vue.component('TablesPage', {
                 ></v-text-field>
 
                 <v-select
-                        :items="['INTEGER','TEXT','REAL','DATETIME','BOOLEAN','BLOB']"
+                        :items="['string','int32','int64','float32','float64','time.Time','[]byte']"
                         label="Type"
                         v-model="editItem.DataType"
                 ></v-select>
 
 
-                <template v-if="editItem.DataType=='INTEGER'">
+                <template v-if="editItem.DataType=='int32'">
 
                 </template>
-                <template v-else-if="editItem.DataType=='TEXT'">
+                <template v-else-if="editItem.DataType=='string'">
                     <v-text-field type="number"
                                   label="Size"
                                   v-model="editItem.Size"

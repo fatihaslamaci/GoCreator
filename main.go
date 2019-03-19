@@ -33,19 +33,19 @@ func main() {
 	{
 		table := TDataTable{}
 		table.Ad = "CariHesap"
-		table.Fields = append(table.Fields, TDataField{Name: "ID", PrimaryKey: true, DataType: "INTEGER"})
-		table.Fields = append(table.Fields, TDataField{Name: "Unvan", DataType: "TEXT", Size: 150})
-		table.Fields = append(table.Fields, TDataField{Name: "KrediLimit", DataType: "REAL"})
+		table.Fields = append(table.Fields, TDataField{Name: "ID", PrimaryKey: true, DataType: "int64"})
+		table.Fields = append(table.Fields, TDataField{Name: "Unvan", DataType: "string", Size: 150})
+		table.Fields = append(table.Fields, TDataField{Name: "KrediLimit", DataType: "float32"})
 
 		gotables = append(gotables, table)
 	}
 	{
 		table := TDataTable{}
 		table.Ad = "CariHereket"
-		table.Fields = append(table.Fields, TDataField{Name: "ID", PrimaryKey: true, DataType: "INTEGER"})
-		table.Fields = append(table.Fields, TDataField{Name: "Tarih", DataType: "DATETIME"})
-		table.Fields = append(table.Fields, TDataField{Name: "Aciklama", DataType: "TEXT", Size: 50})
-		table.Fields = append(table.Fields, TDataField{Name: "Tutar", DataType: "REAL"})
+		table.Fields = append(table.Fields, TDataField{Name: "ID", PrimaryKey: true, DataType: "int64"})
+		table.Fields = append(table.Fields, TDataField{Name: "Tarih", DataType: "time.Time"})
+		table.Fields = append(table.Fields, TDataField{Name: "Aciklama", DataType: "string", Size: 50})
+		table.Fields = append(table.Fields, TDataField{Name: "Tutar", DataType: "float64"})
 
 		gotables = append(gotables, table)
 	}

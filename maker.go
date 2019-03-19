@@ -14,9 +14,47 @@ func check(e error) {
 	}
 }
 
+var FieldMap = map[string]string{
+	"bool":      "NUMERIC",
+	"string":    "TEXT",
+	"int32":     "INTEGER",
+	"int64":     "INTEGER",
+	"float32":   "REAL",
+	"float64":   "REAL",
+	"[]byte":    "BLOB",
+	"time.Time": "NUMERIC",
+}
+
+func SQLiteDataType(field TDataField) string {
+
+	r := FieldMap[field.DataType]
+
+	if field.PrimaryKey {
+		r += " PRIMARY KEY AUTOINCREMENT"
+	}
+
+	return r
+}
+
+func IdName(table TDataTable) string {
+
+	r := "id"
+
+	for _, item := range table.Fields {
+		if item.PrimaryKey {
+			r = item.Name
+		}
+	}
+
+	return r
+
+}
+
 func TemplateExecuteArray(data interface{}, tmpl string, TemplateName string) string {
 	funcMap := template.FuncMap{
-		"ToLover": strings.ToLower,
+		"ToLover":        strings.ToLower,
+		"SQLiteDataType": SQLiteDataType,
+		"IdName":         IdName,
 	}
 
 	t := template.Must(template.New(TemplateName).Funcs(funcMap).ParseFiles(tmpl))

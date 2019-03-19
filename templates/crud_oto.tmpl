@@ -1,0 +1,100 @@
+package main
+
+import (
+	"database/sql"
+)
+
+{{ range $ii, $KaynakBilgi := . }}
+//{{$ii}}. {{$KaynakBilgi.Ad}}  **************************************************************************************************
+
+//{{ "{{" }} .{{$KaynakBilgi.Ad}} {{ "}}" }}
+
+
+func {{$KaynakBilgi.Ad}}SelectAll(db *sql.DB) []{{$KaynakBilgi.Ad}} {
+	rows, err := db.Query(`SELECT
+	{{ range $i, $e := $KaynakBilgi.Fields }}
+	   
+	        {{ if eq $i 0 }}
+	            {{ $e.Name}}
+	        {{ else }}
+	            ,{{$e.Name}}
+	        {{ end }}
+	    
+	{{ end }} FROM {{$KaynakBilgi.Ad}}`)
+	CheckErr(err)
+	var result  []{{$KaynakBilgi.Ad}}
+	for rows.Next() {
+		item :={{$KaynakBilgi.Ad}}{}
+		err2 := rows.Scan(
+		{{ range $i, $e := $KaynakBilgi.Fields }}
+		    {{if $e.Name}}
+		        &item.{{$e.Name}},
+		    {{ end }}
+		{{ end }}
+		)
+		CheckErr(err2)
+		result = append(result, item)
+	}
+	return result
+}
+
+
+func {{$KaynakBilgi.Ad}}Select(db *sql.DB, id int64) {{$KaynakBilgi.Ad}} {
+	item := {{$KaynakBilgi.Ad}}{}
+
+	if id > 0 {
+		row := db.QueryRow(`SELECT
+		{{ range $i, $e := $KaynakBilgi.Fields }}
+		    {{if $e.Name}}
+		        {{ if eq $i 0 }}
+		            {{$e.Name}}
+		        {{ else }}
+		            ,{{$e.Name}}
+		        {{ end }}
+		    {{ end }}
+		{{ end }}
+		FROM {{$KaynakBilgi.Ad}} WHERE {{ IdName $KaynakBilgi }}=?`, id)
+		err := row.Scan(
+		{{ range $i, $e := $KaynakBilgi.Fields }}
+		    {{if $e.Name}}
+		        &item.{{$e.Name}},
+		    {{ end }}
+		{{ end }})
+		CheckErr(err)
+	}
+	return item
+}
+
+func {{$KaynakBilgi.Ad}}Insert(db *sql.DB, item {{$KaynakBilgi.Ad}}) int64 {
+	var r int64
+	stmt, err := db.Prepare("INSERT INTO {{$KaynakBilgi.Ad}}({{ range $i, $e := $KaynakBilgi.Fields }}{{if $e.Name}}{{ if eq $i 0 }}{{ else }}{{ if eq $i 1 }}{{$e.Name}}{{ else }}, {{$e.Name}}{{ end }}{{ end }}{{ end }}{{ end }}) VALUES ({{ range $i, $e := $KaynakBilgi.Fields }}{{if $e.Name}}{{ if eq $i 0 }}{{ else }}{{ if eq $i 1 }}?{{ else }},?{{ end }}{{ end }}{{ end }}{{ end }})")
+	CheckErr(err)
+	defer stmt.Close()
+	ret, err := stmt.Exec({{ range $i, $e := $KaynakBilgi.Fields }}{{if $e.Name}}{{ if eq $i 0 }}{{ else }}{{ if eq $i 1 }}item.{{$e.Name}}{{ else }}, item.{{$e.Name}}{{ end }}{{ end }}{{ end }}{{ end }})
+	CheckErr(err)
+	r,err = ret.LastInsertId()
+	CheckErr(err)
+	return r
+}
+
+func {{$KaynakBilgi.Ad}}Update(db *sql.DB, item {{$KaynakBilgi.Ad}}) {
+	stmt, err := db.Prepare("UPDATE {{$KaynakBilgi.Ad}} SET {{ range $i, $e := $KaynakBilgi.Fields }}{{if $e.Name}}{{ if eq $i 0 }}{{ else }}{{ if eq $i 1 }}{{$e.Name}}=?{{ else }}, {{$e.Name}}=?{{ end }}{{ end }}{{ end }}{{ end }} WHERE {{ IdName $KaynakBilgi }}=?")
+	CheckErr(err)
+	defer stmt.Close()
+	_, err2 := stmt.Exec({{ range $i, $e := $KaynakBilgi.Fields }}{{if $e.Name}}{{ if eq $i 0 }}{{ else }}{{ if eq $i 1 }}item.{{$e.Name}}{{ else }}, item.{{$e.Name}}{{ end }}{{ end }}{{ end }}{{ end }}, item.{{ IdName $KaynakBilgi }})
+	CheckErr(err2)
+}
+
+func {{$KaynakBilgi.Ad}}Delete(db *sql.DB, id int64) int64 {
+	stmt, err := db.Prepare("DELETE FROM {{$KaynakBilgi.Ad}} WHERE {{ IdName $KaynakBilgi }}=?")
+	CheckErr(err)
+	defer stmt.Close()
+	res, err := stmt.Exec(id)
+	CheckErr(err)
+	affect, err := res.RowsAffected()
+	CheckErr(err)
+	return affect
+
+}
+
+{{end}}
