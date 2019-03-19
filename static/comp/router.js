@@ -4,6 +4,10 @@ const SamplePage = {
 const TablesPage = {
     template: '<tables-page></tables-page>'
 };
+const ProxyClassPage = {
+    template: '<proxy-class-page></proxy-class-page>'
+};
+
 
 const About = {
     template: '<div>About</div>'
@@ -29,6 +33,11 @@ const router = new VueRouter({
             path: '/TablesPage',
             component: TablesPage,
             name: 'TablesPage'
+        },
+        {
+            path: '/ProxyClassPage',
+            component: ProxyClassPage,
+            name: 'ProxyClassPage'
         },
         {
             path: '/BuildPage',

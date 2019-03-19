@@ -19,6 +19,15 @@ func getTablesHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(a)
 }
 
+func getProxyClassHandler(w http.ResponseWriter, r *http.Request) {
+
+	projectId := r.Header.Get("projectId")
+
+	a := JsonProxyClassOku(projectId)
+
+	json.NewEncoder(w).Encode(a)
+}
+
 func saveTablesHandler(w http.ResponseWriter, r *http.Request) {
 
 	body, err := ioutil.ReadAll(r.Body)
@@ -40,6 +49,24 @@ func saveTablesHandler(w http.ResponseWriter, r *http.Request) {
 	JsonTableKaydet(project, r.Header.Get("projectId"))
 
 	json.NewEncoder(w).Encode(project)
+
+}
+
+func saveProxyClassHandler(w http.ResponseWriter, r *http.Request) {
+
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		panic(err)
+	}
+	var model []TProxyClass
+	err = json.Unmarshal(body, &model)
+	if err != nil {
+		panic(err)
+	}
+
+	JsonProxyClassKaydet(model, r.Header.Get("projectId"))
+
+	json.NewEncoder(w).Encode(model)
 
 }
 

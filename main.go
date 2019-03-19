@@ -66,6 +66,10 @@ func main() {
 	http.HandleFunc("/api/saveProject", saveProjectHandler)
 	http.HandleFunc("/api/getTables", getTablesHandler)
 	http.HandleFunc("/api/saveTables", saveTablesHandler)
+
+	http.HandleFunc("/api/getProxyClass", getProxyClassHandler)
+	http.HandleFunc("/api/saveProxyClass", saveProxyClassHandler)
+
 	http.HandleFunc("/api/build", buildHandler)
 
 	http.HandleFunc("/echo", socketHandler)

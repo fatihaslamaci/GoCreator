@@ -17,6 +17,11 @@ Vue.component('faNavigation', {
                     routername: 'TablesPage'
                 },
                 {
+                    title: 'Proxy Class',
+                    icon: 'dashboard',
+                    routername: 'ProxyClassPage'
+                },
+                {
                     title: 'Build',
                     icon: 'build',
                     routername: 'BuildPage'

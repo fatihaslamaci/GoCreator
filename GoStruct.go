@@ -25,3 +25,13 @@ type TabloEkOzellik struct {
 	SinifId int64
 	Ozellik string
 }
+
+type TProxyClass struct {
+	Name   string
+	Fields []TProxyClassField
+}
+
+type TProxyClassField struct {
+	Name      string
+	FieldType string
+}
