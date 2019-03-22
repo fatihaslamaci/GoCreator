@@ -28,30 +28,36 @@ var c = exec.Command(PrgDir + "/main")
 func main() {
 	fmt.Println("Start :", time.Now())
 
-	gotables := []TDataTable{}
+	/*
 
-	{
-		table := TDataTable{}
-		table.Ad = "CariHesap"
-		table.Fields = append(table.Fields, TDataField{Name: "ID", PrimaryKey: true, DataType: "int64"})
-		table.Fields = append(table.Fields, TDataField{Name: "Unvan", DataType: "string", Size: 150})
-		table.Fields = append(table.Fields, TDataField{Name: "KrediLimit", DataType: "float32"})
+			gotables := []TDataTable{}
 
-		gotables = append(gotables, table)
-	}
-	{
-		table := TDataTable{}
-		table.Ad = "CariHereket"
-		table.Fields = append(table.Fields, TDataField{Name: "ID", PrimaryKey: true, DataType: "int64"})
-		table.Fields = append(table.Fields, TDataField{Name: "Tarih", DataType: "time.Time"})
-		table.Fields = append(table.Fields, TDataField{Name: "Aciklama", DataType: "string", Size: 50})
-		table.Fields = append(table.Fields, TDataField{Name: "Tutar", DataType: "float64"})
+		{
+			table := TDataTable{}
+			table.Name = "CariHesap"
 
-		gotables = append(gotables, table)
-	}
+			table.Fields = append(table.Fields, TDataField{ TBaseCartField {Name:'ID'} })
 
-	JsonTableKaydet(gotables, "58e8ea5d-4551-4129-91ec-9d6cec7bb95e")
+			table.Fields = append(table.Fields, TDataField{Name: "ID", PrimaryKey: true, DataType: "int64"})
 
+			table.Fields = append(table.Fields, TDataField{Name: "Unvan", DataType: "string", Size: 150})
+			table.Fields = append(table.Fields, TDataField{Name: "KrediLimit", DataType: "float32"})
+
+			gotables = append(gotables, table)
+		}
+		{
+			table := TDataTable{}
+			table.Ad = "CariHereket"
+			table.Fields = append(table.Fields, TDataField{Name: "ID", PrimaryKey: true, DataType: "int64"})
+			table.Fields = append(table.Fields, TDataField{Name: "Tarih", DataType: "time.Time"})
+			table.Fields = append(table.Fields, TDataField{Name: "Aciklama", DataType: "string", Size: 50})
+			table.Fields = append(table.Fields, TDataField{Name: "Tutar", DataType: "float64"})
+
+			gotables = append(gotables, table)
+		}
+
+		JsonTableKaydet(gotables, "58e8ea5d-4551-4129-91ec-9d6cec7bb95e")
+	*/
 	//aaa:= JsonTableOku()
 
 	//goprojects = append(goprojects, GoProject{Uid: "1", Ad: "John1"})
@@ -69,6 +75,9 @@ func main() {
 
 	http.HandleFunc("/api/getProxyClass", getProxyClassHandler)
 	http.HandleFunc("/api/saveProxyClass", saveProxyClassHandler)
+
+	http.HandleFunc("/api/getEndPoints", getEndPointHandler)
+	http.HandleFunc("/api/saveEndPoints", saveEndPointHandler)
 
 	http.HandleFunc("/api/build", buildHandler)
 

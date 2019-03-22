@@ -63,3 +63,23 @@ func JsonProxyClassOku(uuid string) []TProxyClass {
 
 	return r
 }
+
+func JsonEndPointKaydet(value []TEndPoint, uuid string) {
+
+	b, _ := json.Marshal(value)
+	var out bytes.Buffer
+	json.Indent(&out, b, "", "\t")
+
+	os.MkdirAll("./db/"+uuid, os.ModePerm)
+
+	ioutil.WriteFile("./db/"+uuid+"/EndPoint.json", out.Bytes(), 0644)
+
+}
+
+func JsonEndPointOku(uuid string) []TEndPoint {
+	dat, _ := ioutil.ReadFile("./db/" + uuid + "/EndPoint.json")
+	var r []TEndPoint
+	_ = json.Unmarshal(dat, &r)
+
+	return r
+}

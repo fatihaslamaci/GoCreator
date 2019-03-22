@@ -1,4 +1,4 @@
-Vue.component('ProxyClassPage', {
+Vue.component('BaseKartPage', {
     data: function () {
         return {
             count: 0,
@@ -21,9 +21,10 @@ Vue.component('ProxyClassPage', {
 
         }
     },
+
     mounted() {
         axios
-            .post('/api/getProxyClass', {}, {headers: {projectId: sessionStorage.projectId}})
+            .post(this.getcart, {}, {headers: {projectId: sessionStorage.projectId}})
             .then(response => (
                     this.items = response.data
                 )
@@ -42,15 +43,12 @@ Vue.component('ProxyClassPage', {
 
         addTable() {
             var table = {
+                Uid: "",
                 Name: this.NewTableName,
-                Fields: [{
-                    Name: "Id",
-                    FieldType: "int64",
-
-                }]
+                Fields: this.deffield,
             };
 
-            if (this.items == null) {
+            if (this.items==null) {
                 this.items = [];
             }
             this.items.push(table);
@@ -70,13 +68,12 @@ Vue.component('ProxyClassPage', {
             this.editItem.Name = "";
             this.table = table;
             this.dialog = true;
-
         },
 
         saveChanges() {
             this.loading = true;
             axios
-                .post('/api/saveProxyClass', this.items, {headers: {projectId: sessionStorage.projectId}})
+                .post(this.savecart, this.items, {headers: {projectId: sessionStorage.projectId}})
                 .then(response => {
                     this.items = response.data;
                 })
@@ -86,10 +83,7 @@ Vue.component('ProxyClassPage', {
                 .finally(() => {
                     this.loading = false;
                 })
-
-
         },
-
 
         deleteField() {
             if (confirm("Delete field?")) {
@@ -101,7 +95,7 @@ Vue.component('ProxyClassPage', {
             }
         },
         deleteTable(table) {
-            if (confirm("Delete proxy class?")) {
+            if (confirm("Delete table?")) {
                 var index = this.items.indexOf(table);
                 if (index > -1) {
                     this.items.splice(index, 1);
@@ -109,30 +103,26 @@ Vue.component('ProxyClassPage', {
             }
         },
 
-        fieldDialogTitle() {
+        fieldDialogTitle(){
             if (this.insert) {
                 return "Insert Field";
-            } else {
+            }else{
                 return "Edit Field"
             }
-
         }
-
-
     },
+    props: ['title', 'getcart',"savecart",'deffield'],
 
     template: `<div>
 
     <v-dialog v-model="dialogNewTable" persistent max-width="290">
         <v-card>
-            <v-card-title class="headline"> New Proxy Class</v-card-title>
+            <v-card-title class="headline"> New Table</v-card-title>
             <v-card-text>
-
                 <v-text-field
-                        label="Proxy Class Name :"
+                        label="Table Name :"
                         v-model="NewTableName"
                 ></v-text-field>
-
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
@@ -147,49 +137,27 @@ Vue.component('ProxyClassPage', {
         <v-card>
             <v-card-title class="headline"> {{fieldDialogTitle()}}</v-card-title>
             <v-card-text>
-               
-                <v-text-field
-                        label="Field Name :"
-                        v-model="editItem.Name"
-                ></v-text-field>
-
-                <v-select
-                        :items="['string','int32','int64','float32','float64','time.Time','[]byte']"
-                        label="Field Type"
-                        v-model="editItem.FieldType"
-                ></v-select>
-
-
-                <template v-if="editItem.FieldType=='int32'">
-
-                </template>
-                <template v-else-if="editItem.FieldType=='string'">
-
-                </template>
-
-
+                <slot name="FieldDialog" v-bind:field="editItem"> </slot>
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="green darken-1" flat @click="dialog = false">Cancel</v-btn>
                 <v-btn v-if="insert==false" color="error" flat @click="deleteField()">Delete</v-btn>
-
                 <v-btn color="green darken-1" flat @click="saveField()">Save</v-btn>
-
             </v-card-actions>
         </v-card>
     </v-dialog>
 
 
     <v-container fluid grid-list-md>
-        <v-btn round color="primary" dark @click="dialogNewTable=true">New Proxy Class</v-btn>
+        <v-btn round color="primary" dark @click="dialogNewTable=true">New Table</v-btn>
         <v-btn round color="primary" :loading="loading" dark @click="saveChanges()">save changes</v-btn>
 
         <v-data-iterator v-if="items !=null"
-                         :items="items"
-                         :rows-per-page-items="rowsPerPageItems"
-                         :pagination.sync="pagination"
-                         content-tag="v-layout" row wrap>
+                :items="items"
+                :rows-per-page-items="rowsPerPageItems"
+                :pagination.sync="pagination"
+                content-tag="v-layout" row wrap>
             <template v-slot:item="props">
                 <v-flex xs12 sm6 md4 lg3>
                     <v-card>
@@ -197,27 +165,21 @@ Vue.component('ProxyClassPage', {
                             <v-btn icon>
                                 <v-icon @click="deleteTable(props.item)">delete</v-icon>
                             </v-btn>
-
                             <v-toolbar-title>{{ props.item.Name }}</v-toolbar-title>
                             <v-spacer></v-spacer>
-
-
                             <v-btn icon>
                                 <v-icon @click="addField(props.item)">add</v-icon>
                             </v-btn>
-
+                            
                         </v-toolbar>
 
                         <v-list dense>
                             <v-list-tile v-for="(book, index) in props.item.Fields" :key="index" :book="book">
 
-
-                                <v-list-tile-content>&nbsp; &nbsp;&nbsp; &nbsp;{{book.Name}}</v-list-tile-content>
-                                <v-list-tile-content class="align-end">{{ book.FieldType }} &nbsp;
-                                </v-list-tile-content>
+                                <slot name="FieldList" v-bind:field="book"> </slot>
+                                
+                               
                                 <v-icon small @click="editField(book,props.item)">edit</v-icon>
-
-
                             </v-list-tile>
                         </v-list>
                     </v-card>
@@ -225,7 +187,6 @@ Vue.component('ProxyClassPage', {
             </template>
         </v-data-iterator>
     </v-container>
-
 </div>
     `,
 

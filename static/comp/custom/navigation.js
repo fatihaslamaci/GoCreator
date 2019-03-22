@@ -22,6 +22,11 @@ Vue.component('faNavigation', {
                     routername: 'ProxyClassPage'
                 },
                 {
+                    title: 'End Point',
+                    icon: 'dashboard',
+                    routername: 'EndPointPage'
+                },
+                {
                     title: 'Build',
                     icon: 'build',
                     routername: 'BuildPage'

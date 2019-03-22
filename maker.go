@@ -27,7 +27,7 @@ var FieldMap = map[string]string{
 
 func SQLiteDataType(field TDataField) string {
 
-	r := FieldMap[field.DataType]
+	r := FieldMap[field.FieldType]
 
 	if field.PrimaryKey {
 		r += " PRIMARY KEY AUTOINCREMENT"

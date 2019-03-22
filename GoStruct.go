@@ -7,15 +7,14 @@ type TProject struct {
 }
 
 type TDataField struct {
-	Name       string //TabloAdi
-	PrimaryKey bool   `json:"PrimaryKey,omitempty"`
-	DataType   string
-	Size       int `json:",omitempty,string"`
+	TBaseCartField
+	PrimaryKey bool `json:"PrimaryKey,omitempty"`
+	Size       int  `json:",omitempty,string"`
 }
 
 type TDataTable struct {
-	Uid               string
-	Ad                string
+	Uid string
+	TBaseCart
 	Fields            []TDataField
 	TabloEkOzellikler []TabloEkOzellik
 }
@@ -27,11 +26,29 @@ type TabloEkOzellik struct {
 }
 
 type TProxyClass struct {
-	Name   string
+	TBaseCart
 	Fields []TProxyClassField
 }
 
 type TProxyClassField struct {
+	TBaseCartField
+}
+
+type TEndPoint struct {
+	TBaseCart
+	Fields []TEndPointField
+}
+
+type TEndPointField struct {
+	TBaseCartField
+}
+
+type TBaseCart struct {
+	Name   string
+	Fields []TBaseCartField
+}
+
+type TBaseCartField struct {
 	Name      string
 	FieldType string
 }

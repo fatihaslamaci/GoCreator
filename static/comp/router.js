@@ -7,6 +7,9 @@ const TablesPage = {
 const ProxyClassPage = {
     template: '<proxy-class-page></proxy-class-page>'
 };
+const EndPointPage = {
+    template: '<end-point-page></end-point-page>'
+};
 
 
 const About = {
@@ -38,6 +41,11 @@ const router = new VueRouter({
             path: '/ProxyClassPage',
             component: ProxyClassPage,
             name: 'ProxyClassPage'
+        },
+        {
+            path: '/EndPointPage',
+            component: EndPointPage,
+            name: 'EndPointPage'
         },
         {
             path: '/BuildPage',

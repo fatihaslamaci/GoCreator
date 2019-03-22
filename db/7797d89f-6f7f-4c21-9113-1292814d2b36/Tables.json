@@ -1,7 +1,7 @@
 [
 	{
 		"Uid": "813df423-7db6-4db9-836c-44663a7eaa56",
-		"Ad": "deneme",
+		"Name": "deneme",
 		"Fields": [
 			{
 				"Name": "ID",
@@ -18,7 +18,7 @@
 	},
 	{
 		"Uid": "213ce51b-dc56-473c-8b07-e181077880e1",
-		"Ad": "deneme2",
+		"Name": "deneme2",
 		"Fields": [
 			{
 				"Name": "ID",
@@ -28,6 +28,10 @@
 			{
 				"Name": "tarih",
 				"DataType": "time.Time"
+			},
+			{
+				"Name": "aaaa",
+				"DataType": "float32"
 			}
 		],
 		"TabloEkOzellikler": null
