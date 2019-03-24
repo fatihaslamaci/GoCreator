@@ -8,8 +8,10 @@ type TProject struct {
 
 type TDataField struct {
 	TBaseCartField
-	PrimaryKey bool `json:"PrimaryKey,omitempty"`
-	Size       int  `json:",omitempty,string"`
+	Dflt_value string `json:",omitempty"`
+	PrimaryKey bool   `json:",omitempty"`
+	Nullable   bool   `json:",omitempty"`
+	Size       int    `json:",omitempty,string"`
 }
 
 type TDataTable struct {

@@ -2,10 +2,12 @@ package main
 
 import (
 	"time"
+	"gopkg.in/guregu/null.v3"
+
 )
 {{ range $ii, $data := . }}
 type {{$data.Name}} struct {
-{{ range $i, $e := $data.Fields }}  {{$e.Name}}   {{$e.FieldType}}
+{{ range $i, $e := $data.Fields }}  {{$e.Name}}   {{StructFieldType $e}}
 {{ end }}}
 
 

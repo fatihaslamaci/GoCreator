@@ -23,6 +23,13 @@ Vue.component('TablesPage', {
                 label="Type"
                 v-model="props.field.FieldType"
         ></v-select>
+        <v-checkbox v-model="props.field.Nullable" label="Nullable"></v-checkbox>
+        <v-text-field
+                label="Default Value :"
+                v-model="props.field.Dflt_value"
+        ></v-text-field>
+
+
         <template v-if="props.field.FieldType=='int32'">
         </template>
         <template v-else-if="props.field.FieldType=='string'">

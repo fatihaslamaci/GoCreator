@@ -25,6 +25,17 @@ var FieldMap = map[string]string{
 	"time.Time": "NUMERIC",
 }
 
+var FieldMapNull = map[string]string{
+	"bool":      "null.Bool",
+	"string":    "null.String",
+	"int32":     "null.Int",
+	"int64":     "null.Int",
+	"float32":   "null.Float",
+	"float64":   "null.Float",
+	"[]byte":    "[]byte",
+	"time.Time": "null.Time",
+}
+
 func SQLiteDataType(field TDataField) string {
 
 	r := FieldMap[field.FieldType]
@@ -50,11 +61,23 @@ func IdName(table TDataTable) string {
 
 }
 
+func StructFieldType(field TDataField) string {
+
+	r := field.FieldType
+
+	if field.Nullable {
+		r = FieldMapNull[field.FieldType]
+	}
+
+	return r
+}
+
 func TemplateExecuteArray(data interface{}, tmpl string, TemplateName string) string {
 	funcMap := template.FuncMap{
-		"ToLover":        strings.ToLower,
-		"SQLiteDataType": SQLiteDataType,
-		"IdName":         IdName,
+		"ToLover":         strings.ToLower,
+		"SQLiteDataType":  SQLiteDataType,
+		"IdName":          IdName,
+		"StructFieldType": StructFieldType,
 	}
 
 	t := template.Must(template.New(TemplateName).Funcs(funcMap).ParseFiles(tmpl))
