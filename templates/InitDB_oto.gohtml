@@ -1,3 +1,5 @@
+
+
 package main
 
 import (
@@ -7,10 +9,10 @@ import (
 )
 
 const sql_table = `
-{{ range $ii, $KaynakBilgi := . }}
-CREATE TABLE IF NOT EXISTS {{$KaynakBilgi.Ad}}(
+{{ range $ii, $data := . }}
+CREATE TABLE IF NOT EXISTS {{$data.Name}}(
 
-{{ range $i, $e := $KaynakBilgi.Fields }}
+{{ range $i, $e := $data.Fields }}
 {{ if $e.Name }}
     {{ if eq $i 0 }}
         {{ $e.Name }} {{ SQLiteDataType $e }}
@@ -20,7 +22,7 @@ CREATE TABLE IF NOT EXISTS {{$KaynakBilgi.Ad}}(
 {{ end }}
 {{ end }}
 
-{{ range $i, $e := $KaynakBilgi.TabloEkOzellikler }}
+{{ range $i, $e := $data.TabloEkOzellikler }}
         ,{{$e.Ozellik}}
 {{ end }}
 

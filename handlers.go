@@ -165,18 +165,18 @@ func buildHandler(w http.ResponseWriter, r *http.Request) {
 	PrgDir = project.Path
 
 	os.MkdirAll(project.Path, os.ModePerm)
-	Copy("deneme.gotmp", (project.Path + "/main.go"))
+	Copy("deneme.gohtml", (project.Path + "/main.go"))
 
 	prgFormat(project.Path, w)
 	prgBuild(project.Path, w)
 
-	TamplateFile := "InitDB_oto.tmpl"
+	TamplateFile := "InitDB_oto.gohtml"
 	HedefeKaydet(JsonTableOku(projectId), (project.Path + "/InitDB.go"), ("./templates/" + TamplateFile), TamplateFile)
 
-	TamplateFile = "struct_oto.tmpl"
+	TamplateFile = "struct_oto.gohtml"
 	HedefeKaydet(JsonTableOku(projectId), (project.Path + "/" + "struct_oto.go"), ("./templates/" + TamplateFile), TamplateFile)
 
-	TamplateFile = "crud_oto.tmpl"
+	TamplateFile = "crud_oto.gohtml"
 	HedefeKaydet(JsonTableOku(projectId), (project.Path + "/" + "crud_oto.go"), ("./templates/" + TamplateFile), TamplateFile)
 
 	//json.NewEncoder(w).Encode(project)

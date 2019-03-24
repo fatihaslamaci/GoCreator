@@ -5,12 +5,12 @@
 		"Fields": [
 			{
 				"Name": "ID",
-				"PrimaryKey": true,
-				"DataType": "int64"
+				"FieldType": "float64",
+				"PrimaryKey": true
 			},
 			{
 				"Name": "aaaa",
-				"DataType": "string",
+				"FieldType": "string",
 				"Size": "12"
 			}
 		],
@@ -22,16 +22,17 @@
 		"Fields": [
 			{
 				"Name": "ID",
-				"PrimaryKey": true,
-				"DataType": "int64"
+				"FieldType": "int64",
+				"PrimaryKey": true
 			},
 			{
 				"Name": "tarih",
-				"DataType": "time.Time"
+				"FieldType": "time.Time"
 			},
 			{
 				"Name": "aaaa",
-				"DataType": "float32"
+				"FieldType": "string",
+				"Size": "12"
 			}
 		],
 		"TabloEkOzellikler": null

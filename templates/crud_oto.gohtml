@@ -1,0 +1,100 @@
+package main
+
+import (
+	"database/sql"
+)
+
+{{ range $ii, $data := . }}
+//{{$ii}}. {{$data.Name}}  **************************************************************************************************
+
+//{{ "{{" }} .{{$data.Name}} {{ "}}" }}
+
+
+func {{$data.Name}}SelectAll(db *sql.DB) []{{$data.Name}} {
+	rows, err := db.Query(`SELECT
+	{{ range $i, $e := $data.Fields }}
+	   
+	        {{ if eq $i 0 }}
+	            {{ $e.Name}}
+	        {{ else }}
+	            ,{{$e.Name}}
+	        {{ end }}
+	    
+	{{ end }} FROM {{$data.Name}}`)
+	CheckErr(err)
+	var result  []{{$data.Name}}
+	for rows.Next() {
+		item :={{$data.Name}}{}
+		err2 := rows.Scan(
+		{{ range $i, $e := $data.Fields }}
+		    {{if $e.Name}}
+		        &item.{{$e.Name}},
+		    {{ end }}
+		{{ end }}
+		)
+		CheckErr(err2)
+		result = append(result, item)
+	}
+	return result
+}
+
+
+func {{$data.Name}}Select(db *sql.DB, id int64) {{$data.Name}} {
+	item := {{$data.Name}}{}
+
+	if id > 0 {
+		row := db.QueryRow(`SELECT
+		{{ range $i, $e := $data.Fields }}
+		    {{if $e.Name}}
+		        {{ if eq $i 0 }}
+		            {{$e.Name}}
+		        {{ else }}
+		            ,{{$e.Name}}
+		        {{ end }}
+		    {{ end }}
+		{{ end }}
+		FROM {{$data.Name}} WHERE {{ IdName $data }}=?`, id)
+		err := row.Scan(
+		{{ range $i, $e := $data.Fields }}
+		    {{if $e.Name}}
+		        &item.{{$e.Name}},
+		    {{ end }}
+		{{ end }})
+		CheckErr(err)
+	}
+	return item
+}
+
+func {{$data.Name}}Insert(db *sql.DB, item {{$data.Name}}) int64 {
+	var r int64
+	stmt, err := db.Prepare("INSERT INTO {{$data.Name}}({{ range $i, $e := $data.Fields }}{{if $e.Name}}{{ if eq $i 0 }}{{ else }}{{ if eq $i 1 }}{{$e.Name}}{{ else }}, {{$e.Name}}{{ end }}{{ end }}{{ end }}{{ end }}) VALUES ({{ range $i, $e := $data.Fields }}{{if $e.Name}}{{ if eq $i 0 }}{{ else }}{{ if eq $i 1 }}?{{ else }},?{{ end }}{{ end }}{{ end }}{{ end }})")
+	CheckErr(err)
+	defer stmt.Close()
+	ret, err := stmt.Exec({{ range $i, $e := $data.Fields }}{{if $e.Name}}{{ if eq $i 0 }}{{ else }}{{ if eq $i 1 }}item.{{$e.Name}}{{ else }}, item.{{$e.Name}}{{ end }}{{ end }}{{ end }}{{ end }})
+	CheckErr(err)
+	r,err = ret.LastInsertId()
+	CheckErr(err)
+	return r
+}
+
+func {{$data.Name}}Update(db *sql.DB, item {{$data.Name}}) {
+	stmt, err := db.Prepare("UPDATE {{$data.Name}} SET {{ range $i, $e := $data.Fields }}{{if $e.Name}}{{ if eq $i 0 }}{{ else }}{{ if eq $i 1 }}{{$e.Name}}=?{{ else }}, {{$e.Name}}=?{{ end }}{{ end }}{{ end }}{{ end }} WHERE {{ IdName $data }}=?")
+	CheckErr(err)
+	defer stmt.Close()
+	_, err2 := stmt.Exec({{ range $i, $e := $data.Fields }}{{if $e.Name}}{{ if eq $i 0 }}{{ else }}{{ if eq $i 1 }}item.{{$e.Name}}{{ else }}, item.{{$e.Name}}{{ end }}{{ end }}{{ end }}{{ end }}, item.{{ IdName $data }})
+	CheckErr(err2)
+}
+
+func {{$data.Name}}Delete(db *sql.DB, id int64) int64 {
+	stmt, err := db.Prepare("DELETE FROM {{$data.Name}} WHERE {{ IdName $data }}=?")
+	CheckErr(err)
+	defer stmt.Close()
+	res, err := stmt.Exec(id)
+	CheckErr(err)
+	affect, err := res.RowsAffected()
+	CheckErr(err)
+	return affect
+
+}
+
+{{end}}
