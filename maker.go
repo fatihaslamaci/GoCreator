@@ -72,12 +72,24 @@ func StructFieldType(field TDataField) string {
 	return r
 }
 
+func ProxyFieldType(field TProxyClassField) string {
+
+	r := field.FieldType
+
+	//if field.Nullable {
+	//	r = FieldMapNull[field.FieldType]
+	//}
+
+	return r
+}
+
 func TemplateExecuteArray(data interface{}, tmpl string, TemplateName string) string {
 	funcMap := template.FuncMap{
 		"ToLover":         strings.ToLower,
 		"SQLiteDataType":  SQLiteDataType,
 		"IdName":          IdName,
 		"StructFieldType": StructFieldType,
+		"ProxyFieldType":  ProxyFieldType,
 	}
 
 	t := template.Must(template.New(TemplateName).Funcs(funcMap).ParseFiles(tmpl))

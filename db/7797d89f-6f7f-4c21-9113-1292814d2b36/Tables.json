@@ -61,11 +61,13 @@
 				"Name": "BA",
 				"FieldType": "string",
 				"Dflt_value": "B",
+				"Nullable": true,
 				"Size": "1"
 			},
 			{
 				"Name": "Tarih",
-				"FieldType": "time.Time"
+				"FieldType": "time.Time",
+				"Nullable": true
 			}
 		],
 		"TabloEkOzellikler": null

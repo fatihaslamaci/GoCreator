@@ -37,12 +37,10 @@ type TProxyClassField struct {
 }
 
 type TEndPoint struct {
-	TBaseCart
-	Fields []TEndPointField
-}
-
-type TEndPointField struct {
-	TBaseCartField
+	Name        string
+	InputClass  string
+	OutputClass string
+	GoCode      string
 }
 
 type TBaseCart struct {

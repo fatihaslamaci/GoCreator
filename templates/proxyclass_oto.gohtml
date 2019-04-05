@@ -1,0 +1,13 @@
+package main
+
+import (
+"time"
+
+)
+{{ range $ii, $data := . }}
+    type {{$data.Name}} struct {
+    {{ range $i, $e := $data.Fields }}  {{$e.Name}}   {{ProxyFieldType $e}}
+    {{ end }}}
+
+
+{{ end }}

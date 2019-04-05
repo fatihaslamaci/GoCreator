@@ -16,7 +16,7 @@ func getTablesHandler(w http.ResponseWriter, r *http.Request) {
 
 	a := JsonTableOku(projectId)
 
-	json.NewEncoder(w).Encode(a)
+	_ = json.NewEncoder(w).Encode(a)
 }
 
 func getProxyClassHandler(w http.ResponseWriter, r *http.Request) {
@@ -25,7 +25,7 @@ func getProxyClassHandler(w http.ResponseWriter, r *http.Request) {
 
 	a := JsonProxyClassOku(projectId)
 
-	json.NewEncoder(w).Encode(a)
+	_ = json.NewEncoder(w).Encode(a)
 }
 
 func getEndPointHandler(w http.ResponseWriter, r *http.Request) {
@@ -34,7 +34,7 @@ func getEndPointHandler(w http.ResponseWriter, r *http.Request) {
 
 	a := JsonEndPointOku(projectId)
 
-	json.NewEncoder(w).Encode(a)
+	_ = json.NewEncoder(w).Encode(a)
 }
 
 func saveEndPointHandler(w http.ResponseWriter, r *http.Request) {
@@ -51,7 +51,7 @@ func saveEndPointHandler(w http.ResponseWriter, r *http.Request) {
 
 	JsonEndPointKaydet(model, r.Header.Get("projectId"))
 
-	json.NewEncoder(w).Encode(model)
+	_ = json.NewEncoder(w).Encode(model)
 
 }
 
@@ -75,7 +75,7 @@ func saveTablesHandler(w http.ResponseWriter, r *http.Request) {
 
 	JsonTableKaydet(project, r.Header.Get("projectId"))
 
-	json.NewEncoder(w).Encode(project)
+	_ = json.NewEncoder(w).Encode(project)
 
 }
 
@@ -93,7 +93,7 @@ func saveProxyClassHandler(w http.ResponseWriter, r *http.Request) {
 
 	JsonProxyClassKaydet(model, r.Header.Get("projectId"))
 
-	json.NewEncoder(w).Encode(model)
+	_ = json.NewEncoder(w).Encode(model)
 
 }
 
@@ -114,17 +114,17 @@ func prgFormat(path string, w http.ResponseWriter) {
 
 	cmd := "go fmt " + path + "/*.go"
 
-	fmt.Fprintf(w, "$: "+cmd+"\n")
+	_, _ = fmt.Fprintf(w, "$: "+cmd+"\n")
 	err, out, errout := Shellout(path, "bash", "-c", cmd)
 	if err != nil {
-		fmt.Fprintf(w, "error: %v\n", err)
+		_, _ = fmt.Fprintf(w, "error: %v\n", err)
 	}
 
 	if len(out) > 0 {
-		fmt.Fprintf(w, out)
+		_, _ = fmt.Fprintf(w, out)
 	}
 	if len(errout) > 0 {
-		fmt.Fprintf(w, errout)
+		_, _ = fmt.Fprintf(w, errout)
 
 	}
 
@@ -134,12 +134,12 @@ func prgBuild(path string, w http.ResponseWriter) {
 
 	cmd := "go build "
 
-	fmt.Fprintf(w, "$: "+cmd+"\n")
+	_, _ = fmt.Fprintf(w, "$: "+cmd+"\n")
 	//err, out, errout := Shellout(path,"go", "build", path+"/main.go")
 	err, out, errout := Shellout(path, "go", "build")
 
 	if err != nil {
-		fmt.Fprintf(w, "error: %v\n", err)
+		_, _ = fmt.Fprintf(w, "error: %v\n", err)
 	}
 
 	if len(out) > 0 {
@@ -170,14 +170,20 @@ func buildHandler(w http.ResponseWriter, r *http.Request) {
 	prgFormat(project.Path, w)
 	prgBuild(project.Path, w)
 
+	tables := JsonTableOku(projectId)
+	proxyclass := JsonProxyClassOku(projectId)
+
 	TamplateFile := "InitDB_oto.gohtml"
-	HedefeKaydet(JsonTableOku(projectId), (project.Path + "/InitDB.go"), ("./templates/" + TamplateFile), TamplateFile)
+	HedefeKaydet(tables, (project.Path + "/InitDB.go"), ("./templates/" + TamplateFile), TamplateFile)
 
 	TamplateFile = "struct_oto.gohtml"
-	HedefeKaydet(JsonTableOku(projectId), (project.Path + "/" + "struct_oto.go"), ("./templates/" + TamplateFile), TamplateFile)
+	HedefeKaydet(tables, (project.Path + "/" + "struct_oto.go"), ("./templates/" + TamplateFile), TamplateFile)
 
 	TamplateFile = "crud_oto.gohtml"
-	HedefeKaydet(JsonTableOku(projectId), (project.Path + "/" + "crud_oto.go"), ("./templates/" + TamplateFile), TamplateFile)
+	HedefeKaydet(tables, (project.Path + "/" + "crud_oto.go"), ("./templates/" + TamplateFile), TamplateFile)
+
+	TamplateFile = "proxyclass_oto.gohtml"
+	HedefeKaydet(proxyclass, (project.Path + "/" + "proxyclass_oto.go"), ("./templates/" + TamplateFile), TamplateFile)
 
 	//json.NewEncoder(w).Encode(project)
 
