@@ -95,7 +95,7 @@ Vue.component('BaseKartPage', {
             }
         },
         deleteTable(table) {
-            if (confirm("Delete table?")) {
+            if (confirm("Delete "+this.title+"?" )) {
                 var index = this.items.indexOf(table);
                 if (index > -1) {
                     this.items.splice(index, 1);
@@ -117,10 +117,10 @@ Vue.component('BaseKartPage', {
 
     <v-dialog v-model="dialogNewTable" persistent max-width="290">
         <v-card>
-            <v-card-title class="headline"> New Table</v-card-title>
+            <v-card-title class="headline"> New {{title}}</v-card-title>
             <v-card-text>
                 <v-text-field
-                        label="Table Name :"
+                        label="Name :"
                         v-model="NewTableName"
                 ></v-text-field>
             </v-card-text>
@@ -150,9 +150,19 @@ Vue.component('BaseKartPage', {
 
 
     <v-container fluid grid-list-md>
-        <v-btn round color="primary" dark @click="dialogNewTable=true">New Table</v-btn>
-        <v-btn round color="primary" :loading="loading" dark @click="saveChanges()">save changes</v-btn>
+        <v-toolbar flat color="white">
+        <v-toolbar-title>{{title}}</v-toolbar-title>
+        <v-divider
+                class="mx-2"
+                inset
+                vertical
+        ></v-divider>
 
+
+        <v-spacer></v-spacer>
+        <v-btn round color="primary" dark @click="dialogNewTable=true">New</v-btn>
+        <v-btn round color="primary" :loading="loading" dark @click="saveChanges()">save changes</v-btn>
+        </v-toolbar>
         <v-data-iterator v-if="items !=null"
                 :items="items"
                 :rows-per-page-items="rowsPerPageItems"
@@ -167,6 +177,9 @@ Vue.component('BaseKartPage', {
                             </v-btn>
                             <v-toolbar-title>{{ props.item.Name }}</v-toolbar-title>
                             <v-spacer></v-spacer>
+                            
+                            
+                            
                             <v-btn icon>
                                 <v-icon @click="addField(props.item)">add</v-icon>
                             </v-btn>
@@ -178,7 +191,9 @@ Vue.component('BaseKartPage', {
 
                                 <slot name="FieldList" v-bind:field="book"> </slot>
                                 
-                               
+                                 <v-list-tile-content class="align-end">{{ book.FieldType }} &nbsp;
+                                 </v-list-tile-content>
+                                
                                 <v-icon small @click="editField(book,props.item)">edit</v-icon>
                             </v-list-tile>
                         </v-list>
