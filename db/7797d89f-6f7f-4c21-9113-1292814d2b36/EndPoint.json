@@ -1,0 +1,14 @@
+[
+	{
+		"Name": "aaa",
+		"InputClass": "PP1",
+		"OutputClass": "PP1",
+		"GoCode": ""
+	},
+	{
+		"Name": "bbb",
+		"InputClass": "PP1",
+		"OutputClass": "PP1",
+		"GoCode": "bbb"
+	}
+]
