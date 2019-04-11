@@ -2,10 +2,10 @@ Vue.component('BuildPage', {
     data: function () {
         return {
             count: 0,
-            info:[],
+            info: [],
         }
     },
-    mounted () {
+    mounted() {
         connect();
         axios
             .get('/api/getProject')
@@ -17,7 +17,7 @@ Vue.component('BuildPage', {
     methods: {
         build() {
             var output = document.getElementById("output");
-            output.innerHTML="";
+            output.innerHTML = "";
             this.loading = true;
             axios
                 .post('/api/build', {}, {headers: {projectId: sessionStorage.projectId}})
@@ -26,7 +26,7 @@ Vue.component('BuildPage', {
                     send('build');
                 })
                 .catch((error) => {
-                    output.innerHTML += "Response Error : "+ error + "\n";
+                    output.innerHTML += "Response Error : " + error + "\n";
 
                 })
                 .finally(() => {
@@ -39,23 +39,22 @@ Vue.component('BuildPage', {
 
     },
 
-    template: `<div> 
+    template: `<base-page title="Build Project">
 
-<v-btn color="green darken-1"  @click="build()">Build</v-btn>
-   
+    <template v-slot:toolbarslot>
+        <v-btn round color="green darken-1" dark @click="build()">Build</v-btn>
+    </template>
 
-<pre id="output"></pre>
-</div>
-  
-    
-    
+    <v-card>
+        <v-card-text>
+            <pre id="output"></pre>
+        </v-card-text>
+    </v-card>
+</base-page>
     
     `,
 
 });
-
-
-
 
 
 let socket = null;
@@ -67,7 +66,7 @@ function connect() {
 
     socket.onopen = function () {
 
-        if (output== undefined) {
+        if (output == undefined) {
             output = document.getElementById("output");
         }
         output.innerHTML += "Status: Connected\n";
@@ -75,12 +74,12 @@ function connect() {
 
     socket.onmessage = function (e) {
         //var output = document.getElementById("output");
-        output.innerHTML +=  e.data + "\n";
+        output.innerHTML += e.data + "\n";
     };
 
     socket.onclose = function (e) {
         //var output = document.getElementById("output");
-        output.innerHTML +=  'Socket is closed. Reconnect will be attempted in 10 second.' + "\n";
+        output.innerHTML += 'Socket is closed. Reconnect will be attempted in 10 second.' + "\n";
         setTimeout(function () {
             connect();
         }, 10000);

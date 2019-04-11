@@ -167,11 +167,9 @@ func buildHandler(w http.ResponseWriter, r *http.Request) {
 	os.MkdirAll(project.Path, os.ModePerm)
 	Copy("deneme.gohtml", (project.Path + "/main.go"))
 
-	prgFormat(project.Path, w)
-	prgBuild(project.Path, w)
-
 	tables := JsonTableOku(projectId)
 	proxyclass := JsonProxyClassOku(projectId)
+	endpoint := JsonEndPointOku(projectId)
 
 	TamplateFile := "InitDB_oto.gohtml"
 	HedefeKaydet(tables, (project.Path + "/InitDB.go"), ("./templates/" + TamplateFile), TamplateFile)
@@ -184,6 +182,12 @@ func buildHandler(w http.ResponseWriter, r *http.Request) {
 
 	TamplateFile = "proxyclass_oto.gohtml"
 	HedefeKaydet(proxyclass, (project.Path + "/" + "proxyclass_oto.go"), ("./templates/" + TamplateFile), TamplateFile)
+
+	TamplateFile = "handler_oto.gohtml"
+	HedefeKaydet(endpoint, (project.Path + "/" + "handler_oto.go"), ("./templates/" + TamplateFile), TamplateFile)
+
+	prgFormat(project.Path, w)
+	prgBuild(project.Path, w)
 
 	//json.NewEncoder(w).Encode(project)
 

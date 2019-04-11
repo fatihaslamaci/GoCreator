@@ -1,0 +1,32 @@
+package main
+import (
+"encoding/json"
+"io/ioutil"
+"net/http"
+
+)
+
+{{ range $ii, $data := . }}
+
+    func {{$data.Name}}Handler(w http.ResponseWriter, r *http.Request) {
+
+    body, err := ioutil.ReadAll(r.Body)
+    if err != nil {
+    panic(err)
+    }
+    var inputClass {{$data.InputClass}}
+    err = json.Unmarshal(body, &inputClass)
+    if err != nil {
+    panic(err)
+    }
+
+
+    var outputClass {{$data.OutputClass}}
+    json.NewEncoder(w).Encode(outputClass)
+
+    }
+
+
+
+
+{{ end }}

@@ -8,6 +8,8 @@ Vue.component('EndPointPage', {
                 {text: 'Name', value: 'Name'},
                 {text: 'InputClass', value: 'InputClass'},
                 {text: 'OutputClass', value: 'OutputClass'},
+                {text: '',value:''},
+
 
             ],
             desserts: [],
@@ -109,20 +111,12 @@ Vue.component('EndPointPage', {
         },
 
     },
-        template: `<div>
-    <v-toolbar flat color="white">
-        <v-toolbar-title>My CRUD</v-toolbar-title>
-        <v-divider
-                class="mx-2"
-                inset
-                vertical
-        ></v-divider>
-
-
-        <v-spacer></v-spacer>
+        template: `<base-page title="End Point Page">
+    
+    <template v-slot:toolbarslot>
         <v-btn round color="primary" dark @click="dialog=true">New Item</v-btn>
         <v-btn round color="primary" :loading="loading" dark @click="saveChanges()">save changes</v-btn>
-
+    </template>
 
         <v-dialog v-model="dialog" max-width="500px">
             <v-card>
@@ -157,7 +151,8 @@ Vue.component('EndPointPage', {
                 </v-card-actions>
             </v-card>
         </v-dialog>
-    </v-toolbar>
+    
+    <template>
     <v-data-table
             :headers="headers"
             :items="desserts"
@@ -187,7 +182,9 @@ Vue.component('EndPointPage', {
             <v-btn color="primary" @click="initialize">Reset</v-btn>
         </template>
     </v-data-table>
-</div>
+    </template>
+    
+</base-page>
   
   
     `,

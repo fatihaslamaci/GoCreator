@@ -1,29 +1,21 @@
 Vue.component('SamplePage', {
     data: function () {
-        return {
-            count: 0,
-            info:[]
-        }
-    },
-    mounted () {
-        axios
-          .get('/api/getProject')
-          .then(response => (
-              this.info = response.data
-            )
-        )
+        return {}
     },
 
-    template: `<div> <button v-on:click="count++">You clicked me times. {{count}} fatih3
-    </button>
-    <sample-comp></sample-comp>
-    
-    
-    {{info}}
+    template: `<base-page title="Sample Page Title">
 
-    
-    </div>
-    `,
-    
+    <template v-slot:toolbarslot>
+        <v-btn round color="primary" dark @click="">Sample Button</v-btn>
+    </template>
+
+    <v-card>
+        Sample Page Content
+    </v-card>
+
+</base-page>
+
+`,
+
 });
 
