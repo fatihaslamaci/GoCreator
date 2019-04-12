@@ -11,6 +11,10 @@ const EndPointPage = {
     template: '<end-point-page></end-point-page>'
 };
 
+const ExplorerPage = {
+    template: '<explorer-page></explorer-page>'
+};
+
 
 const About = {
     template: '<div>About</div>'
@@ -46,6 +50,11 @@ const router = new VueRouter({
             path: '/EndPointPage',
             component: EndPointPage,
             name: 'EndPointPage'
+        },
+        {
+            path: '/ExplorerPage',
+            component: ExplorerPage,
+            name: 'ExplorerPage'
         },
         {
             path: '/BuildPage',

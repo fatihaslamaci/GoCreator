@@ -27,6 +27,11 @@ Vue.component('faNavigation', {
                     routername: 'EndPointPage'
                 },
                 {
+                    title: 'Explorer',
+                    icon: 'dashboard',
+                    routername: 'ExplorerPage'
+                },
+                {
                     title: 'Build',
                     icon: 'build',
                     routername: 'BuildPage'
