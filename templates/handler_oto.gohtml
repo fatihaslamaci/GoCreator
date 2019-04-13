@@ -27,8 +27,8 @@ func HandleFuncAdd() {
     panic(err)
     }
 
+    outputClass:={{$data.Name}}HandlerMap(inputClass)
 
-    var outputClass {{$data.OutputClass}}
     json.NewEncoder(w).Encode(outputClass)
 
     }
