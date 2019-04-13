@@ -188,8 +188,10 @@ func buildHandler(w http.ResponseWriter, r *http.Request) {
 
 	for i := 0; i < len(endpoint); i++ {
 		TamplateFile = "handlerMap.gohtml"
-		HedefeKaydet(endpoint[i], (project.Path + "/" + "handlerMap_" + endpoint[i].Name + " .go"), ("./templates/" + TamplateFile), TamplateFile)
-
+		HedefFileName := project.Path + "/" + "handlerMap_" + endpoint[i].Name + ".go"
+		if FileExists(HedefFileName) == false {
+			HedefeKaydet(endpoint[i], HedefFileName, ("./templates/" + TamplateFile), TamplateFile)
+		}
 	}
 
 	prgFormat(project.Path, w)
