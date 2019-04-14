@@ -174,8 +174,8 @@ func buildHandler(w http.ResponseWriter, r *http.Request) {
 	TamplateFile := "InitDB_oto.gohtml"
 	HedefeKaydet(tables, (project.Path + "/InitDB.go"), ("./templates/" + TamplateFile), TamplateFile)
 
-	TamplateFile = "struct_oto.gohtml"
-	HedefeKaydet(tables, (project.Path + "/" + "struct_oto.go"), ("./templates/" + TamplateFile), TamplateFile)
+	TamplateFile = "entity_oto.gohtml"
+	HedefeKaydet(tables, (project.Path + "/" + "entity_oto.go"), ("./templates/" + TamplateFile), TamplateFile)
 
 	TamplateFile = "crud_oto.gohtml"
 	HedefeKaydet(tables, (project.Path + "/" + "crud_oto.go"), ("./templates/" + TamplateFile), TamplateFile)

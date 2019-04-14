@@ -45,7 +45,7 @@ Vue.component('BaseKartPage', {
             var table = {
                 Uid: "",
                 Name: this.NewTableName,
-                Fields: this.deffield,
+                Fields: JSON.parse(JSON.stringify(this.deffield)),
             };
 
             if (this.items==null) {

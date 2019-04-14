@@ -18,7 +18,7 @@ Vue.component('ProxyClassPage', {
                 v-model="props.field.Name"
         ></v-text-field>
         <v-select
-                :items="['string','int32','int64','float32','float64','time.Time','[]byte']"
+                :items="['string','int32','int64','float32','float64','bool','time.Time','[]byte']"
                 label="Type"
                 v-model="props.field.FieldType"
         ></v-select>
