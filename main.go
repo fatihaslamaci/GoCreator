@@ -80,6 +80,8 @@ func main() {
 	http.HandleFunc("/api/saveEndPoints", saveEndPointHandler)
 
 	http.HandleFunc("/api/build", buildHandler)
+	http.HandleFunc("/api/getDir", getDir)
+	http.HandleFunc("/api/getFile", getFile)
 
 	http.HandleFunc("/echo", socketHandler)
 

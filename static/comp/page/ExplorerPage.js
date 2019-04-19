@@ -12,72 +12,74 @@ Vue.component('ExplorerPage', {
                 txt: 'mdi-file-document-outline',
                 go: 'mdi-language-go',
 
-                xls: 'mdi-file-excel'
+                xls: 'mdi-file-excel',
+                sqlite:'mdi-database',
+                xml:'mdi-file-xml',
+
             },
             tree: [],
-            items: [
-                {
-                    name: '.git'
-                },
-                {
-                    name: 'node_modules'
-                },
-                {
-                    name: 'public',
-                    children: [
-                        {
-                            name: 'static',
-                            children: [{
-                                name: 'logo.png',
-                                file: 'png'
-                            }]
-                        },
-                        {
-                            name: 'favicon.ico',
-                            file: 'png'
-                        },
-                        {
-                            name: 'index.html',
-                            file: 'html'
-                        }
-                    ]
-                },
-                {
-                    name: '.gitignore',
-                    file: 'txt'
-                },
-                {
-                    name: 'babel.config.js',
-                    file: 'js'
-                },
-                {
-                    name: 'package.json',
-                    file: 'json'
-                },
-                {
-                    name: 'README.md',
-                    file: 'md'
-                },
-                {
-                    name: 'vue.config.js',
-                    file: 'js'
-                },
-                {
-                    name: 'yarn.lock',
-                    file: 'txt'
-                },
-                {
-                    name: 'main.go',
-                    file: 'go'
-                }
-            ]
-
-
+            items: [],
+            items2: [],
+            dialog:false,
+            textFile:"",
 
         }
     },
+    mounted() {
+        axios
+            .post('/api/getDir', {}, {headers: {projectId: sessionStorage.projectId}})
+            .then(response => (
+                    //console.log(response.data)
+                    this.items = response.data
+                )
+            )
+    },
+    methods: {
+        iconClick(item) {
 
-    template: `<base-page title="Explorer">
+            var prm={
+                Path : item.path
+            };
+
+            axios
+                .post('/api/getFile', prm, {headers: {projectId: sessionStorage.projectId}})
+                .then(response => {
+                    console.log(response.data);
+                    this.textFile = response.data;
+                    this.dialog=true;
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+                .finally(() => {
+                    //this.loading = false;
+                })
+        }
+    },
+
+    template: `
+<div>
+
+    <v-dialog v-model="dialog" persistent >
+        
+        <v-card>
+            <v-card-title class="headline"> File </v-card-title>
+            <v-card-text> 
+            
+            <pre id="output" contenteditable="true"> {{textFile}}</pre>
+            
+          
+            </v-card-text>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="green darken-1" flat @click="dialog = false">Iptal</v-btn>
+                <v-btn color="green darken-1" flat @click="">Kaydet</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
+
+
+<base-page title="Explorer">
 
     <template v-slot:toolbarslot>
         <v-btn round color="primary" dark @click="">Sample Button</v-btn>
@@ -92,12 +94,14 @@ Vue.component('ExplorerPage', {
     item-key="name"
     open-on-click
   >
-    <template v-slot:prepend="{ item, open }">
+    <template v-slot:prepend="{ item, open }" >
       <v-icon v-if="!item.file">
         {{ open ? 'mdi-folder-open' : 'mdi-folder' }}
       </v-icon>
-      <v-icon v-else>
+      <v-icon @click="iconClick(item)" v-else>
+         
         {{ files[item.file] }}
+         
       </v-icon>
     </template>
   </v-treeview>
@@ -105,6 +109,7 @@ Vue.component('ExplorerPage', {
 
 </base-page>
 
+</div>
 `,
 
 });

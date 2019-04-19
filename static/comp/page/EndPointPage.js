@@ -101,6 +101,7 @@ Vue.component('EndPointPage', {
                 .post('/api/saveEndPoints', this.desserts, {headers: {projectId: sessionStorage.projectId}})
                 .then(response => {
                     this.desserts = response.data;
+                    console.log(error)
                 })
                 .catch((error) => {
                     console.log(error)

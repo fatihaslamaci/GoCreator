@@ -228,3 +228,37 @@ func saveProjectHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(goprojects)
 
 }
+
+func getDir(w http.ResponseWriter, r *http.Request) {
+
+	//projectId := r.Header.Get("projectId")
+
+	//a := JsonTableOku(projectId)
+
+	a, _ := NewTree("/home/fatih/go/src/eCariTakip/")
+
+	json.NewEncoder(w).Encode(a.Children)
+
+}
+
+type TFile struct {
+	Path string
+}
+
+func getFile(w http.ResponseWriter, r *http.Request) {
+
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		panic(err)
+	}
+	var request TFile
+	err = json.Unmarshal(body, &request)
+	if err != nil {
+		panic(err)
+	}
+
+	buf, _ := ioutil.ReadFile(request.Path)
+
+	json.NewEncoder(w).Encode(string(buf))
+
+}
