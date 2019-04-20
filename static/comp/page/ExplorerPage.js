@@ -22,6 +22,7 @@ Vue.component('ExplorerPage', {
             items2: [],
             dialog:false,
             textFile:"",
+            path:""
 
         }
     },
@@ -37,12 +38,36 @@ Vue.component('ExplorerPage', {
     methods: {
         iconClick(item) {
 
+            this.path =item.path;
             var prm={
                 Path : item.path
             };
 
             axios
                 .post('/api/getFile', prm, {headers: {projectId: sessionStorage.projectId}})
+                .then(response => {
+                    console.log(response.data);
+                    this.textFile = response.data;
+                    this.dialog=true;
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+                .finally(() => {
+                    //this.loading = false;
+                })
+        },
+
+        saveFile() {
+
+
+            var prm={
+                Path : this.path,
+                Value :"denem"
+            };
+
+            axios
+                .post('/api/saveFile', prm, {headers: {projectId: sessionStorage.projectId}})
                 .then(response => {
                     console.log(response.data);
                     this.textFile = response.data;
@@ -73,7 +98,7 @@ Vue.component('ExplorerPage', {
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="green darken-1" flat @click="dialog = false">Iptal</v-btn>
-                <v-btn color="green darken-1" flat @click="">Kaydet</v-btn>
+                <v-btn color="green darken-1" flat @click="saveFile()">Kaydet</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>

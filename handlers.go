@@ -262,3 +262,26 @@ func getFile(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(string(buf))
 
 }
+
+type TFileSave struct {
+	Path  string
+	Value string
+}
+
+func saveFile(w http.ResponseWriter, r *http.Request) {
+
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		panic(err)
+	}
+	var request TFileSave
+	err = json.Unmarshal(body, &request)
+	if err != nil {
+		panic(err)
+	}
+
+	ioutil.WriteFile(request.Path, []byte(request.Value), 0644)
+
+	json.NewEncoder(w).Encode("")
+
+}
