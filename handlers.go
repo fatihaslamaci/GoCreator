@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 )
 
 func getTablesHandler(w http.ResponseWriter, r *http.Request) {
@@ -231,11 +232,10 @@ func saveProjectHandler(w http.ResponseWriter, r *http.Request) {
 
 func getDir(w http.ResponseWriter, r *http.Request) {
 
-	//projectId := r.Header.Get("projectId")
+	projectId := r.Header.Get("projectId")
+	project := getProject(projectId)
 
-	//a := JsonTableOku(projectId)
-
-	a, _ := NewTree("/home/fatih/go/src/eCariTakip/")
+	a, _ := NewTree(project.Path)
 
 	json.NewEncoder(w).Encode(a.Children)
 
@@ -282,6 +282,31 @@ func saveFile(w http.ResponseWriter, r *http.Request) {
 
 	ioutil.WriteFile(request.Path, []byte(request.Value), 0644)
 
-	json.NewEncoder(w).Encode("")
+	prgFormat2(request.Path)
+
+	buf, _ := ioutil.ReadFile(request.Path)
+	json.NewEncoder(w).Encode(string(buf))
+
+}
+
+func prgFormat2(path string) {
+
+	cmd := "go fmt " + path
+
+	s := filepath.Dir(path)
+
+	err, out, errout := Shellout(s, "bash", "-c", cmd)
+	if err != nil {
+		fmt.Print("err:")
+		fmt.Println(err)
+	}
+
+	if len(out) > 0 {
+		fmt.Println("out:" + out)
+	}
+	if len(errout) > 0 {
+		fmt.Println("errout:" + errout)
+
+	}
 
 }

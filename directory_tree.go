@@ -41,13 +41,28 @@ type Node struct {
 	Parent   *Node     `json:"-"`
 }
 
+type Nodes map[string]*Node
+
+/*
+
+func (ps Nodes) Len() int {
+	return len(ps)
+}
+func (ps Nodes) Less(i, j int) bool {
+	return ps(i).Name < ps[j].Name
+}
+func (ps Nodes) Swap(i, j int) {
+	ps[i], ps[j] = ps[j], ps[i]
+}
+*/
+
 // Create directory hierarchy.
 func NewTree(root string) (result *Node, err error) {
 	absRoot, err := filepath.Abs(root)
 	if err != nil {
 		return
 	}
-	parents := make(map[string]*Node)
+	parents := make(Nodes)
 	walkFunc := func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
@@ -68,6 +83,7 @@ func NewTree(root string) (result *Node, err error) {
 		return nil
 	}
 	if err = filepath.Walk(absRoot, walkFunc); err != nil {
+
 		return
 	}
 	for path, node := range parents {
@@ -80,5 +96,6 @@ func NewTree(root string) (result *Node, err error) {
 			parent.Children = append(parent.Children, node)
 		}
 	}
+
 	return
 }

@@ -21,12 +21,13 @@ Vue.component('ExplorerPage', {
             items: [],
             items2: [],
             dialog:false,
-            textFile:"",
-            path:""
+            path:"",
+            codeElement:null
 
         }
     },
     mounted() {
+        this.codeElement=document.getElementById("codetext")
         axios
             .post('/api/getDir', {}, {headers: {projectId: sessionStorage.projectId}})
             .then(response => (
@@ -46,8 +47,7 @@ Vue.component('ExplorerPage', {
             axios
                 .post('/api/getFile', prm, {headers: {projectId: sessionStorage.projectId}})
                 .then(response => {
-                    console.log(response.data);
-                    this.textFile = response.data;
+                    this.codeElement.innerText=response.data;
                     this.dialog=true;
                 })
                 .catch((error) => {
@@ -59,19 +59,17 @@ Vue.component('ExplorerPage', {
         },
 
         saveFile() {
-
-
+            var output = this.codeElement.innerText;
             var prm={
                 Path : this.path,
-                Value :"denem"
+                Value :output
             };
 
             axios
                 .post('/api/saveFile', prm, {headers: {projectId: sessionStorage.projectId}})
                 .then(response => {
-                    console.log(response.data);
-                    this.textFile = response.data;
-                    this.dialog=true;
+                    this.codeElement.innerText=response.data;
+
                 })
                 .catch((error) => {
                     console.log(error)
@@ -91,13 +89,13 @@ Vue.component('ExplorerPage', {
             <v-card-title class="headline"> File </v-card-title>
             <v-card-text> 
             
-            <pre id="output" contenteditable="true"> {{textFile}}</pre>
+            <pre id="codetext" contenteditable="true"></pre>
             
           
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="green darken-1" flat @click="dialog = false">Iptal</v-btn>
+                <v-btn color="green darken-1" flat @click="dialog = false">İptal</v-btn>
                 <v-btn color="green darken-1" flat @click="saveFile()">Kaydet</v-btn>
             </v-card-actions>
         </v-card>
