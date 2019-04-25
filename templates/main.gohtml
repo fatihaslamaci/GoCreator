@@ -7,6 +7,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 	"os"
 	"database/sql"
+	"{{.}}/gocreator"
 
 )
 
@@ -16,12 +17,12 @@ func main() {
 
 	os.MkdirAll("./sqldb", os.ModePerm)
     	const dbpath = "./sqldb/gomaker.sqlite"
-    	db = InitDB(dbpath)
+    	db = gocreator.InitDB(dbpath)
     	defer db.Close()
-    	CreateTable(db)
-        AlterDb(db)
+		gocreator.CreateTable(db)
+		gocreator.AlterDb(db)
 
-		HandleFuncAdd()
+		gocreator.HandleFuncAdd()
 
 
 http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {

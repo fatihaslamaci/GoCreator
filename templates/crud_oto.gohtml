@@ -1,4 +1,4 @@
-package main
+package gocreator
 
 import (
 	"database/sql"
@@ -13,13 +13,13 @@ import (
 func {{$data.Name}}SelectAll(db *sql.DB) []{{$data.Name}} {
 	rows, err := db.Query(`SELECT
 	{{ range $i, $e := $data.Fields }}
-	   
+
 	        {{ if eq $i 0 }}
 	            {{ $e.Name}}
 	        {{ else }}
 	            ,{{$e.Name}}
 	        {{ end }}
-	    
+
 	{{ end }} FROM {{$data.Name}}`)
 	CheckErr(err)
 	var result  []{{$data.Name}}

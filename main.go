@@ -65,7 +65,7 @@ func main() {
 	//goprojects = JsonProjeOku()
 
 	//os.MkdirAll("/home/fatih/go/src/goprj", os.ModePerm)
-	//Copy("deneme.gohtml", "/home/fatih/go/src/goprj/main.go")
+	//Copy("main.gohtml", "/home/fatih/go/src/goprj/main.go")
 	//***********************
 
 	http.HandleFunc("/api/getProject", getProjecthandler)

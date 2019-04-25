@@ -122,3 +122,10 @@ func HedefeKaydet(data interface{}, hedefFile string, TemplateFile string, Templ
 	fhedef.Sync()
 
 }
+
+func HedefeKaydetEgerDosyaYoksa(data interface{}, hedefFile string, TemplateFile string, TemplateName string) {
+
+	if FileExists(hedefFile) == false {
+		HedefeKaydet(data, hedefFile, TemplateFile, TemplateName)
+	}
+}

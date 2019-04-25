@@ -8,32 +8,25 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path"
 	"path/filepath"
 )
 
 func getTablesHandler(w http.ResponseWriter, r *http.Request) {
 
-	projectId := r.Header.Get("projectId")
-
-	a := JsonTableOku(projectId)
+	a := JsonTableOku(getProject(r.Header.Get("projectId")).Path)
 
 	_ = json.NewEncoder(w).Encode(a)
 }
 
 func getProxyClassHandler(w http.ResponseWriter, r *http.Request) {
-
-	projectId := r.Header.Get("projectId")
-
-	a := JsonProxyClassOku(projectId)
-
+	a := JsonProxyClassOku(getProject(r.Header.Get("projectId")).Path)
 	_ = json.NewEncoder(w).Encode(a)
 }
 
 func getEndPointHandler(w http.ResponseWriter, r *http.Request) {
 
-	projectId := r.Header.Get("projectId")
-
-	a := JsonEndPointOku(projectId)
+	a := JsonEndPointOku(getProject(r.Header.Get("projectId")).Path)
 
 	_ = json.NewEncoder(w).Encode(a)
 }
@@ -50,7 +43,7 @@ func saveEndPointHandler(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	JsonEndPointKaydet(model, r.Header.Get("projectId"))
+	JsonEndPointKaydet(model, getProject(r.Header.Get("projectId")).Path)
 
 	_ = json.NewEncoder(w).Encode(model)
 
@@ -74,7 +67,7 @@ func saveTablesHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	JsonTableKaydet(project, r.Header.Get("projectId"))
+	JsonTableKaydet(project, getProject(r.Header.Get("projectId")).Path)
 
 	_ = json.NewEncoder(w).Encode(project)
 
@@ -92,7 +85,7 @@ func saveProxyClassHandler(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	JsonProxyClassKaydet(model, r.Header.Get("projectId"))
+	JsonProxyClassKaydet(model, getProject(r.Header.Get("projectId")).Path)
 
 	_ = json.NewEncoder(w).Encode(model)
 
@@ -165,37 +158,40 @@ func buildHandler(w http.ResponseWriter, r *http.Request) {
 	project := getProject(projectId)
 	PrgDir = project.Path
 
-	os.MkdirAll(project.Path, os.ModePerm)
-	Copy("deneme.gohtml", (project.Path + "/main.go"))
+	os.MkdirAll(project.Path+"/gocreator/db", os.ModePerm)
 
-	tables := JsonTableOku(projectId)
-	proxyclass := JsonProxyClassOku(projectId)
-	endpoint := JsonEndPointOku(projectId)
+	tables := JsonTableOku(PrgDir)
+	proxyclass := JsonProxyClassOku(PrgDir)
+	endpoint := JsonEndPointOku(PrgDir)
 
-	TamplateFile := "InitDB_oto.gohtml"
-	HedefeKaydet(tables, (project.Path + "/InitDB.go"), ("./templates/" + TamplateFile), TamplateFile)
+	TamplateFile := "main.gohtml"
+	HedefeKaydet(path.Base(project.Path), (project.Path + "/main.go"), ("./templates/" + TamplateFile), TamplateFile)
+
+	TamplateFile = "InitDB_oto.gohtml"
+	HedefeKaydet(tables, (project.Path + "/gocreator/InitDB.go"), ("./templates/" + TamplateFile), TamplateFile)
 
 	TamplateFile = "entity_oto.gohtml"
-	HedefeKaydet(tables, (project.Path + "/" + "entity_oto.go"), ("./templates/" + TamplateFile), TamplateFile)
+	HedefeKaydet(tables, (project.Path + "/gocreator/" + "entity_oto.go"), ("./templates/" + TamplateFile), TamplateFile)
 
 	TamplateFile = "crud_oto.gohtml"
-	HedefeKaydet(tables, (project.Path + "/" + "crud_oto.go"), ("./templates/" + TamplateFile), TamplateFile)
+	HedefeKaydet(tables, (project.Path + "/gocreator/" + "crud_oto.go"), ("./templates/" + TamplateFile), TamplateFile)
 
 	TamplateFile = "proxyclass_oto.gohtml"
-	HedefeKaydet(proxyclass, (project.Path + "/" + "proxyclass_oto.go"), ("./templates/" + TamplateFile), TamplateFile)
+	HedefeKaydet(proxyclass, (project.Path + "/gocreator/" + "proxyclass_oto.go"), ("./templates/" + TamplateFile), TamplateFile)
 
 	TamplateFile = "handler_oto.gohtml"
-	HedefeKaydet(endpoint, (project.Path + "/" + "handler_oto.go"), ("./templates/" + TamplateFile), TamplateFile)
+	HedefeKaydet(endpoint, (project.Path + "/gocreator/" + "handler_oto.go"), ("./templates/" + TamplateFile), TamplateFile)
 
 	for i := 0; i < len(endpoint); i++ {
 		TamplateFile = "handlerMap.gohtml"
-		HedefFileName := project.Path + "/" + "handlerMap_" + endpoint[i].Name + ".go"
-		if FileExists(HedefFileName) == false {
-			HedefeKaydet(endpoint[i], HedefFileName, ("./templates/" + TamplateFile), TamplateFile)
-		}
+		HedefFileName := project.Path + "/gocreator/" + "handlerMap_" + endpoint[i].Name + ".go"
+		HedefeKaydetEgerDosyaYoksa(endpoint[i], HedefFileName, ("./templates/" + TamplateFile), TamplateFile)
+
 	}
 
+	prgFormat(project.Path+"/gocreator", w)
 	prgFormat(project.Path, w)
+
 	prgBuild(project.Path, w)
 
 	//json.NewEncoder(w).Encode(project)

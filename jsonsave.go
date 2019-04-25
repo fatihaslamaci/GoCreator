@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"io/ioutil"
-	"os"
 )
 
 func JsonProjeOku() []TProject {
@@ -24,60 +23,57 @@ func JsonProjeKaydet(projeler []TProject) {
 
 }
 
-func JsonTableKaydet(projeler []TDataTable, uuid string) {
+func JsonTableKaydet(projeler []TDataTable, path string) {
 
 	b, _ := json.Marshal(projeler)
 	var out bytes.Buffer
 	json.Indent(&out, b, "", "\t")
 
-	os.MkdirAll("./db/"+uuid, os.ModePerm)
-
-	ioutil.WriteFile("./db/"+uuid+"/Tables.json", out.Bytes(), 0644)
+	err := ioutil.WriteFile(path+"/gocreator/db/Tables.json", out.Bytes(), 0644)
+	if err != nil {
+		panic(err)
+	}
 
 }
 
-func JsonTableOku(uuid string) []TDataTable {
-	dat, _ := ioutil.ReadFile("./db/" + uuid + "/Tables.json")
+func JsonTableOku(path string) []TDataTable {
+	dat, _ := ioutil.ReadFile(path + "/gocreator/db/Tables.json")
 	var projeler []TDataTable
 	_ = json.Unmarshal(dat, &projeler)
 
 	return projeler
 }
 
-func JsonProxyClassKaydet(value []TProxyClass, uuid string) {
+func JsonProxyClassKaydet(value []TProxyClass, path string) {
 
 	b, _ := json.Marshal(value)
 	var out bytes.Buffer
 	json.Indent(&out, b, "", "\t")
 
-	os.MkdirAll("./db/"+uuid, os.ModePerm)
-
-	ioutil.WriteFile("./db/"+uuid+"/ProxyClass.json", out.Bytes(), 0644)
+	ioutil.WriteFile(path+"/gocreator/db/ProxyClass.json", out.Bytes(), 0644)
 
 }
 
-func JsonProxyClassOku(uuid string) []TProxyClass {
-	dat, _ := ioutil.ReadFile("./db/" + uuid + "/ProxyClass.json")
+func JsonProxyClassOku(path string) []TProxyClass {
+	dat, _ := ioutil.ReadFile(path + "/gocreator/db/ProxyClass.json")
 	var r []TProxyClass
 	_ = json.Unmarshal(dat, &r)
 
 	return r
 }
 
-func JsonEndPointKaydet(value []TEndPoint, uuid string) {
+func JsonEndPointKaydet(value []TEndPoint, path string) {
 
 	b, _ := json.Marshal(value)
 	var out bytes.Buffer
 	json.Indent(&out, b, "", "\t")
 
-	os.MkdirAll("./db/"+uuid, os.ModePerm)
-
-	ioutil.WriteFile("./db/"+uuid+"/EndPoint.json", out.Bytes(), 0644)
+	ioutil.WriteFile(path+"/gocreator/db/EndPoint.json", out.Bytes(), 0644)
 
 }
 
-func JsonEndPointOku(uuid string) []TEndPoint {
-	dat, _ := ioutil.ReadFile("./db/" + uuid + "/EndPoint.json")
+func JsonEndPointOku(path string) []TEndPoint {
+	dat, _ := ioutil.ReadFile(path + "/gocreator/db/EndPoint.json")
 	var r []TEndPoint
 	_ = json.Unmarshal(dat, &r)
 
