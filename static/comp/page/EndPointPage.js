@@ -25,7 +25,16 @@ Vue.component('EndPointPage', {
                 InputClass: '',
                 OutputClass: '',
                 GoCode: '',
-            }
+            },
+            InputClass:{
+                Name:"",
+                Fields:[]
+            },
+            OutputClass:{
+                Name:"",
+                Fields:[],
+            },
+
         }
     },
     computed: {
@@ -67,9 +76,38 @@ Vue.component('EndPointPage', {
 
         },
 
+        GetClassByName(item) {
+
+            //this.loading = true;
+            axios
+                .post('/api/getProxyClassByName', {}, {headers: {projectId: sessionStorage.projectId,className1:item.InputClass,className2:item.OutputClass,}})
+                .then(response => {
+
+                    if(response.data === null){
+                        this.InputClass=null;
+                        this.OutputClass=null;
+                    }else {
+                        this.InputClass=response.data[0];
+                        this.OutputClass=response.data[1];
+                    }
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+                .finally(() => {
+                    //this.loading = false;
+                })
+
+
+        },
+
+
+
         editItem(item) {
-            this.editedIndex = this.desserts.indexOf(item)
-            this.editedItem = Object.assign({}, item)
+            this.editedIndex = this.desserts.indexOf(item);
+            this.editedItem = Object.assign({}, item);
+            this.GetClassByName(item);
+
             this.dialog = true
         },
 
@@ -119,7 +157,7 @@ Vue.component('EndPointPage', {
         <v-btn round color="primary" :loading="loading" dark @click="saveChanges()">save changes</v-btn>
     </template>
 
-        <v-dialog v-model="dialog" max-width="500px">
+        <v-dialog v-model="dialog" max-width="600px">
             <v-card>
                 <v-card-title>
                     <span class="headline">{{ formTitle }}</span>
@@ -139,10 +177,61 @@ Vue.component('EndPointPage', {
                             </v-flex>
                             <v-flex xs12 sm6 md4>
                                 <v-text-field v-model="editedItem.GoCode" label="GoCode"></v-text-field>
+                               
                             </v-flex>
 
                         </v-layout>
+                        
+                      
+
                     </v-container>
+                    
+                    <v-layout wrap>
+                    <v-card>
+                        <v-toolbar dense color="info">
+                            <v-btn icon>
+                                <v-icon @click="">delete</v-icon>
+                            </v-btn>
+                            <v-toolbar-title>{{ InputClass.Name }}</v-toolbar-title>
+                            <v-spacer></v-spacer>
+                            <v-btn icon>
+                                <v-icon @click="">add</v-icon>
+                            </v-btn>
+                            
+                        </v-toolbar>
+                         <v-list dense>
+                            <v-list-tile v-for="(book, index) in InputClass.Fields" :key="index" :book="book">
+                                <v-list-tile-content>{{ book.Name }} </v-list-tile-content>
+                                 <v-list-tile-content class="align-end">{{ book.FieldType }} &nbsp;
+                                 </v-list-tile-content>
+                                <v-icon small @click="">edit</v-icon>
+                            </v-list-tile>
+                        </v-list>
+                    </v-card>
+               
+                    <v-card>
+                        <v-toolbar dense color="info">
+                            <v-btn icon>
+                                <v-icon @click="">delete</v-icon>
+                            </v-btn>
+                            <v-toolbar-title>{{ OutputClass.Name }}</v-toolbar-title>
+                            <v-spacer></v-spacer>
+                            <v-btn icon>
+                                <v-icon @click="">add</v-icon>
+                            </v-btn>
+                            
+                        </v-toolbar>
+                         <v-list dense>
+                            <v-list-tile v-for="(book, index) in OutputClass.Fields" :key="index" :book="book">
+                                <v-list-tile-content>{{ book.Name }} </v-list-tile-content>
+                                 <v-list-tile-content class="align-end">{{ book.FieldType }} &nbsp;
+                                 </v-list-tile-content>
+                                <v-icon small @click="">edit</v-icon>
+                            </v-list-tile>
+                        </v-list>
+                    </v-card>
+                </v-layout>   
+                    
                 </v-card-text>
 
                 <v-card-actions>

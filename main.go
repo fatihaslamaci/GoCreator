@@ -75,6 +75,7 @@ func main() {
 
 	http.HandleFunc("/api/getProxyClass", getProxyClassHandler)
 	http.HandleFunc("/api/saveProxyClass", saveProxyClassHandler)
+	http.HandleFunc("/api/getProxyClassByName", getProxyClassByNameHandler)
 
 	http.HandleFunc("/api/getEndPoints", getEndPointHandler)
 	http.HandleFunc("/api/saveEndPoints", saveEndPointHandler)

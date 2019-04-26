@@ -24,6 +24,24 @@ func getProxyClassHandler(w http.ResponseWriter, r *http.Request) {
 	_ = json.NewEncoder(w).Encode(a)
 }
 
+func getProxyClassByNameHandler(w http.ResponseWriter, r *http.Request) {
+
+	a := JsonProxyClassOku(getProject(r.Header.Get("projectId")).Path)
+	name1 := r.Header.Get("className1")
+	name2 := r.Header.Get("className2")
+
+	var pc [2]TProxyClass
+	for i := 0; i < len(a); i++ {
+		if a[i].Name == name1 {
+			pc[0] = a[i]
+		} else if a[i].Name == name2 {
+			pc[1] = a[i]
+		}
+	}
+
+	_ = json.NewEncoder(w).Encode(pc)
+}
+
 func getEndPointHandler(w http.ResponseWriter, r *http.Request) {
 
 	a := JsonEndPointOku(getProject(r.Header.Get("projectId")).Path)
