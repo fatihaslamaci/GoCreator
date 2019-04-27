@@ -21,7 +21,7 @@ func HandleFuncAdd() {
     if err != nil {
     panic(err)
     }
-    var inputClass {{$data.InputClass}}
+    var inputClass {{$data.Name}}Request
     err = json.Unmarshal(body, &inputClass)
     if err != nil {
     panic(err)

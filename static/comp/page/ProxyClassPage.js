@@ -9,10 +9,10 @@ Vue.component('ProxyClassPage', {
         }
     },
 
-    template: `<base-kart-page title="Proxy Class"  :deffield="DefField" getcart="/api/getProxyClass" savecart="/api/saveProxyClass">
+    template: `<base-kart-page title="Proxy Class" :deffield="DefField" getcart="/api/getProxyClass" savecart="/api/saveProxyClass">
 
     <template v-slot:FieldDialog="props">
-        
+
         <v-text-field
                 label="Field Name :"
                 v-model="props.field.Name"
@@ -34,9 +34,9 @@ Vue.component('ProxyClassPage', {
     </template>
 
     <template v-slot:FieldList="props">
-            <v-icon small></v-icon>
-            <v-list-tile-content>&nbsp; &nbsp;&nbsp; &nbsp;{{props.field.Name}}</v-list-tile-content>
-    
+        <v-icon small></v-icon>
+        <v-list-tile-content>&nbsp; &nbsp;&nbsp; &nbsp;{{props.field.Name}}</v-list-tile-content>
+
         <v-list-tile-content class="align-end">{{ props.field.DataType }} &nbsp;
         </v-list-tile-content>
     </template>

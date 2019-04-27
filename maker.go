@@ -72,7 +72,7 @@ func StructFieldType(field TDataField) string {
 	return r
 }
 
-func ProxyFieldType(field TProxyClassField) string {
+func ProxyFieldType(field TBaseCartField) string {
 
 	r := field.FieldType
 

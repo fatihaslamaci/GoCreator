@@ -5,8 +5,12 @@ import (
 
 )
 {{ range $ii, $data := . }}
-    type {{$data.Name}} struct {
-    {{ range $i, $e := $data.Fields }}  {{$e.Name}}   {{ProxyFieldType $e}}
+    type {{.Name}}Request struct {
+    {{ range $i, $e := $data.Request.Fields }}  {{$e.Name}}   {{ProxyFieldType $e}}
+    {{ end }}}
+
+    type {{.Name}}Response struct {
+    {{ range $i, $e := $data.Response.Fields }}  {{$e.Name}}   {{ProxyFieldType $e}}
     {{ end }}}
 
 

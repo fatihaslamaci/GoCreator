@@ -29,18 +29,17 @@ type TabloEkOzellik struct {
 
 type TProxyClass struct {
 	TBaseCart
-	Fields []TProxyClassField
+	//Fields []TProxyClassField
 }
 
-type TProxyClassField struct {
-	TBaseCartField
-}
+//type TProxyClassField struct {
+//	TBaseCartField
+//}
 
 type TEndPoint struct {
-	Name        string
-	InputClass  string
-	OutputClass string
-	GoCode      string
+	Name     string
+	Request  TBaseCart
+	Response TBaseCart
 }
 
 type TBaseCart struct {
