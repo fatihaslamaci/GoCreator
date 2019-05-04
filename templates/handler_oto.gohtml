@@ -6,6 +6,7 @@ import (
 
 )
 
+
 func HandleFuncAdd() {
 {{ range $ii, $data := . }}
     http.HandleFunc("/api/{{$data.Name}}", {{$data.Name}}Handler)

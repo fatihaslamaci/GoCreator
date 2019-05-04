@@ -1,16 +1,18 @@
 package gocreator
 
 import (
-"time"
+
+{{ImportFieldEndPoint . "time.Time" "time" }}
+
 
 )
 {{ range $ii, $data := . }}
-    type {{.Name}}Request struct {
-    {{ range $i, $e := $data.Request.Fields }}  {{$e.Name}}   {{ProxyFieldType $e}}
+    type {{$data.Name}}Request struct {
+    {{ range $i, $e := $data.Request.Fields }}  {{$e.Name}}   {{EndPointFieldType $e}}
     {{ end }}}
 
-    type {{.Name}}Response struct {
-    {{ range $i, $e := $data.Response.Fields }}  {{$e.Name}}   {{ProxyFieldType $e}}
+    type {{$data.Name}}Response struct {
+    {{ range $i, $e := $data.Response.Fields }}  {{$e.Name}}   {{EndPointFieldType $e}}
     {{ end }}}
 
 

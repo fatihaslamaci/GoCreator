@@ -4,29 +4,28 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/google/uuid"
+	"gocreator/maker"
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
-	"path"
 	"path/filepath"
 )
 
 func getTablesHandler(w http.ResponseWriter, r *http.Request) {
 
-	a := JsonTableOku(getProject(r.Header.Get("projectId")).Path)
+	a := maker.JsonTableOku(maker.GetProject(r.Header.Get("projectId")).Path)
 
 	_ = json.NewEncoder(w).Encode(a)
 }
 
 func getProxyClassHandler(w http.ResponseWriter, r *http.Request) {
-	a := JsonProxyClassOku(getProject(r.Header.Get("projectId")).Path)
+	a := maker.JsonProxyClassOku(maker.GetProject(r.Header.Get("projectId")).Path)
 	_ = json.NewEncoder(w).Encode(a)
 }
 
 func getEndPointHandler(w http.ResponseWriter, r *http.Request) {
 
-	a := JsonEndPointOku(getProject(r.Header.Get("projectId")).Path)
+	a := maker.JsonEndPointOku(maker.GetProject(r.Header.Get("projectId")).Path)
 
 	_ = json.NewEncoder(w).Encode(a)
 }
@@ -37,13 +36,13 @@ func saveEndPointHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-	var model []TEndPoint
+	var model []maker.TEndPoint
 	err = json.Unmarshal(body, &model)
 	if err != nil {
 		panic(err)
 	}
 
-	JsonEndPointKaydet(model, getProject(r.Header.Get("projectId")).Path)
+	maker.JsonEndPointKaydet(model, maker.GetProject(r.Header.Get("projectId")).Path)
 
 	_ = json.NewEncoder(w).Encode(model)
 
@@ -55,7 +54,7 @@ func saveTablesHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-	var project []TDataTable
+	var project []maker.TDataTable
 	err = json.Unmarshal(body, &project)
 	if err != nil {
 		panic(err)
@@ -67,7 +66,7 @@ func saveTablesHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	JsonTableKaydet(project, getProject(r.Header.Get("projectId")).Path)
+	maker.JsonTableKaydet(project, maker.GetProject(r.Header.Get("projectId")).Path)
 
 	_ = json.NewEncoder(w).Encode(project)
 
@@ -79,29 +78,16 @@ func saveProxyClassHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-	var model []TProxyClass
+	var model []maker.TProxyClass
 	err = json.Unmarshal(body, &model)
 	if err != nil {
 		panic(err)
 	}
 
-	JsonProxyClassKaydet(model, getProject(r.Header.Get("projectId")).Path)
+	maker.JsonProxyClassKaydet(model, maker.GetProject(r.Header.Get("projectId")).Path)
 
 	_ = json.NewEncoder(w).Encode(model)
 
-}
-
-func getProject(uid string) TProject {
-
-	var r = TProject{}
-	projects := JsonProjeOku()
-	for i := 0; i < len(projects); i++ {
-		if projects[i].Uid == uid {
-			r = projects[i]
-			break
-		}
-	}
-	return r
 }
 
 func prgFormat(path string, w http.ResponseWriter) {
@@ -145,61 +131,37 @@ func prgBuild(path string, w http.ResponseWriter) {
 
 }
 
+func GenerateHandler(w http.ResponseWriter, r *http.Request) {
+
+	projectId := r.Header.Get("projectId")
+	project := maker.MapkeProject(projectId)
+	PrgDir = project.Path
+
+	prgFormat(project.Path+"/gocreator", w)
+	prgFormat(project.Path, w)
+
+}
+
 func buildHandler(w http.ResponseWriter, r *http.Request) {
-
 	// Kill it:
-
 	if c.Process != nil {
 		if err := c.Process.Kill(); err != nil {
 			log.Fatal("failed to kill process: ", err)
 		}
 	}
 	projectId := r.Header.Get("projectId")
-	project := getProject(projectId)
+	project := maker.MapkeProject(projectId)
 	PrgDir = project.Path
-
-	os.MkdirAll(project.Path+"/gocreator/db", os.ModePerm)
-
-	tables := JsonTableOku(PrgDir)
-	//proxyclass := JsonProxyClassOku(PrgDir)
-	endpoint := JsonEndPointOku(PrgDir)
-
-	TamplateFile := "main.gohtml"
-	HedefeKaydet(path.Base(project.Path), (project.Path + "/main.go"), ("./templates/" + TamplateFile), TamplateFile)
-
-	TamplateFile = "InitDB_oto.gohtml"
-	HedefeKaydet(tables, (project.Path + "/gocreator/InitDB.go"), ("./templates/" + TamplateFile), TamplateFile)
-
-	TamplateFile = "entity_oto.gohtml"
-	HedefeKaydet(tables, (project.Path + "/gocreator/" + "entity_oto.go"), ("./templates/" + TamplateFile), TamplateFile)
-
-	TamplateFile = "crud_oto.gohtml"
-	HedefeKaydet(tables, (project.Path + "/gocreator/" + "crud_oto.go"), ("./templates/" + TamplateFile), TamplateFile)
-
-	TamplateFile = "proxyclass_oto.gohtml"
-	HedefeKaydet(endpoint, (project.Path + "/gocreator/" + "proxyclass_oto.go"), ("./templates/" + TamplateFile), TamplateFile)
-
-	TamplateFile = "handler_oto.gohtml"
-	HedefeKaydet(endpoint, (project.Path + "/gocreator/" + "handler_oto.go"), ("./templates/" + TamplateFile), TamplateFile)
-
-	for i := 0; i < len(endpoint); i++ {
-		TamplateFile = "handlerMap.gohtml"
-		HedefFileName := project.Path + "/gocreator/" + "handlerMap_" + endpoint[i].Name + ".go"
-		HedefeKaydetEgerDosyaYoksa(endpoint[i], HedefFileName, ("./templates/" + TamplateFile), TamplateFile)
-
-	}
 
 	prgFormat(project.Path+"/gocreator", w)
 	prgFormat(project.Path, w)
 
 	prgBuild(project.Path, w)
 
-	//json.NewEncoder(w).Encode(project)
-
 }
 
 func getProjecthandler(w http.ResponseWriter, r *http.Request) {
-	goprojects := JsonProjeOku()
+	goprojects := maker.JsonProjeOku()
 	json.NewEncoder(w).Encode(goprojects)
 }
 
@@ -209,18 +171,19 @@ func saveProjectHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-	var project TProject
+	var project maker.TProject
 	err = json.Unmarshal(body, &project)
 	if err != nil {
 		panic(err)
 	}
 
 	project.Uid = uuid.New().String()
+
 	//project.Ad= "Deneme"
 
-	goprojects := JsonProjeOku()
+	goprojects := maker.JsonProjeOku()
 	goprojects = append(goprojects, project)
-	JsonProjeKaydet(goprojects)
+	maker.JsonProjeKaydet(goprojects)
 
 	json.NewEncoder(w).Encode(goprojects)
 
@@ -229,7 +192,7 @@ func saveProjectHandler(w http.ResponseWriter, r *http.Request) {
 func getDir(w http.ResponseWriter, r *http.Request) {
 
 	projectId := r.Header.Get("projectId")
-	project := getProject(projectId)
+	project := maker.GetProject(projectId)
 
 	a, _ := NewTree(project.Path)
 

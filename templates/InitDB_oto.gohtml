@@ -6,6 +6,9 @@ import (
 	"strings"
 )
 
+var gdb *sql.DB
+
+
 const sql_table = `
 {{ range $ii, $data := . }}
 CREATE TABLE IF NOT EXISTS {{$data.Name}}(
@@ -45,6 +48,7 @@ func CheckErr(err error) {
 
 func InitDB(filepath string) *sql.DB {
 	db, err := sql.Open("sqlite3", filepath)
+	gdb=db
 	CheckErr(err)
 
 	if db == nil {

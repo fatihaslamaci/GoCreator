@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+
 	"os/exec"
 	"path"
 	"sync"
@@ -68,6 +69,8 @@ func main() {
 	//Copy("main.gohtml", "/home/fatih/go/src/goprj/main.go")
 	//***********************
 
+	//gocreator.HandleFuncAdd()
+
 	http.HandleFunc("/api/getProject", getProjecthandler)
 	http.HandleFunc("/api/saveProject", saveProjectHandler)
 	http.HandleFunc("/api/getTables", getTablesHandler)
@@ -80,6 +83,8 @@ func main() {
 	http.HandleFunc("/api/saveEndPoints", saveEndPointHandler)
 
 	http.HandleFunc("/api/build", buildHandler)
+	http.HandleFunc("/api/GenerateCode", GenerateHandler)
+
 	http.HandleFunc("/api/getDir", getDir)
 	http.HandleFunc("/api/getFile", getFile)
 	http.HandleFunc("/api/saveFile", saveFile)

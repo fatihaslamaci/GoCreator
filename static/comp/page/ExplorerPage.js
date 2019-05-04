@@ -17,6 +17,7 @@ Vue.component('ExplorerPage', {
                 xml:'mdi-file-xml',
 
             },
+            token:"",
             tree: [],
             items: [],
             items2: [],
@@ -77,7 +78,29 @@ Vue.component('ExplorerPage', {
                 .finally(() => {
                     //this.loading = false;
                 })
+        },
+
+        Login(prm) {
+            var output = this.codeElement.innerText;
+            var prm={
+                UserName : "",
+                Password :""
+            };
+
+            axios
+                .post('http://localhost:8000/api/loginhandler', prm, {headers: {projectId: sessionStorage.projectId}})
+                .then(response => {
+                    this.token=response.data;
+
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+                .finally(() => {
+                    //this.loading = false;
+                })
         }
+
     },
 
     template: `
@@ -104,9 +127,16 @@ Vue.component('ExplorerPage', {
 
 <base-page title="Explorer">
 
+   
+
     <template v-slot:toolbarslot>
         <v-btn round color="primary" dark @click="">Sample Button</v-btn>
+
+   <v-btn color="green darken-1" flat @click="Login">Login</v-btn>
+   {{token}}
+
     </template>
+
 
     <v-card>
           <v-treeview

@@ -36,13 +36,35 @@ Vue.component('BuildPage', {
 
         },
 
+        generateCode() {
+            var output = document.getElementById("output");
+            output.innerHTML = "";
+            this.loading = true;
+            axios
+                .post('/api/GenerateCode', {projectId: sessionStorage.projectId}, {headers: {projectId: sessionStorage.projectId}})
+                .then(response => {
+                    output.innerHTML += response.data + "\n";
+                    send('build');
+                })
+                .catch((error) => {
+                    output.innerHTML += "Response Error : " + error + "\n";
+
+                })
+                .finally(() => {
+                    this.loading = false;
+                })
+
+
+        },
 
     },
 
     template: `<base-page title="Build Project">
 
     <template v-slot:toolbarslot>
+        <v-btn round color="green darken-1" dark @click="generateCode()">GenerateCode</v-btn>
         <v-btn round color="green darken-1" dark @click="build()">Build</v-btn>
+        
     </template>
 
     <v-card>

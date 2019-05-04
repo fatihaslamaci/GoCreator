@@ -1,9 +1,19 @@
-package main
+package maker
 
 type TProject struct {
 	Uid  string
 	Ad   string
 	Path string
+}
+
+type TBaseCart struct {
+	Name   string
+	Fields []TBaseCartField
+}
+
+type TBaseCartField struct {
+	Name      string
+	FieldType string
 }
 
 type TDataField struct {
@@ -38,16 +48,16 @@ type TProxyClass struct {
 
 type TEndPoint struct {
 	Name     string
-	Request  TBaseCart
-	Response TBaseCart
+	Request  TEndPointCart
+	Response TEndPointCart
 }
 
-type TBaseCart struct {
+type TEndPointCart struct {
 	Name   string
-	Fields []TBaseCartField
+	Fields []TEndPointField
 }
 
-type TBaseCartField struct {
-	Name      string
-	FieldType string
+type TEndPointField struct {
+	TBaseCartField
+	Body_Header int //0 :Body Read, 1 :Header Read
 }

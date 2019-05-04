@@ -22,7 +22,7 @@ func main() {
 		gocreator.CreateTable(db)
 		gocreator.AlterDb(db)
 
-		gocreator.HandleFuncAdd()
+		gocreator.HandleFuncAdd(db)
 
 
 http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
