@@ -8,6 +8,8 @@ Vue.component('project', {
             saveloading: false,
             errored: false,
             dialog: false,
+            dialogSecim: false,
+
             newitem: {},
         }
 
@@ -16,13 +18,18 @@ Vue.component('project', {
         this.loading = true;
 
         axios
-            .get('/api/getProject')
+            .get('/api/getProjects')
             .then(response => {
                 this.items = response.data;
-                if (sessionStorage.projectId) {
+                if (this.items==null){
+                    this.dialog = true;
+                }else if (sessionStorage.projectId) {
                     this.projectId = sessionStorage.projectId;
-
+                } else {
+                    this.dialogSecim = true;
                 }
+
+
             })
             .catch((error) => {
                 console.log(error)
@@ -47,9 +54,12 @@ Vue.component('project', {
         newProject() {
             this.saveloading = true;
             axios
-                .post('/api/saveProject', this.newitem)
+                .post('/api/saveProjects', this.newitem)
                 .then(response => {
                     this.items = response.data;
+                    //sessionStorage.projectId = this.items[this.items.length - 1].Uid;
+                    this.projectId = this.items[this.items.length - 1].Uid;
+
                     console.log(response.data)
                 })
                 .catch((error) => {
@@ -91,6 +101,31 @@ Vue.component('project', {
             </v-card-actions>
         </v-card>
     </v-dialog>
+    
+    <v-dialog v-model="dialogSecim" persistent max-width="290">
+        
+        <v-card>
+            <v-card-title class="headline"> Select Project </v-card-title>
+            <v-card-text> 
+            
+            <v-select
+            v-model="projectId"
+            :items="items"
+            item-text="Ad"
+            item-value="Uid"
+            label="Project"
+            ></v-select>
+           
+          
+            </v-card-text>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="green darken-1" flat @click="dialogSecim = false">Iptal</v-btn>
+                <v-btn :loading="saveloading" color="green darken-1" flat @click="newProject">Tamam</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
+    
     
     <v-select
             v-model="projectId"

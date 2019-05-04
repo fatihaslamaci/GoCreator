@@ -6,8 +6,6 @@
     <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
     <link href="https://cdn.materialdesignicons.com/2.5.94/css/materialdesignicons.min.css" rel="stylesheet">
 
-
-
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
 
 </head>
@@ -30,14 +28,15 @@
 
         <v-toolbar dense color="indigo" dark fixed app>
             <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-            <v-toolbar-title>Go Creator</v-toolbar-title>
+            <v-toolbar-title>Go Creator Project : {{ project.Path }}</v-toolbar-title>
         </v-toolbar>
         <v-content>
 
             <router-view v-model="drawer"></router-view>
         </v-content>
         <v-footer color="indigo" app>
-            <span class="white--text">Developer Fatih Aşlamacı &copy; 2019</span>
+            <span class="white--text">&copy; 2019 The GoCreator Authors. All rights reserved.
+</span>
         </v-footer>
     </v-app>
 
@@ -78,10 +77,40 @@
             router,
             data: {
                 drawer: true,
+
+                project:{
+                    Uid:"",
+                    Ad:"",
+                    Path:"",
+                }
             },
             mounted() {
-
+                this.getProject();
             },
+        methods: {
+                getProject(){
+                    if (this.project.Uid !== sessionStorage.projectId) {
+                        this.project.Uid = sessionStorage.projectId
+                        console.log("projectPath");
+                        axios
+                            .post('/api/getProject', {}, {headers: {projectId: sessionStorage.projectId}})
+                            .then(response => {
+                                this.project = response.data;
+                            })
+                            .catch((error) => {
+                                console.log("Response Error : " + error);
+
+                            })
+                            .finally(() => {
+                                //this.loading = false;
+                            })
+
+
+                    }
+
+
+                }
+        }
         }
     ).$mount('#app')
 </script>

@@ -160,12 +160,18 @@ func buildHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func getProjecthandler(w http.ResponseWriter, r *http.Request) {
+func getProjectsHandler(w http.ResponseWriter, r *http.Request) {
 	goprojects := maker.JsonProjeOku()
 	json.NewEncoder(w).Encode(goprojects)
 }
+func getProjectHandler(w http.ResponseWriter, r *http.Request) {
+	projectId := r.Header.Get("projectId")
+	project := maker.GetProject(projectId)
+	json.NewEncoder(w).Encode(project)
 
-func saveProjectHandler(w http.ResponseWriter, r *http.Request) {
+}
+
+func saveProjectsHandler(w http.ResponseWriter, r *http.Request) {
 
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {

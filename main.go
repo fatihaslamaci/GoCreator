@@ -71,8 +71,10 @@ func main() {
 
 	//gocreator.HandleFuncAdd()
 
-	http.HandleFunc("/api/getProject", getProjecthandler)
-	http.HandleFunc("/api/saveProject", saveProjectHandler)
+	http.HandleFunc("/api/getProjects", getProjectsHandler)
+	http.HandleFunc("/api/getProject", getProjectHandler)
+
+	http.HandleFunc("/api/saveProjects", saveProjectsHandler)
 	http.HandleFunc("/api/getTables", getTablesHandler)
 	http.HandleFunc("/api/saveTables", saveTablesHandler)
 

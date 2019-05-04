@@ -2,17 +2,10 @@ Vue.component('BuildPage', {
     data: function () {
         return {
             count: 0,
-            info: [],
         }
     },
     mounted() {
         connect();
-        axios
-            .get('/api/getProject')
-            .then(response => (
-                    this.info = response.data
-                )
-            )
     },
     methods: {
         build() {
