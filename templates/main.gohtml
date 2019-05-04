@@ -1,3 +1,7 @@
+// Code Generator tarafından bir defaya mahsus oluşturulmuştur
+// Örnektir. Kod değişikliği yapabilirsiniz.
+
+
 package main
 
 import (
@@ -22,7 +26,7 @@ func main() {
 		gocreator.CreateTable(db)
 		gocreator.AlterDb(db)
 
-		gocreator.HandleFuncAdd(db)
+		gocreator.HandleFuncAdd()
 
 
 http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -32,5 +36,9 @@ http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 
 
 	})
+
+	port:=":8000"
+	fmt.Printf("Server Started.  http://localhost%s/\n",port)
+
 	http.ListenAndServe(":8000", nil)
 }
