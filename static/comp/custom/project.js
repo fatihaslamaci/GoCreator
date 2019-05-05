@@ -16,19 +16,18 @@ Vue.component('project', {
     },
     mounted() {
         this.loading = true;
-
         axios
             .get('/api/getProjects')
             .then(response => {
                 this.items = response.data;
-                if (this.items==null){
+                console.log(this.items);
+                if ((this.items==null)||(this.items.length<1)) {
                     this.dialog = true;
                 }else if (sessionStorage.projectId) {
                     this.projectId = sessionStorage.projectId;
                 } else {
                     this.dialogSecim = true;
                 }
-
 
             })
             .catch((error) => {
