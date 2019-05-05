@@ -167,7 +167,7 @@ func FileExists(name string) bool {
 	return true
 }
 
-func MapkeProject(ProjectId string) TProject {
+func MakeProject(ProjectId string) TProject {
 	project := GetProject(ProjectId)
 	PrgDir := project.Path
 	os.MkdirAll(project.Path+"/gocreator/db", os.ModePerm)

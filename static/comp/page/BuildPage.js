@@ -37,7 +37,6 @@ Vue.component('BuildPage', {
                 .post('/api/GenerateCode', {projectId: sessionStorage.projectId}, {headers: {projectId: sessionStorage.projectId}})
                 .then(response => {
                     output.innerHTML += response.data + "\n";
-                    send('build');
                 })
                 .catch((error) => {
                     output.innerHTML += "Response Error : " + error + "\n";

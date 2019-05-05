@@ -20,7 +20,6 @@ Vue.component('project', {
             .get('/api/getProjects')
             .then(response => {
                 this.items = response.data;
-                console.log(this.items);
                 if ((this.items==null)||(this.items.length<1)) {
                     this.dialog = true;
                 }else if (sessionStorage.projectId) {
@@ -72,7 +71,7 @@ Vue.component('project', {
 
         },
         deleteProject() {
-            this.saveloading = true;
+            this.loading = true;
             axios
                 .post('/api/deleteProject', {Uid:this.projectId})
                 .then(response => {
@@ -82,7 +81,7 @@ Vue.component('project', {
                     console.log(error)
                 })
                 .finally(() => {
-                    this.saveloading = false;
+                    this.loading = false;
                 })
         },
 

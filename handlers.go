@@ -134,7 +134,7 @@ func prgBuild(path string, w http.ResponseWriter) {
 func GenerateHandler(w http.ResponseWriter, r *http.Request) {
 
 	projectId := r.Header.Get("projectId")
-	project := maker.MapkeProject(projectId)
+	project := maker.MakeProject(projectId)
 	PrgDir = project.Path
 
 	prgFormat(project.Path+"/gocreator", w)
@@ -150,7 +150,7 @@ func buildHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	projectId := r.Header.Get("projectId")
-	project := maker.MapkeProject(projectId)
+	project := maker.MakeProject(projectId)
 	PrgDir = project.Path
 
 	prgFormat(project.Path+"/gocreator", w)
