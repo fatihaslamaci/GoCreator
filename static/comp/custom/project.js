@@ -71,7 +71,22 @@ Vue.component('project', {
                 })
 
 
-        }
+        },
+        deleteProject() {
+            this.saveloading = true;
+            axios
+                .post('/api/deleteProject', {Uid:this.projectId})
+                .then(response => {
+                    this.items = response.data;
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+                .finally(() => {
+                    this.saveloading = false;
+                })
+        },
+
     },
 
 
@@ -81,10 +96,10 @@ Vue.component('project', {
     <v-dialog v-model="dialog" persistent max-width="290">
         
         <v-card>
-            <v-card-title class="headline"> Yeni Proje </v-card-title>
+            <v-card-title class="headline"> New Project </v-card-title>
             <v-card-text> 
             <v-text-field
-            label="Proje Adı :"
+            label="Project Name :"
             v-model="newitem.Ad"
             ></v-text-field>
             <v-text-field
@@ -96,8 +111,8 @@ Vue.component('project', {
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="green darken-1" flat @click="dialog = false">Iptal</v-btn>
-                <v-btn :loading="saveloading" color="green darken-1" flat @click="newProject">Kaydet</v-btn>
+                <v-btn color="green darken-1" flat @click="dialog = false">Cancel</v-btn>
+                <v-btn :loading="saveloading" color="green darken-1" flat @click="newProject">Save</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -113,15 +128,15 @@ Vue.component('project', {
             :items="items"
             item-text="Ad"
             item-value="Uid"
-            label="Project"
+            label="Project Name :"
             ></v-select>
            
           
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="green darken-1" flat @click="dialogSecim = false">Iptal</v-btn>
-                <v-btn :loading="saveloading" color="green darken-1" flat @click="newProject">Tamam</v-btn>
+                <v-btn color="green darken-1" flat @click="dialogSecim = false">Cancel</v-btn>
+                <v-btn :loading="saveloading" color="green darken-1" flat @click="newProject">Ok</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -132,7 +147,7 @@ Vue.component('project', {
             :items="items"
             item-text="Ad"
             item-value="Uid"
-            label="Project"
+            label="Project Name :"
             :loading="loading"
     >
 
@@ -149,9 +164,15 @@ Vue.component('project', {
                 <v-card>
                     <v-card-text class="pa-4">
                         <v-btn large flat color="primary" @click="dialog = true">
-                            <v-icon left>mdi-target</v-icon>
+                            <v-icon left>create_new_folder</v-icon>
                             New
                         </v-btn>
+                        
+                        <v-btn large flat color="primary" @click="deleteProject()">
+                            <v-icon left>delete</v-icon>
+                            Delete
+                        </v-btn>
+                        
                     </v-card-text>
                 </v-card>
             </v-menu>

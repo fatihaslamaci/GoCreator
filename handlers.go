@@ -195,6 +195,40 @@ func saveProjectsHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func remove(s []maker.TProject, i int) []maker.TProject {
+	s[i] = s[len(s)-1]
+	return s[:len(s)-1]
+}
+
+func deleteProjectHandler(w http.ResponseWriter, r *http.Request) {
+
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		panic(err)
+	}
+	var project maker.TUid
+	err = json.Unmarshal(body, &project)
+	if err != nil {
+		panic(err)
+	}
+
+	//project.Ad= "Deneme"
+
+	goprojects := maker.JsonProjeOku()
+
+	for index, element := range goprojects {
+		if element.Uid == project.Uid {
+			goprojects = remove(goprojects, index)
+			break
+		}
+	}
+
+	maker.JsonProjeKaydet(goprojects)
+
+	json.NewEncoder(w).Encode(goprojects)
+
+}
+
 func getDir(w http.ResponseWriter, r *http.Request) {
 
 	projectId := r.Header.Get("projectId")

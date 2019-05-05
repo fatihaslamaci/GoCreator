@@ -1,5 +1,9 @@
 package maker
 
+type TUid struct {
+	Uid string
+}
+
 type TProject struct {
 	Uid  string
 	Ad   string
