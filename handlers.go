@@ -134,7 +134,9 @@ func prgBuild(path string, w http.ResponseWriter) {
 func GenerateHandler(w http.ResponseWriter, r *http.Request) {
 
 	projectId := r.Header.Get("projectId")
-	project := maker.MakeProject(projectId)
+	template := r.Header.Get("template")
+
+	project := maker.MakeProject(projectId, template)
 	PrgDir = project.Path
 
 	prgFormat(project.Path+"/gocreator", w)
@@ -150,7 +152,8 @@ func buildHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	projectId := r.Header.Get("projectId")
-	project := maker.MakeProject(projectId)
+	template := r.Header.Get("template")
+	project := maker.MakeProject(projectId, template)
 	PrgDir = project.Path
 
 	prgFormat(project.Path+"/gocreator", w)
@@ -237,6 +240,26 @@ func getDir(w http.ResponseWriter, r *http.Request) {
 	a, _ := NewTree(project.Path)
 
 	json.NewEncoder(w).Encode(a.Children)
+
+}
+
+func getTemplateList(w http.ResponseWriter, r *http.Request) {
+
+	//projectId := r.Header.Get("projectId")
+
+	files, err := ioutil.ReadDir("./templates/")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var s []string
+	for _, f := range files {
+		if f.IsDir() {
+			s = append(s, f.Name())
+		}
+	}
+
+	json.NewEncoder(w).Encode(s)
 
 }
 

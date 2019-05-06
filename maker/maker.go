@@ -167,37 +167,40 @@ func FileExists(name string) bool {
 	return true
 }
 
-func MakeProject(ProjectId string) TProject {
+func MakeProject(ProjectId string, templateDir string) TProject {
 	project := GetProject(ProjectId)
 	PrgDir := project.Path
 	os.MkdirAll(project.Path+"/gocreator/db", os.ModePerm)
 	tables := JsonTableOku(PrgDir)
+
+	templateFileDir := "./templates/" + templateDir + "/"
+
 	//proxyclass := JsonProxyClassOku(PrgDir)
 	endpoint := JsonEndPointOku(PrgDir)
 	TamplateFile := "main.gohtml"
-	HedefeKaydetEgerDosyaYoksa(path.Base(project.Path), (project.Path + "/main.go"), ("./templates/" + TamplateFile), TamplateFile)
+	HedefeKaydetEgerDosyaYoksa(path.Base(project.Path), (project.Path + "/main.go"), (templateFileDir + TamplateFile), TamplateFile)
 	if len(tables) > 0 {
 		TamplateFile = "InitDB_oto.gohtml"
-		HedefeKaydet(tables, (project.Path + "/gocreator/InitDB.go"), ("./templates/" + TamplateFile), TamplateFile)
+		HedefeKaydet(tables, (project.Path + "/gocreator/InitDB.go"), (templateFileDir + TamplateFile), TamplateFile)
 
 		TamplateFile = "entity_oto.gohtml"
-		HedefeKaydet(tables, (project.Path + "/gocreator/" + "entity_oto.go"), ("./templates/" + TamplateFile), TamplateFile)
+		HedefeKaydet(tables, (project.Path + "/gocreator/" + "entity_oto.go"), (templateFileDir + TamplateFile), TamplateFile)
 
 		TamplateFile = "crud_oto.gohtml"
-		HedefeKaydet(tables, (project.Path + "/gocreator/" + "crud_oto.go"), ("./templates/" + TamplateFile), TamplateFile)
+		HedefeKaydet(tables, (project.Path + "/gocreator/" + "crud_oto.go"), (templateFileDir + TamplateFile), TamplateFile)
 	}
 	if len(endpoint) > 0 {
 
 		TamplateFile = "proxyclass_oto.gohtml"
-		HedefeKaydet(endpoint, (project.Path + "/gocreator/" + "proxyclass_oto.go"), ("./templates/" + TamplateFile), TamplateFile)
+		HedefeKaydet(endpoint, (project.Path + "/gocreator/" + "proxyclass_oto.go"), (templateFileDir + TamplateFile), TamplateFile)
 
 		TamplateFile = "handler_oto.gohtml"
-		HedefeKaydet(endpoint, (project.Path + "/gocreator/" + "handler_oto.go"), ("./templates/" + TamplateFile), TamplateFile)
+		HedefeKaydet(endpoint, (project.Path + "/gocreator/" + "handler_oto.go"), (templateFileDir + TamplateFile), TamplateFile)
 
 		for i := 0; i < len(endpoint); i++ {
 			TamplateFile = "handlerMap.gohtml"
 			HedefFileName := project.Path + "/gocreator/" + "handlerMap_" + endpoint[i].Name + ".go"
-			HedefeKaydetEgerDosyaYoksa(endpoint[i], HedefFileName, ("./templates/" + TamplateFile), TamplateFile)
+			HedefeKaydetEgerDosyaYoksa(endpoint[i], HedefFileName, (templateFileDir + TamplateFile), TamplateFile)
 
 		}
 	}

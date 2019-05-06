@@ -2,10 +2,15 @@ Vue.component('BuildPage', {
     data: function () {
         return {
             count: 0,
+            template: "",
+            templateItems: [],
+
         }
     },
     mounted() {
+        this.getTemplateList();
         connect();
+
     },
     methods: {
         build() {
@@ -13,7 +18,12 @@ Vue.component('BuildPage', {
             output.innerHTML = "";
             this.loading = true;
             axios
-                .post('/api/build', {}, {headers: {projectId: sessionStorage.projectId}})
+                .post('/api/build', {}, {
+                    headers: {
+                        projectId: sessionStorage.projectId,
+                        template: this.template
+                    }
+                })
                 .then(response => {
                     output.innerHTML += response.data + "\n";
                     send('build');
@@ -34,7 +44,13 @@ Vue.component('BuildPage', {
             output.innerHTML = "";
             this.loading = true;
             axios
-                .post('/api/GenerateCode', {projectId: sessionStorage.projectId}, {headers: {projectId: sessionStorage.projectId}})
+                .post('/api/GenerateCode', {projectId: sessionStorage.projectId},
+                    {
+                        headers: {
+                            projectId: sessionStorage.projectId,
+                            template: this.template
+                        }
+                    })
                 .then(response => {
                     output.innerHTML += response.data + "\n";
                 })
@@ -49,11 +65,38 @@ Vue.component('BuildPage', {
 
         },
 
+        getTemplateList() {
+
+            this.loading = true;
+            axios
+                .post('/api/getTemplateList', {}, {headers: {projectId: sessionStorage.projectId}})
+                .then(response => {
+                    this.templateItems = response.data;
+                    this.template = this.templateItems[0];
+
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+                .finally(() => {
+                    this.loading = false;
+                })
+
+
+        },
+
     },
 
     template: `<base-page title="Build Project">
 
     <template v-slot:toolbarslot>
+    
+        <v-select
+                :items="templateItems"
+                label="Template :"
+                v-model="template"
+        ></v-select>
+        
         <v-btn round color="green darken-1" dark @click="generateCode()">GenerateCode</v-btn>
         <v-btn round color="green darken-1" dark @click="build()">Build</v-btn>
         

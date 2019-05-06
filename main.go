@@ -88,6 +88,8 @@ func main() {
 	http.HandleFunc("/api/build", buildHandler)
 	http.HandleFunc("/api/GenerateCode", GenerateHandler)
 
+	http.HandleFunc("/api/getTemplateList", getTemplateList)
+
 	http.HandleFunc("/api/getDir", getDir)
 	http.HandleFunc("/api/getFile", getFile)
 	http.HandleFunc("/api/saveFile", saveFile)
