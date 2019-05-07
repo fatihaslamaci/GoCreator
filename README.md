@@ -1,0 +1,2 @@
+# gocreator
+Golang Code Generator
