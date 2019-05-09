@@ -20,6 +20,11 @@ type TBaseCartField struct {
 	FieldType string
 }
 
+type TDataCart struct {
+	Name   string
+	Fields []TDataField
+}
+
 type TDataField struct {
 	TBaseCartField
 	Dflt_value string `json:",omitempty"`
@@ -30,8 +35,7 @@ type TDataField struct {
 
 type TDataTable struct {
 	Uid string
-	TBaseCart
-	Fields            []TDataField
+	TDataCart
 	TabloEkOzellikler []TabloEkOzellik
 }
 
