@@ -1,0 +1,20 @@
+// Copyright 2019 The GoCreator Authors. All rights reserved.
+// Code Generator tarafından oluşturulmuştur
+// Lütfen Değişiklik yapmayınız
+
+
+package gocreator
+
+import (
+
+)
+
+{{ range $iii, $query := . }}
+    type {{$query.Name}}Query struct {
+    {{ range $ii, $data := $query.Tables }}
+        {{ range $i, $e := $data.Fields }}  {{$data.Name}}_{{$e.Name}}   {{$e.FieldType}}
+        {{ end }}
+    {{ end }}}
+
+
+{{ end }}

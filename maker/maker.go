@@ -167,6 +167,44 @@ func FileExists(name string) bool {
 	return true
 }
 
+func TestQueryList() []TQuery {
+
+	r := []TQuery{}
+
+	{
+		item := TQuery{Name: "Query1"}
+
+		table := TQueryTable{}
+		table.Name = "CariHesap"
+
+		{
+			field := TQueryField{}
+			field.Name = "Field1"
+			field.FieldType = "string"
+			table.Fields = append(table.Fields, field)
+		}
+
+		{
+			field := TQueryField{}
+			field.Name = "Field2"
+			field.FieldType = "int"
+			table.Fields = append(table.Fields, field)
+		}
+
+		item.Tables = append(item.Tables, table)
+
+		r = append(r, item)
+	}
+
+	{
+		item := TQuery{Name: "Query2"}
+		r = append(r, item)
+	}
+
+	return r
+
+}
+
 func MakeProject(ProjectId string, templateDir string) TProject {
 	project := GetProject(ProjectId)
 	PrgDir := project.Path
@@ -204,5 +242,13 @@ func MakeProject(ProjectId string, templateDir string) TProject {
 
 		}
 	}
+
+	query := TestQueryList()
+
+	if len(query) > 0 {
+		TamplateFile = "query_oto.gohtml"
+		HedefeKaydet(query, (project.Path + "/gocreator/query_oto.go"), (templateFileDir + TamplateFile), TamplateFile)
+	}
+
 	return project
 }

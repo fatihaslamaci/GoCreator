@@ -1,16 +1,17 @@
 package maker
 
 type TQuery struct {
+	Name   string
 	Tables []TQueryTable
 }
 
-type TQueryTable struct {
-	TDataCart
-}
+//type TQueryTable struct {
+//	TDataCart
+//}
 
-type TQueryCart struct {
+type TQueryTable struct {
 	Name   string
-	Fields []TDataField
+	Fields []TQueryField
 }
 type TQueryField struct {
 	TBaseCartField
