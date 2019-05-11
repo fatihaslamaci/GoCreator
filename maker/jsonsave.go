@@ -33,6 +33,7 @@ func JsonProjeKaydet(projeler []TProject) {
 	b, _ := json.Marshal(projeler)
 	var out bytes.Buffer
 	json.Indent(&out, b, "", "\t")
+	os.MkdirAll("./db", os.ModePerm)
 	ioutil.WriteFile("./db/projeler.json", out.Bytes(), 0644)
 
 }

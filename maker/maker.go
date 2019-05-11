@@ -3,7 +3,7 @@ package maker
 import (
 	"bytes"
 	"os"
-	"path"
+	"path/filepath"
 	"regexp"
 	"strings"
 	"text/template"
@@ -216,7 +216,7 @@ func MakeProject(ProjectId string, templateDir string) TProject {
 	//proxyclass := JsonProxyClassOku(PrgDir)
 	endpoint := JsonEndPointOku(PrgDir)
 	TamplateFile := "main.gohtml"
-	HedefeKaydetEgerDosyaYoksa(path.Base(project.Path), (project.Path + "/main.go"), (templateFileDir + TamplateFile), TamplateFile)
+	HedefeKaydetEgerDosyaYoksa(filepath.Base(project.Path), (project.Path + "/main.go"), (templateFileDir + TamplateFile), TamplateFile)
 	if len(tables) > 0 {
 		TamplateFile = "InitDB_oto.gohtml"
 		HedefeKaydet(tables, (project.Path + "/gocreator/InitDB.go"), (templateFileDir + TamplateFile), TamplateFile)

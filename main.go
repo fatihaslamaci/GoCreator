@@ -3,9 +3,9 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"path/filepath"
 
 	"os/exec"
-	"path"
 	"sync"
 
 	//"strings"
@@ -115,10 +115,10 @@ func socketHandler(w http.ResponseWriter, r *http.Request) {
 
 		if string(msg[:]) == "build" {
 
-			c = exec.Command(PrgDir + "/" + path.Base(PrgDir))
+			c = exec.Command(PrgDir + "\\" + filepath.Base(PrgDir))
 			c.Dir = PrgDir
 
-			if err := conn.WriteMessage(msgType, []byte("$: "+path.Base(PrgDir))); err != nil {
+			if err := conn.WriteMessage(msgType, []byte("$: "+filepath.Base(PrgDir))); err != nil {
 				return
 			}
 

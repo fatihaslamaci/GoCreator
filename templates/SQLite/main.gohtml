@@ -2,9 +2,7 @@
 // Code Generator tarafından bir defaya mahsus oluşturulmuştur
 // Örnektir. Kod değişikliği yapabilirsiniz.
 
-
 package main
-
 import (
 	"fmt"
 	"net/http"
@@ -29,12 +27,9 @@ func main() {
 
 		gocreator.HandleFuncAdd()
 
-
 http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("111 Hello, you've requested: %s", time.Now())
 	fmt.Fprintf(w, "666 Hello, you've requested: %s\n", time.Now())
-
-
 
 	})
 

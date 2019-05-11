@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"path/filepath"
+	"runtime"
 )
 
 func getTablesHandler(w http.ResponseWriter, r *http.Request) {
@@ -92,10 +93,25 @@ func saveProxyClassHandler(w http.ResponseWriter, r *http.Request) {
 
 func prgFormat(path string, w http.ResponseWriter) {
 
-	cmd := "go fmt " + path + "/*.go"
-
+	//cmd := "go fmt " + path + "/*.go"
+	cmd := "go fmt " + path + "\\"
 	_, _ = fmt.Fprintf(w, "$: "+cmd+"\n")
-	err, out, errout := Shellout(path, "bash", "-c", cmd)
+
+	var err, out, errout = error(nil), "", ""
+
+	switch runtime.GOOS {
+	case "linux":
+		err, out, errout = Shellout(path, "bash", "-c", cmd)
+	case "windows", "darwin":
+		err, out, errout = Shellout(path, "cmd", "/C", cmd)
+	default:
+		fmt.Errorf("unsupported platform")
+	}
+
+	//c :=exec.Command("cmd", "/C", "gofmt -w", hedefklasor)
+
+	//err, out, errout := Shellout(path, "cmd", "/C", cmd)
+
 	if err != nil {
 		_, _ = fmt.Fprintf(w, "error: %v\n", err)
 	}
@@ -139,7 +155,7 @@ func GenerateHandler(w http.ResponseWriter, r *http.Request) {
 	project := maker.MakeProject(projectId, template)
 	PrgDir = project.Path
 
-	prgFormat(project.Path+"/gocreator", w)
+	prgFormat(project.Path+"\\gocreator", w)
 	prgFormat(project.Path, w)
 
 }
@@ -156,7 +172,7 @@ func buildHandler(w http.ResponseWriter, r *http.Request) {
 	project := maker.MakeProject(projectId, template)
 	PrgDir = project.Path
 
-	prgFormat(project.Path+"/gocreator", w)
+	prgFormat(project.Path+"\\gocreator", w)
 	prgFormat(project.Path, w)
 
 	prgBuild(project.Path, w)
