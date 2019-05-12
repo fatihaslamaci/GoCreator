@@ -1,8 +1,9 @@
 package maker
 
 type TQuery struct {
-	Name   string
-	Tables []TQueryTable
+	Name       string
+	Tables     []TQueryTable
+	Parameters []TBaseCartField
 }
 
 //type TQueryTable struct {

@@ -18,20 +18,26 @@ import (
         {{ end }}
     {{ end }}}
 
+    type {{$query.Name}}Prm struct {
+    {{ range $ii, $data := $query.Parameters }}
+         {{$data.Name}}   {{$data.FieldType}}
+    {{ end }}}
 
-    func {{$query.Name}}QuerySelect(db *sql.DB) []{{$query.Name}}Query {
+
+    func {{$query.Name}}QuerySelect(db *sql.DB, prm {{$query.Name}}Prm) []{{$query.Name}}Query {
     rows, err := db.Query(`SELECT
     {{ range $ii, $data := $query.Tables }}
         {{ range $i, $e := $data.Fields }}
             {{ if and (eq $i 0) (eq $ii 0) }}
-                {{$data.Name}}_{{ $e.Name}}
+                {{$data.Name}}.{{ $e.Name}}
             {{ else }}
-                ,{{$data.Name}}_{{$e.Name}}
+                ,{{$data.Name}}.{{$e.Name}}
             {{ end }}
         {{ end }}
     {{ end }}
 
-    FROM {{$query.Name}}`)
+    FROM {{$query.Name}}` {{if $query.Parameters}} {{ range $ii, $data := $query.Parameters }} ,prm.{{$data.Name}} {{ end }} {{ end }} )
+
     CheckErr(err)
     var result  []{{$query.Name}}Query
     for rows.Next() {

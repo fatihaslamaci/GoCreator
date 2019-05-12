@@ -173,36 +173,60 @@ func TestQueryList() []TQuery {
 	dat := ` 
 [
 {
-	"Name" : "Query1",
+	"Name" : "Ekstre",
 	"Tables":
 	[
 		{
-			"Name":"Tbl1",
+			"Name":"CariHesap",
 			"Fields" : 
 			[
 				{
-					"Name":"Field1",
-					"FieldType":"string"
+					"Name":"ID",
+					"FieldType":"int64"
 				},
 				{
-					"Name":"Field2",
+					"Name":"Unvan",
 					"FieldType":"string"
 				}
 			]
 		},
 		{
-			"Name":"Tbl2",
+			"Name":"CariHareket",
 			"Fields" : 
 			[
 				{
-					"Name":"Field1",
-					"FieldType":"string"
+					"Name":"ID",
+					"FieldType":"int64"
 				},
 				{
-					"Name":"Field2",
-					"FieldType":"string"
+					"Name":"CariHesapId",
+					"FieldType":"int64"
+				},
+				{
+					"Name":"Tarih",
+					"FieldType":"time.Time"
+				},
+				{
+					"Name":"Tutar",
+					"FieldType":"float32"
 				}
+
 			]
+		}
+	],
+	"Parameters":
+	[
+		{
+			"Name":"ID",
+			"FieldType":"int64"
+		},
+		{
+			"Name":"CariHesapId",
+			"FieldType":"int64"
+		},
+		{
+			"Name":"Tarih",
+			"FieldType":"time.Time"
 		}
 	]
 },
@@ -250,7 +274,11 @@ func TestQueryList() []TQuery {
 `
 
 	var r []TQuery
-	_ = json.Unmarshal([]byte(dat), &r)
+	err := json.Unmarshal([]byte(dat), &r)
+
+	if err != nil {
+		panic(err)
+	}
 
 	return r
 
