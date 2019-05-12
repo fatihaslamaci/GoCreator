@@ -150,7 +150,6 @@ func prgBuild(path string, w http.ResponseWriter) {
 }
 
 func DirSperator() string {
-
 	switch runtime.GOOS {
 	case "linux":
 		return "/"
@@ -161,7 +160,6 @@ func DirSperator() string {
 	default:
 		return "/"
 	}
-
 }
 
 func GenerateHandler(w http.ResponseWriter, r *http.Request) {

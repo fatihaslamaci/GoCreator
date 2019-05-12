@@ -2,6 +2,7 @@ package maker
 
 import (
 	"bytes"
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -169,37 +170,87 @@ func FileExists(name string) bool {
 
 func TestQueryList() []TQuery {
 
-	r := []TQuery{}
-
-	{
-		item := TQuery{Name: "Query1"}
-
-		table := TQueryTable{}
-		table.Name = "CariHesap"
-
+	dat := ` 
+[
+{
+	"Name" : "Query1",
+	"Tables":
+	[
 		{
-			field := TQueryField{}
-			field.Name = "Field1"
-			field.FieldType = "string"
-			table.Fields = append(table.Fields, field)
-		}
-
+			"Name":"Tbl1",
+			"Fields" : 
+			[
+				{
+					"Name":"Field1",
+					"FieldType":"string"
+				},
+				{
+					"Name":"Field2",
+					"FieldType":"string"
+				}
+			]
+		},
 		{
-			field := TQueryField{}
-			field.Name = "Field2"
-			field.FieldType = "int"
-			table.Fields = append(table.Fields, field)
+			"Name":"Tbl2",
+			"Fields" : 
+			[
+				{
+					"Name":"Field1",
+					"FieldType":"string"
+				},
+				{
+					"Name":"Field2",
+					"FieldType":"string"
+				}
+			]
 		}
+	]
+},
 
-		item.Tables = append(item.Tables, table)
+{
+	"Name" : "Query2",
+	"Tables":
+	[
+		{
+			"Name":"Tbl1",
+			"Fields" : 
+			[
+				{
+					"Name":"Field1",
+					"FieldType":"string"
+				},
+				{
+					"Name":"Field2",
+					"FieldType":"string"
+				}
+			]
+		},
+		{
+			"Name":"Tbl2",
+			"Fields" : 
+			[
+				{
+					"Name":"Field1",
+					"FieldType":"string"
+				},
+				{
+					"Name":"Field2",
+					"FieldType":"string"
+				}
+			]
+		}
+	]
+}
 
-		r = append(r, item)
-	}
 
-	{
-		item := TQuery{Name: "Query2"}
-		r = append(r, item)
-	}
+
+
+]
+
+`
+
+	var r []TQuery
+	_ = json.Unmarshal([]byte(dat), &r)
 
 	return r
 

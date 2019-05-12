@@ -7,6 +7,8 @@ package gocreator
 
 import (
 
+"database/sql"
+
 )
 
 {{ range $iii, $query := . }}
@@ -15,6 +17,43 @@ import (
         {{ range $i, $e := $data.Fields }}  {{$data.Name}}_{{$e.Name}}   {{$e.FieldType}}
         {{ end }}
     {{ end }}}
+
+
+    func {{$query.Name}}QuerySelect(db *sql.DB) []{{$query.Name}}Query {
+    rows, err := db.Query(`SELECT
+    {{ range $ii, $data := $query.Tables }}
+        {{ range $i, $e := $data.Fields }}
+            {{ if and (eq $i 0) (eq $ii 0) }}
+                {{$data.Name}}_{{ $e.Name}}
+            {{ else }}
+                ,{{$data.Name}}_{{$e.Name}}
+            {{ end }}
+        {{ end }}
+    {{ end }}
+
+    FROM {{$query.Name}}`)
+    CheckErr(err)
+    var result  []{{$query.Name}}Query
+    for rows.Next() {
+    item :={{$query.Name}}Query{}
+    err2 := rows.Scan(
+
+{{ range $ii, $data := $query.Tables }}
+
+    {{ range $i, $e := $data.Fields }}
+        {{if $e.Name}}
+            &item.{{$data.Name}}_{{$e.Name}},
+        {{ end }}
+    {{ end }}
+{{ end }}
+
+    )
+    CheckErr(err2)
+    result = append(result, item)
+    }
+    return result
+    }
+
 
 
 {{ end }}
