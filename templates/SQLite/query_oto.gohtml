@@ -38,16 +38,17 @@ import (
         {{ end }}
     {{ end }}
 
-    FROM
-
     {{ range $ii, $data := $query.Tables }}
         {{ if eq $ii 0 }}
-        {{$data.Name}}
+    FROM {{$data.Name}}
         {{ else }}
     {{$data.Join}} {{$data.Name}} ON {{$data.JoinOn}}
         {{ end }}
     {{ end }}
 
+    {{if $query.QueryEnd}}
+    {{$query.QueryEnd}}
+    {{ end }}
 
     ` {{if $query.Parameters}} {{ range $ii, $data := $query.Parameters }} ,prm.{{$data.Name}} {{ end }} {{ end }} )
 

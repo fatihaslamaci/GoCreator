@@ -2,6 +2,7 @@ package maker
 
 type TQuery struct {
 	Name       string
+	QueryEnd   string `json:",omitempty"`
 	Tables     []TQueryTable
 	Parameters []TBaseCartField
 }
