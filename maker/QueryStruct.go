@@ -12,6 +12,8 @@ type TQuery struct {
 
 type TQueryTable struct {
 	Name   string
+	Join   string `json:",omitempty"`
+	JoinOn string `json:",omitempty"`
 	Fields []TQueryField
 }
 type TQueryField struct {

@@ -8,6 +8,7 @@ package gocreator
 import (
 
 "database/sql"
+"time"
 
 )
 
@@ -25,18 +26,30 @@ import (
 
 
     func {{$query.Name}}QuerySelect(db *sql.DB, prm {{$query.Name}}Prm) []{{$query.Name}}Query {
-    rows, err := db.Query(`SELECT
+    rows, err := db.Query(`
+    SELECT
     {{ range $ii, $data := $query.Tables }}
         {{ range $i, $e := $data.Fields }}
             {{ if and (eq $i 0) (eq $ii 0) }}
-                {{$data.Name}}.{{ $e.Name}}
+         {{$data.Name}}.{{ $e.Name}}
             {{ else }}
-                ,{{$data.Name}}.{{$e.Name}}
+        ,{{$data.Name}}.{{$e.Name}}
             {{ end }}
         {{ end }}
     {{ end }}
 
-    FROM {{$query.Name}}` {{if $query.Parameters}} {{ range $ii, $data := $query.Parameters }} ,prm.{{$data.Name}} {{ end }} {{ end }} )
+    FROM
+
+    {{ range $ii, $data := $query.Tables }}
+        {{ if eq $ii 0 }}
+        {{$data.Name}}
+        {{ else }}
+    {{$data.Join}} {{$data.Name}} ON {{$data.JoinOn}}
+        {{ end }}
+    {{ end }}
+
+
+    ` {{if $query.Parameters}} {{ range $ii, $data := $query.Parameters }} ,prm.{{$data.Name}} {{ end }} {{ end }} )
 
     CheckErr(err)
     var result  []{{$query.Name}}Query

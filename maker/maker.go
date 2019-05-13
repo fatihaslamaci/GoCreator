@@ -2,7 +2,6 @@ package maker
 
 import (
 	"bytes"
-	"encoding/json"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -168,122 +167,6 @@ func FileExists(name string) bool {
 	return true
 }
 
-func TestQueryList() []TQuery {
-
-	dat := ` 
-[
-{
-	"Name" : "Ekstre",
-	"Tables":
-	[
-		{
-			"Name":"CariHesap",
-			"Fields" : 
-			[
-				{
-					"Name":"ID",
-					"FieldType":"int64"
-				},
-				{
-					"Name":"Unvan",
-					"FieldType":"string"
-				}
-			]
-		},
-		{
-			"Name":"CariHareket",
-			"Fields" : 
-			[
-				{
-					"Name":"ID",
-					"FieldType":"int64"
-				},
-				{
-					"Name":"CariHesapId",
-					"FieldType":"int64"
-				},
-				{
-					"Name":"Tarih",
-					"FieldType":"time.Time"
-				},
-				{
-					"Name":"Tutar",
-					"FieldType":"float32"
-				}
-
-			]
-		}
-	],
-	"Parameters":
-	[
-		{
-			"Name":"ID",
-			"FieldType":"int64"
-		},
-		{
-			"Name":"CariHesapId",
-			"FieldType":"int64"
-		},
-		{
-			"Name":"Tarih",
-			"FieldType":"time.Time"
-		}
-	]
-},
-
-{
-	"Name" : "Query2",
-	"Tables":
-	[
-		{
-			"Name":"Tbl1",
-			"Fields" : 
-			[
-				{
-					"Name":"Field1",
-					"FieldType":"string"
-				},
-				{
-					"Name":"Field2",
-					"FieldType":"string"
-				}
-			]
-		},
-		{
-			"Name":"Tbl2",
-			"Fields" : 
-			[
-				{
-					"Name":"Field1",
-					"FieldType":"string"
-				},
-				{
-					"Name":"Field2",
-					"FieldType":"string"
-				}
-			]
-		}
-	]
-}
-
-
-
-
-]
-
-`
-
-	var r []TQuery
-	err := json.Unmarshal([]byte(dat), &r)
-
-	if err != nil {
-		panic(err)
-	}
-
-	return r
-
-}
-
 func MakeProject(ProjectId string, templateDir string) TProject {
 	project := GetProject(ProjectId)
 	PrgDir := project.Path
@@ -322,8 +205,7 @@ func MakeProject(ProjectId string, templateDir string) TProject {
 		}
 	}
 
-	query := TestQueryList()
-
+	query := JsonQueryOku(PrgDir)
 	if len(query) > 0 {
 		TamplateFile = "query_oto.gohtml"
 		HedefeKaydet(query, (project.Path + "/gocreator/query_oto.go"), (templateFileDir + TamplateFile), TamplateFile)

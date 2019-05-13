@@ -94,3 +94,11 @@ func JsonEndPointOku(path string) []TEndPoint {
 
 	return r
 }
+
+func JsonQueryOku(path string) []TQuery {
+	dat, _ := ioutil.ReadFile(path + "/gocreator/db/Query.json")
+	var r []TQuery
+	_ = json.Unmarshal(dat, &r)
+
+	return r
+}
