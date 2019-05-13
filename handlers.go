@@ -93,26 +93,19 @@ func saveProxyClassHandler(w http.ResponseWriter, r *http.Request) {
 
 func prgFormat(path string, w http.ResponseWriter) {
 
-	//cmd := "go fmt " + path + "/*.go"
-
 	var err, out, errout = error(nil), "", ""
+
+	cmd := "go fmt " + path + DirSperator()
+	_, _ = fmt.Fprintf(w, "$: "+cmd+"\n")
 
 	switch runtime.GOOS {
 	case "linux":
-		cmd := "go fmt " + path + "/"
-		_, _ = fmt.Fprintf(w, "$: "+cmd+"\n")
 		err, out, errout = Shellout(path, "bash", "-c", cmd)
 	case "windows", "darwin":
-		cmd := "go fmt " + path + "\\"
-		_, _ = fmt.Fprintf(w, "$: "+cmd+"\n")
 		err, out, errout = Shellout(path, "cmd", "/C", cmd)
 	default:
 		fmt.Errorf("unsupported platform")
 	}
-
-	//c :=exec.Command("cmd", "/C", "gofmt -w", hedefklasor)
-
-	//err, out, errout := Shellout(path, "cmd", "/C", cmd)
 
 	if err != nil {
 		_, _ = fmt.Fprintf(w, "error: %v\n", err)
@@ -131,9 +124,7 @@ func prgFormat(path string, w http.ResponseWriter) {
 func prgBuild(path string, w http.ResponseWriter) {
 
 	cmd := "go build "
-
 	_, _ = fmt.Fprintf(w, "$: "+cmd+"\n")
-	//err, out, errout := Shellout(path,"go", "build", path+"/main.go")
 	err, out, errout := Shellout(path, "go", "build")
 
 	if err != nil {
@@ -147,19 +138,6 @@ func prgBuild(path string, w http.ResponseWriter) {
 		fmt.Fprintf(w, errout)
 	}
 
-}
-
-func DirSperator() string {
-	switch runtime.GOOS {
-	case "linux":
-		return "/"
-
-	case "windows", "darwin":
-		return "\\"
-
-	default:
-		return "/"
-	}
 }
 
 func GenerateHandler(w http.ResponseWriter, r *http.Request) {

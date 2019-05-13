@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"runtime"
 	"sync"
 )
 
@@ -40,6 +41,19 @@ func Shellout(path string, name string, arg ...string) (error, string, string) {
 	cmd.Stderr = &stderr
 	err := cmd.Run()
 	return err, stdout.String(), stderr.String()
+}
+
+func DirSperator() string {
+	switch runtime.GOOS {
+	case "linux":
+		return "/"
+
+	case "windows", "darwin":
+		return "\\"
+
+	default:
+		return "/"
+	}
 }
 
 func prgRun() {
