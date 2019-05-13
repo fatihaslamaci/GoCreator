@@ -11,6 +11,11 @@ const EndPointPage = {
     template: '<end-point-page></end-point-page>'
 };
 
+const QueryBuilderPage = {
+    template: '<query-builder-page></query-builder-page>'
+};
+
+
 const ExplorerPage = {
     template: '<explorer-page></explorer-page>'
 };
@@ -52,6 +57,11 @@ const router = new VueRouter({
             name: 'EndPointPage'
         },
         {
+            path: '/QueryBuilderPage',
+            component: QueryBuilderPage,
+            name: 'QueryBuilderPage'
+        },
+        {
             path: '/ExplorerPage',
             component: ExplorerPage,
             name: 'ExplorerPage'
@@ -60,6 +70,7 @@ const router = new VueRouter({
             path: '/BuildPage',
             component: BuildPage,
             name: 'BuildPage'
-        },
+        }
+
     ]
 });
