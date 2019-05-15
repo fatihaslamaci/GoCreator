@@ -102,3 +102,13 @@ func JsonQueryOku(path string) []TQuery {
 
 	return r
 }
+
+func JsonQueryKaydet(value []TQuery, path string) {
+
+	b, _ := json.Marshal(value)
+	var out bytes.Buffer
+	json.Indent(&out, b, "", "\t")
+	os.MkdirAll(path+"/gocreator/db", os.ModePerm)
+	ioutil.WriteFile(path+"/gocreator/db/Query.json", out.Bytes(), 0644)
+
+}

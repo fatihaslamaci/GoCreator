@@ -69,6 +69,27 @@ Vue.component('QueryBuilderPage', {
                 })
         },
 
+        SaveQueryBuilder() {
+            var prm = {
+                ProjectId  : sessionStorage.projectId,
+                Query  : this.desserts,
+            };
+
+
+            this.loading = true;
+            axios
+                .post('/api/SaveQueryBuilder', prm, {})
+                .then(response => {
+                    this.desserts  = response.data.Query;
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+                .finally(() => {
+                    this.loading = false;
+                })
+        },
+
         editItem (item) {
             this.editedIndex = this.desserts.indexOf(item);
             this.editedItem = Object.assign({}, item);
@@ -101,7 +122,7 @@ Vue.component('QueryBuilderPage', {
     template: `<div><base-page title="QueryBuilder">
 
     <template v-slot:toolbarslot>
-        <v-btn round color="primary" dark @click="">Sample Button</v-btn>
+        <v-btn round color="primary" dark @click="SaveQueryBuilder()">Save</v-btn>
     </template>
 
   

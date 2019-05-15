@@ -58,7 +58,7 @@ func HandleFuncAdd() {
 
     this.loading = true;
     axios
-    .post('/api/{{$data.Name}}Handler', prm, {})
+    .post('/api/{{$data.Name}}', prm, {})
     .then(response => {
     r = response.data;
     })
