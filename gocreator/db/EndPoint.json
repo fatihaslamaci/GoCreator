@@ -1,0 +1,58 @@
+{
+	"PacketNames": [
+		"gocreator/maker"
+	],
+	"EndPoints": [
+		{
+			"Name": "GetQueryBuilder",
+			"Request": {
+				"Name": "",
+				"Fields": [
+					{
+						"Name": "ProjectId",
+						"FieldType": "string",
+						"Body_Header": 0
+					}
+				]
+			},
+			"Response": {
+				"Name": "",
+				"Fields": [
+					{
+						"Name": "Query",
+						"FieldType": "[]maker.TQuery",
+						"Body_Header": 0
+					}
+				]
+			}
+		},
+		{
+			"Name": "SaveQueryBuilder",
+			"Request": {
+				"Name": "",
+				"Fields": [
+					{
+						"Name": "ProjectId",
+						"FieldType": "string",
+						"Body_Header": 0
+					},
+					{
+						"Name": "Query",
+						"FieldType": "[]maker.TQuery",
+						"Body_Header": 0
+					}
+				]
+			},
+			"Response": {
+				"Name": "",
+				"Fields": [
+					{
+						"Name": "Query",
+						"FieldType": "[]maker.TQuery",
+						"Body_Header": 0
+					}
+				]
+			}
+		}
+	]
+}

@@ -37,7 +37,7 @@ func saveEndPointHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-	var model []maker.TEndPoint
+	var model maker.TEndPointList
 	err = json.Unmarshal(body, &model)
 	if err != nil {
 		panic(err)

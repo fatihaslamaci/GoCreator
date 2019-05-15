@@ -189,7 +189,7 @@ func MakeProject(ProjectId string, templateDir string) TProject {
 		TamplateFile = "crud_oto.gohtml"
 		HedefeKaydet(tables, (project.Path + "/gocreator/" + "crud_oto.go"), (templateFileDir + TamplateFile), TamplateFile)
 	}
-	if len(endpoint) > 0 {
+	if len(endpoint.EndPoints) > 0 {
 
 		TamplateFile = "proxyclass_oto.gohtml"
 		HedefeKaydet(endpoint, (project.Path + "/gocreator/" + "proxyclass_oto.go"), (templateFileDir + TamplateFile), TamplateFile)
@@ -197,10 +197,10 @@ func MakeProject(ProjectId string, templateDir string) TProject {
 		TamplateFile = "handler_oto.gohtml"
 		HedefeKaydet(endpoint, (project.Path + "/gocreator/" + "handler_oto.go"), (templateFileDir + TamplateFile), TamplateFile)
 
-		for i := 0; i < len(endpoint); i++ {
+		for i := 0; i < len(endpoint.EndPoints); i++ {
 			TamplateFile = "handlerMap.gohtml"
-			HedefFileName := project.Path + "/gocreator/" + "handlerMap_" + endpoint[i].Name + ".go"
-			HedefeKaydetEgerDosyaYoksa(endpoint[i], HedefFileName, (templateFileDir + TamplateFile), TamplateFile)
+			HedefFileName := project.Path + "/gocreator/" + "handlerMap_" + endpoint.EndPoints[i].Name + ".go"
+			HedefeKaydetEgerDosyaYoksa(endpoint.EndPoints[i], HedefFileName, (templateFileDir + TamplateFile), TamplateFile)
 
 		}
 	}

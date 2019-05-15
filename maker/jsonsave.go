@@ -77,7 +77,7 @@ func JsonProxyClassOku(path string) []TProxyClass {
 	return r
 }
 
-func JsonEndPointKaydet(value []TEndPoint, path string) {
+func JsonEndPointKaydet(value TEndPointList, path string) {
 
 	b, _ := json.Marshal(value)
 	var out bytes.Buffer
@@ -87,9 +87,9 @@ func JsonEndPointKaydet(value []TEndPoint, path string) {
 
 }
 
-func JsonEndPointOku(path string) []TEndPoint {
+func JsonEndPointOku(path string) TEndPointList {
 	dat, _ := ioutil.ReadFile(path + "/gocreator/db/EndPoint.json")
-	var r []TEndPoint
+	var r TEndPointList
 	_ = json.Unmarshal(dat, &r)
 
 	return r

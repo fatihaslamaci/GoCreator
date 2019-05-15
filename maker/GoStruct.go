@@ -10,6 +10,10 @@ type TProject struct {
 	Path string
 }
 
+type TPackets struct {
+	PacketNames []string `json:",omitempty"`
+}
+
 type TBaseCart struct {
 	Name   string
 	Fields []TBaseCartField
@@ -53,6 +57,11 @@ type TProxyClass struct {
 //type TProxyClassField struct {
 //	TBaseCartField
 //}
+
+type TEndPointList struct {
+	TPackets
+	EndPoints []TEndPoint
+}
 
 type TEndPoint struct {
 	Name     string

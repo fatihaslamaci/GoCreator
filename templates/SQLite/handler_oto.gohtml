@@ -12,13 +12,13 @@ import (
 
 
 func HandleFuncAdd() {
-{{ range $ii, $data := . }}
+{{ range $ii, $data := .EndPoints}}
     http.HandleFunc("/api/{{$data.Name}}", {{$data.Name}}Handler)
 {{ end }}
 }
 
 
-{{ range $ii, $data := . }}
+{{ range $ii, $data := .EndPoints }}
 
     func {{$data.Name}}Handler(w http.ResponseWriter, r *http.Request) {
 

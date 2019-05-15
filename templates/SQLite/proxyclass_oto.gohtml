@@ -7,11 +7,14 @@ package gocreator
 
 import (
 
-{{ImportFieldEndPoint . "time.Time" "time" }}
+{{ range $ii, $data := .PacketNames }}
+    "{{$data}}"
+{{ end }}
+
 
 
 )
-{{ range $ii, $data := . }}
+{{ range $ii, $data := .EndPoints }}
     type {{$data.Name}}Request struct {
     {{ range $i, $e := $data.Request.Fields }}  {{$e.Name}}   {{EndPointFieldType $e}}
     {{ end }}}

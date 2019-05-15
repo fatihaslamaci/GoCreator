@@ -9,7 +9,7 @@ Vue.component('EndPointPage', {
                 {text: '', value: ''},
 
             ],
-            desserts: [],
+            desserts: {},
             editedIndex: -1,
             editedItem: {
                 Name: '',
@@ -61,8 +61,14 @@ Vue.component('EndPointPage', {
                 .post('/api/getEndPoints', {}, {headers: {projectId: sessionStorage.projectId}})
                 .then(response => {
 
-                    if (response.data === null) {
-                        this.desserts = [];
+                    console.log(response.data);
+                    if (response.data.EndPoints === null) {
+                        console.log("aaa");
+
+                        this.desserts = {
+                            PacketNames:[],
+                            EndPoints:[]
+                        };
                     } else {
                         this.desserts = response.data;
                     }
@@ -80,7 +86,7 @@ Vue.component('EndPointPage', {
 
 
         editItem(item) {
-            this.editedIndex = this.desserts.indexOf(item);
+            this.editedIndex = this.desserts.EndPoints.indexOf(item);
             //this.editedItem = Object.assign({}, item);
             this.editedItem = JSON.parse(JSON.stringify(item));
 
@@ -88,8 +94,8 @@ Vue.component('EndPointPage', {
         },
 
         deleteItem(item) {
-            const index = this.desserts.indexOf(item);
-            confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1)
+            const index = this.desserts.EndPoints.indexOf(item);
+            confirm('Are you sure you want to delete this item?') && this.desserts.EndPoints.splice(index, 1)
         },
 
         close() {
@@ -101,10 +107,12 @@ Vue.component('EndPointPage', {
         },
 
         save() {
+            console.log(this.desserts);
+
             if (this.editedIndex > -1) {
-                Object.assign(this.desserts[this.editedIndex], this.editedItem)
+                Object.assign(this.desserts.EndPoints[this.editedIndex], this.editedItem)
             } else {
-                this.desserts.push(this.editedItem)
+                this.desserts.EndPoints.push(this.editedItem)
             }
             this.close()
         },
@@ -115,7 +123,6 @@ Vue.component('EndPointPage', {
                 .post('/api/saveEndPoints', this.desserts, {headers: {projectId: sessionStorage.projectId}})
                 .then(response => {
                     this.desserts = response.data;
-                    console.log(error)
                 })
                 .catch((error) => {
                     console.log(error)
@@ -145,7 +152,11 @@ Vue.component('EndPointPage', {
                         <v-flex xs12 sm12 md12>
                             <v-text-field v-model="editedItem.Name" label="Name :"></v-text-field>
                         </v-flex>
+                        
+                        
+                        
                     </v-layout>
+
                 </v-container>
                 <v-layout wrap>
                     <struct-kart title="Request" :value="editedItem.Request"></struct-kart>
@@ -165,7 +176,7 @@ Vue.component('EndPointPage', {
     <template>
         <v-data-table
                 :headers="headers"
-                :items="desserts"
+                :items="desserts.EndPoints"
                 class="elevation-1"
         >
             <template v-slot:items="props">
@@ -190,6 +201,10 @@ Vue.component('EndPointPage', {
                 <v-btn color="primary" @click="initialize">Reset</v-btn>
             </template>
         </v-data-table>
+        
+        TODO : Aşağıdaki datayı düzenleyecek arayüz yapılacak
+        <pre> {{desserts.PacketNames}} </pre>
+        
     </template>
 
 </base-page>
