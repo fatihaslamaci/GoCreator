@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"gocreator/gocreator"
 	"path/filepath"
 
 	"os/exec"
@@ -69,7 +70,7 @@ func main() {
 	//Copy("main.gohtml", "/home/fatih/go/src/goprj/main.go")
 	//***********************
 
-	//gocreator.HandleFuncAdd()
+	gocreator.HandleFuncAdd()
 
 	http.HandleFunc("/api/getProjects", getProjectsHandler)
 	http.HandleFunc("/api/getProject", getProjectHandler)

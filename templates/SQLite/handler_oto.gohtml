@@ -39,6 +39,38 @@ func HandleFuncAdd() {
     }
 
 
+    /*
+    JavaScript Call Sample
+
+    {{$data.Name}}Handler() {
+
+    var prm = {
+    {{ range $i, $e := $data.Request.Fields }}  {{$e.Name}}  : null,
+    {{ end }}
+    };
+
+    var r = {
+    {{ range $i, $e := $data.Response.Fields }}  {{$e.Name}}  : null,
+    {{ end }}
+    };
+
+
+
+    this.loading = true;
+    axios
+    .post('/api/{{$data.Name}}Handler', prm, {})
+    .then(response => {
+    r = response.data;
+    })
+    .catch((error) => {
+    console.log(error)
+    })
+    .finally(() => {
+    this.loading = false;
+    })
+    },
+
+    */
 
 
 {{ end }}

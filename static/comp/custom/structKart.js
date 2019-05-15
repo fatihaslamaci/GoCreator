@@ -62,11 +62,11 @@ Vue.component('StructKart', {
                         label="Field Name :"
                         v-model="editItem.Name"
                 ></v-text-field>
-                <v-select
+                <v-combobox
                         :items="['string','int32','int64','float32','float64','bool','time.Time','[]byte']"
                         label="Field Type :"
                         v-model="editItem.FieldType"
-                ></v-select>
+                ></v-combobox>
 
 
             </v-card-text>
