@@ -140,12 +140,10 @@ func WriteString(fhedef *os.File, s string) {
 }
 
 func HedefeKaydet(data interface{}, hedefFile string, TemplateFile string, TemplateName string) {
-
-	fhedef, err := os.Create(hedefFile)
-	check(err)
-	defer fhedef.Close()
 	s := TemplateExecuteArray(data, TemplateFile, TemplateName)
-
+	fhedef, err := os.Create(hedefFile)
+	defer fhedef.Close()
+	check(err)
 	WriteString(fhedef, s)
 	fhedef.Sync()
 
