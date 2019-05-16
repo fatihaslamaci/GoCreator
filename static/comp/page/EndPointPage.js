@@ -3,6 +3,7 @@ Vue.component('EndPointPage', {
         return {
             dialog: false,
             loading: false,
+            search: null,
 
             headers: [
                 {text: 'Name', value: 'Name'},
@@ -152,19 +153,13 @@ Vue.component('EndPointPage', {
                         <v-flex xs12 sm12 md12>
                             <v-text-field v-model="editedItem.Name" label="Name :"></v-text-field>
                         </v-flex>
-                        
-                        
-                        
                     </v-layout>
-
                 </v-container>
                 <v-layout wrap>
                     <struct-kart title="Request" :value="editedItem.Request"></struct-kart>
                     <struct-kart title="Response" :value="editedItem.Response"></struct-kart>
                 </v-layout>
-
             </v-card-text>
-
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
@@ -172,8 +167,29 @@ Vue.component('EndPointPage', {
             </v-card-actions>
         </v-card>
     </v-dialog>
-
     <template>
+        <v-combobox
+                v-model="desserts.PacketNames"
+                :items="[]"
+                :search-input.sync="search"
+                hide-selected
+                hint="Maximum of 5 tags"
+                label="Add Packet Names"
+                multiple
+                persistent-hint
+                small-chips
+        >
+            <template v-slot:no-data>
+                <v-list-tile>
+                    <v-list-tile-content>
+                        <v-list-tile-title>
+                            No results matching "<strong>{{ search }}</strong>". Press <kbd>enter</kbd> to create a new
+                            one
+                        </v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+            </template>
+        </v-combobox>
         <v-data-table
                 :headers="headers"
                 :items="desserts.EndPoints"
@@ -201,12 +217,7 @@ Vue.component('EndPointPage', {
                 <v-btn color="primary" @click="initialize">Reset</v-btn>
             </template>
         </v-data-table>
-        
-        TODO : Aşağıdaki datayı düzenleyecek arayüz yapılacak
-        <pre> {{desserts.PacketNames}} </pre>
-        
     </template>
-
 </base-page>
   
   
