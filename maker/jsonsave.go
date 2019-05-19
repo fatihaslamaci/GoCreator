@@ -95,10 +95,80 @@ func JsonEndPointOku(path string) TEndPointList {
 	return r
 }
 
+func GetTable(tables []TDataTable, tableName string) TDataTable {
+
+	var r TDataTable
+
+	for i := 0; i < len(tables); i++ {
+		if tables[i].Name == tableName {
+			r = tables[i]
+			break
+		}
+	}
+
+	return r
+
+}
+
+func GetQueryFiled(fields []TQueryField, Name string) TQueryField {
+	var r TQueryField
+
+	for i := 0; i < len(fields); i++ {
+		if fields[i].Name == Name {
+			r = fields[i]
+			break
+		}
+	}
+
+	return r
+}
+
 func JsonQueryOku(path string) []TQuery {
 	dat, _ := ioutil.ReadFile(path + "/gocreator/db/Query.json")
 	var r []TQuery
-	_ = json.Unmarshal(dat, &r)
+	var temp []TQuery
+	_ = json.Unmarshal(dat, &temp)
+
+	tables := JsonTableOku(path)
+
+	for i := 0; i < len(temp); i++ {
+		q := TQuery{}
+		q.Name = temp[i].Name
+		q.Parameters = temp[i].Parameters
+		q.QueryEnd = temp[i].QueryEnd
+
+		for j := 0; j < len(temp[i].Tables); j++ {
+
+			t := GetTable(tables, temp[i].Tables[j].Name)
+
+			if t.Name == "" {
+
+			} else {
+
+				qt := TQueryTable{}
+				qt.Name = temp[i].Tables[j].Name
+				qt.Join = temp[i].Tables[j].Join
+				qt.JoinOn = temp[i].Tables[j].JoinOn
+				q.Tables = append(q.Tables, qt)
+
+				for k := 0; k < len(t.Fields); k++ {
+
+					field := TQueryField{}
+					field.Name = t.Fields[k].Name
+
+					tf := GetQueryFiled(temp[i].Tables[j].Fields, t.Fields[k].Name)
+
+					if tf.Name == t.Fields[k].Name {
+						field.Selected = tf.Selected
+					}
+
+					q.Tables[j].Fields = append(q.Tables[j].Fields, field)
+				}
+			}
+		}
+		r = append(r, q)
+
+	}
 
 	return r
 }

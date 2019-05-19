@@ -199,7 +199,14 @@ Vue.component('QueryBuilderPage', {
                         <v-list dense>
                             <v-list-tile v-for="(book, index) in props.item.Fields" :key="index" :book="book">
 
-                                 <v-list-tile-content>{{book.Name}}</v-list-tile-content> 
+
+                                 <v-checkbox
+      v-model="book.Selected"
+      data-vv-name="checkbox"
+      type="checkbox"
+      :label="book.Name"
+    ></v-checkbox>
+
                                 
                                  <v-list-tile-content class="align-end">{{ book.FieldType }} &nbsp;
                                  </v-list-tile-content>
@@ -215,6 +222,7 @@ Vue.component('QueryBuilderPage', {
 
       </v-flex>
     </v-layout>
+    <pre>{{selectedItem.Tables}}</pre>
  
 
 </base-page>
