@@ -173,7 +173,6 @@ Vue.component('EndPointPage', {
                 :items="[]"
                 :search-input.sync="search"
                 hide-selected
-                hint="Maximum of 5 tags"
                 label="Add Packet Names"
                 multiple
                 persistent-hint

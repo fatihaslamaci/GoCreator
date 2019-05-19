@@ -17,8 +17,12 @@ Vue.component('QueryBuilderPage', {
             },
             defaultItem: {
                 Name: '',
-            }
+            },
 
+            rowsPerPageItems: [20, 40, 80],
+            pagination: {
+                rowsPerPage: 20
+            },
 
         }
     },
@@ -168,9 +172,47 @@ Vue.component('QueryBuilderPage', {
 
  
       <v-flex d-flex xs12 sm7 md9>
-        <v-card color="blue lighten-2" dark>
-          <v-card-text><pre> {{selectedItem}} </pre></v-card-text>
-        </v-card>
+        
+          <v-data-iterator v-if="selectedItem.Tables !=null"
+                :items="selectedItem.Tables"
+                :rows-per-page-items="rowsPerPageItems"
+                :pagination.sync="pagination"
+                content-tag="v-layout" row wrap>
+            <template v-slot:item="props">
+                <v-flex xs12 sm6 md4 lg3>
+                    <v-card>
+                        <v-toolbar dense color="info">
+                            <v-btn icon>
+                                <v-icon @click="deleteTable(props.item)">delete</v-icon>
+                            </v-btn>
+                            <v-toolbar-title>{{ props.item.Name }}</v-toolbar-title>
+                            <v-spacer></v-spacer>
+                            
+                            
+                            
+                            <v-btn icon>
+                                <v-icon @click="addField(props.item)">add</v-icon>
+                            </v-btn>
+                            
+                        </v-toolbar>
+
+                        <v-list dense>
+                            <v-list-tile v-for="(book, index) in props.item.Fields" :key="index" :book="book">
+
+                                 <v-list-tile-content>{{book.Name}}</v-list-tile-content> 
+                                
+                                 <v-list-tile-content class="align-end">{{ book.FieldType }} &nbsp;
+                                 </v-list-tile-content>
+                                
+                                <v-icon small @click="editField(book,props.item)">edit</v-icon>
+                            </v-list-tile>
+                        </v-list>
+                    </v-card>
+                </v-flex>
+            </template>
+        </v-data-iterator>  
+        
+
       </v-flex>
     </v-layout>
  
@@ -180,7 +222,7 @@ Vue.component('QueryBuilderPage', {
 <div>
       <v-dialog v-model="dialog" max-width="500px">
         <template v-slot:activator="{ on }">
-          <v-btn color="primary" dark class="mb-2" v-on="on">New Item</v-btn>
+          <v-btn color="primary" dark class="mb-2" v-on="on">New Query</v-btn>
         </template>
         <v-card>
           <v-card-title>
