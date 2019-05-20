@@ -19,5 +19,5 @@ type TQueryTable struct {
 }
 type TQueryField struct {
 	TBaseCartField
-	Selected bool `json:",omitempty,string"`
+	Selected bool `json:",omitempty"`
 }

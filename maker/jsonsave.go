@@ -155,6 +155,7 @@ func JsonQueryOku(path string) []TQuery {
 
 					field := TQueryField{}
 					field.Name = t.Fields[k].Name
+					field.FieldType = t.Fields[k].FieldType
 
 					tf := GetQueryFiled(temp[i].Tables[j].Fields, t.Fields[k].Name)
 
