@@ -26,7 +26,15 @@ Vue.component('QueryBuilderPage', {
                 rowsPerPage: 20
             },
             tables:[],
-            table:{Name:""}
+            table:{Name:""},
+            editedIndexTable: -1,
+            editedTable:{
+                Name:"",
+                Join: "",
+                JoinOn: "",
+            },
+
+            editTableMode:false
 
         }
     },
@@ -104,9 +112,23 @@ Vue.component('QueryBuilderPage', {
             this.dialog = true;
         },
 
+        editTableDialogShow (item) {
+            this.editTableMode=true;
+            this.editedIndexTable = this.selectedItem.Tables.indexOf(item);
+            this.editedTable = Object.assign({}, item);
+            this.dialog2 = true;
+        },
+
+
+
         deleteItem (item) {
             const index = this.desserts.indexOf(item);
             confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1);
+        },
+
+        deleteTable (item) {
+            const index = this.selectedItem.Tables.indexOf(item);
+            confirm('Are you sure you want to delete this item?') && this.selectedItem.Tables.splice(index, 1);
         },
 
         close () {
@@ -137,6 +159,7 @@ Vue.component('QueryBuilderPage', {
                 .post('/api/GetTables', prm, {})
                 .then(response => {
                     this.tables  = response.data;
+                    this.editTableMode=false;
                     this.dialog2 = true;
                 })
                 .catch((error) => {
@@ -150,17 +173,23 @@ Vue.component('QueryBuilderPage', {
 
         },
 
+        TableDialogOk () {
+            if (this.editTableMode){
+             //TODO : Edit işlemi yapılacak
+            }else {
+                this.addTable();
+            }
+        },
+
         addTable () {
 
             var t = {
                 Name: this.table.Name,
                 Fields: [],
-
             };
 
             var i=0;
             for (i=0;i<this.table.Fields.length;i++){
-
                 var f={
                     Name:this.table.Fields[i].Name,
                     FieldType:this.table.Fields[i].FieldType,
@@ -168,17 +197,12 @@ Vue.component('QueryBuilderPage', {
 
                 t.Fields.push(f)
             }
-
             if (this.selectedItem.Tables==null)
             {
                 this.selectedItem.Tables=[]
             }
-
             this.selectedItem.Tables.push(t);
-
             this.dialog2=false;
-
-
         }
 
     },
@@ -234,7 +258,6 @@ Vue.component('QueryBuilderPage', {
             </v-flex>
 
 
-
             <v-flex d-flex xs12 sm7 md9>
                 <v-data-iterator v-if="selectedItem.Tables !=null"
                                  :items="selectedItem.Tables"
@@ -253,7 +276,7 @@ Vue.component('QueryBuilderPage', {
 
 
                                     <v-btn icon>
-                                        <v-icon @click="addField(props.item)">add</v-icon>
+                                        <v-icon @click="editTableDialogShow(props.item)">edit</v-icon>
                                     </v-btn>
 
                                 </v-toolbar>
@@ -273,7 +296,7 @@ Vue.component('QueryBuilderPage', {
                                         <v-list-tile-content class="align-end">{{ book.FieldType }} &nbsp;
                                         </v-list-tile-content>
 
-                                        <v-icon small @click="editField(book,props.item)">edit</v-icon>
+
                                     </v-list-tile>
                                 </v-list>
                             </v-card>
@@ -323,32 +346,40 @@ Vue.component('QueryBuilderPage', {
                 </v-card-title>
 
                 <v-card-text>
-                    <v-container grid-list-md>
-                        <v-layout wrap>
-                            <v-flex xs12 sm6 md4>
-                                <v-select :items="tables" v-model="table" label="Table"
-                                item-text="Name"
-                                return-object
-                                
-                                ></v-select>
-                            </v-flex>
 
-                            </v-flex>
-                        </v-layout>
-                    </v-container>
+                    <template v-if="editTableMode==false">
+                        <v-select :items="tables" v-model="table" label="Table"
+                                  item-text="Name"
+                                  return-object
+                        ></v-select>
+                    </template>
+                    <template v-if="editTableMode==true">
+                        <v-text-field
+                                label="Join :"
+                                v-model="editedTable.Join"
+                        ></v-text-field>
+                        <v-text-field
+                                label="Join On :"
+                                v-model="editedTable.JoinOn"
+                        ></v-text-field>
+
+                    </template>
+
+                    <pre> {{editedTable}} </pre>
+
                 </v-card-text>
 
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="blue darken-1" flat @click="dialog2=false">Cancel</v-btn>
-                    <v-btn color="blue darken-1" flat @click="addTable()">Add</v-btn>
+                    <v-btn color="blue darken-1" flat @click="TableDialogOk()">Ok</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
-    
-    
+
+
     </div>
-    
+
 </div>
 `,
 
