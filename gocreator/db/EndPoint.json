@@ -53,6 +53,29 @@
 					}
 				]
 			}
+		},
+		{
+			"Name": "GetTables",
+			"Request": {
+				"Name": "",
+				"Fields": [
+					{
+						"Name": "ProjectId",
+						"FieldType": "string",
+						"Body_Header": 0
+					}
+				]
+			},
+			"Response": {
+				"Name": "",
+				"Fields": [
+					{
+						"Name": "Tables",
+						"FieldType": "[]maker.TDataTable",
+						"Body_Header": 0
+					}
+				]
+			}
 		}
 	]
 }

@@ -12,13 +12,6 @@ import (
 	"runtime"
 )
 
-func getTablesHandler(w http.ResponseWriter, r *http.Request) {
-
-	a := maker.JsonTableOku(maker.GetProject(r.Header.Get("projectId")).Path)
-
-	_ = json.NewEncoder(w).Encode(a)
-}
-
 func getProxyClassHandler(w http.ResponseWriter, r *http.Request) {
 	a := maker.JsonProxyClassOku(maker.GetProject(r.Header.Get("projectId")).Path)
 	_ = json.NewEncoder(w).Encode(a)

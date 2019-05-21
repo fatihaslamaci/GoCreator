@@ -77,7 +77,7 @@ func main() {
 	http.HandleFunc("/api/saveProjects", saveProjectsHandler)
 	http.HandleFunc("/api/deleteProject", deleteProjectHandler)
 
-	http.HandleFunc("/api/getTables", getTablesHandler)
+	//http.HandleFunc("/api/getTables", getTablesHandler)
 	http.HandleFunc("/api/saveTables", saveTablesHandler)
 
 	http.HandleFunc("/api/getProxyClass", getProxyClassHandler)

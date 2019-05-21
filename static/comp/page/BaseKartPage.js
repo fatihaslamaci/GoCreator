@@ -23,8 +23,11 @@ Vue.component('BaseKartPage', {
     },
 
     mounted() {
+        var prm = {
+            ProjectId  : sessionStorage.projectId,
+        };
         axios
-            .post(this.getcart, {}, {headers: {projectId: sessionStorage.projectId}})
+            .post(this.getcart, prm, {headers: {projectId: sessionStorage.projectId}})
             .then(response => (
                     this.items = response.data
                 )

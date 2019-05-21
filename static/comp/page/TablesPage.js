@@ -10,7 +10,7 @@ Vue.component('TablesPage', {
         }
     },
 
-    template: `<base-kart-page title="Tables"  :deffield="DefField" getcart="/api/getTables" savecart="/api/saveTables">
+    template: `<base-kart-page title="Tables"  :deffield="DefField" getcart="/api/GetTables" savecart="/api/saveTables">
 
     <template v-slot:FieldDialog="props">
         <v-checkbox v-model="props.field.PrimaryKey" label="Primary Key"></v-checkbox>

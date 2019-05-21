@@ -12,6 +12,7 @@ import (
 func HandleFuncAdd() {
 	http.HandleFunc("/api/GetQueryBuilder", GetQueryBuilderHandler)
 	http.HandleFunc("/api/SaveQueryBuilder", SaveQueryBuilderHandler)
+	http.HandleFunc("/api/GetTables", GetTablesHandler)
 }
 func GetQueryBuilderHandler(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
@@ -77,6 +78,43 @@ func SaveQueryBuilderHandler(w http.ResponseWriter, r *http.Request) {
    this.loading = true;
    axios
    .post('/api/SaveQueryBuilder', prm, {})
+   .then(response => {
+   r = response.data;
+   })
+   .catch((error) => {
+   console.log(error)
+   })
+   .finally(() => {
+   this.loading = false;
+   })
+   },
+*/
+func GetTablesHandler(w http.ResponseWriter, r *http.Request) {
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		panic(err)
+	}
+	var inputClass GetTablesRequest
+	err = json.Unmarshal(body, &inputClass)
+	if err != nil {
+		panic(err)
+	}
+	outputClass := GetTablesHandlerMap(inputClass)
+	json.NewEncoder(w).Encode(outputClass)
+}
+
+/*
+   JavaScript Call Sample
+   GetTablesHandler() {
+   var prm = {
+     ProjectId  : null,
+   };
+   var r = {
+     Tables  : null,
+   };
+   this.loading = true;
+   axios
+   .post('/api/GetTables', prm, {})
    .then(response => {
    r = response.data;
    })

@@ -20,3 +20,9 @@ type SaveQueryBuilderRequest struct {
 type SaveQueryBuilderResponse struct {
 	Query []maker.TQuery
 }
+type GetTablesRequest struct {
+	ProjectId string
+}
+type GetTablesResponse struct {
+	Tables []maker.TDataTable
+}
