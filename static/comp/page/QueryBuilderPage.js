@@ -10,15 +10,18 @@ Vue.component('QueryBuilderPage', {
             selectedIndex:-1,
             editedItem: {
                 Name: '',
-
+                Parameters:[]
             },
 
             selectedItem: {
                 Name: '',
+                Parameters:[]
 
             },
             defaultItem: {
                 Name: '',
+                Parameters:[]
+
             },
 
             rowsPerPageItems: [20, 40, 80],
@@ -32,6 +35,7 @@ Vue.component('QueryBuilderPage', {
                 Name:"",
                 Join: "",
                 JoinOn: "",
+
             },
 
             editTableMode:false
@@ -109,6 +113,10 @@ Vue.component('QueryBuilderPage', {
         editItem (item) {
             this.editedIndex = this.desserts.indexOf(item);
             this.editedItem = Object.assign({}, item);
+            if (this.editedItem.Parameters==null){
+                this.editedItem.Parameters=[];
+            }
+
             this.dialog = true;
         },
 
@@ -116,6 +124,7 @@ Vue.component('QueryBuilderPage', {
             this.editTableMode=true;
             this.editedIndexTable = this.selectedItem.Tables.indexOf(item);
             this.editedTable = Object.assign({}, item);
+
             this.dialog2 = true;
         },
 
@@ -175,7 +184,8 @@ Vue.component('QueryBuilderPage', {
 
         TableDialogOk () {
             if (this.editTableMode){
-             //TODO : Edit işlemi yapılacak
+                //TODO : Edit işlemi yapılacak
+                this.aditTable();
             }else {
                 this.addTable();
             }
@@ -203,7 +213,15 @@ Vue.component('QueryBuilderPage', {
             }
             this.selectedItem.Tables.push(t);
             this.dialog2=false;
+        },
+
+        aditTable () {
+
+            this.selectedItem.Tables[this.editedIndexTable].Join = this.editedTable.Join;
+            this.selectedItem.Tables[this.editedIndexTable].JoinOn = this.editedTable.JoinOn;
+            this.dialog2=false;
         }
+
 
     },
 
@@ -313,22 +331,19 @@ Vue.component('QueryBuilderPage', {
     </base-page>
 
     <div>
-        <v-dialog v-model="dialog" max-width="500px">
+        <v-dialog v-model="dialog" max-width="550px">
             <v-card>
                 <v-card-title>
                     <span class="headline">{{ formTitle }}</span>
                 </v-card-title>
 
                 <v-card-text>
-                    <v-container grid-list-md>
-                        <v-layout wrap>
-                            <v-flex xs12 sm6 md4>
-                                <v-text-field v-model="editedItem.Name" label="Name"></v-text-field>
-                            </v-flex>
-
-                            </v-flex>
-                        </v-layout>
-                    </v-container>
+                    
+                    <v-text-field v-model="editedItem.Name" label="Name"></v-text-field>
+                    <v-text-field v-model="editedItem.QueryEnd" label="Query End"></v-text-field>
+                    <parameter-kart title="Parameters" :value="editedItem.Parameters"></parameter-kart>
+                        
+                    
                 </v-card-text>
 
                 <v-card-actions>
@@ -342,7 +357,7 @@ Vue.component('QueryBuilderPage', {
         <v-dialog v-model="dialog2" max-width="500px">
             <v-card>
                 <v-card-title>
-                    <span class="headline">Add Table </span>
+                    <span class="headline"> Table </span>
                 </v-card-title>
 
                 <v-card-text>
@@ -364,8 +379,6 @@ Vue.component('QueryBuilderPage', {
                         ></v-text-field>
 
                     </template>
-
-                    <pre> {{editedTable}} </pre>
 
                 </v-card-text>
 
