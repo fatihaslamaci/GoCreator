@@ -79,7 +79,18 @@ Vue.component('QueryBuilderPage', {
                 .then(response => {
                     console.log(response.data);
                     this.QueryList=response.data;
+
+                    if (this.QueryList.Query==null){
+                        this.QueryList.Query=[];
+                    }
+
                     this.desserts  = response.data.Query;
+
+                    if (this.desserts==null){
+                        this.desserts=[];
+                    }
+
+
                 })
                 .catch((error) => {
                     console.log(error)
@@ -152,6 +163,9 @@ Vue.component('QueryBuilderPage', {
             if (this.editedIndex > -1) {
                 Object.assign(this.desserts[this.editedIndex], this.editedItem);
             } else {
+                if (this.desserts==null){
+                    this.desserts=[];
+                }
                 this.desserts.push(this.editedItem);
             }
             this.close();
