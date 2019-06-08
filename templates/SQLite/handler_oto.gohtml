@@ -7,6 +7,7 @@ import (
 "encoding/json"
 "io/ioutil"
 "net/http"
+"fmt"
 
 )
 
@@ -20,23 +21,25 @@ func HandleFuncAdd() {
 
 {{ range $ii, $data := .EndPoints }}
 
-    func {{$data.Name}}Handler(w http.ResponseWriter, r *http.Request) {
+func {{$data.Name}}Handler(w http.ResponseWriter, r *http.Request) {
+    if r.Method=="POST" {
+        body, err := ioutil.ReadAll(r.Body)
+        if err != nil {
+            panic(err)
+        }
+        var inputClass {{$data.Name}}Request
+        err = json.Unmarshal(body, &inputClass)
+        if err != nil {
+            panic(err)
+        }
 
-    body, err := ioutil.ReadAll(r.Body)
-    if err != nil {
-    panic(err)
+        outputClass:={{$data.Name}}HandlerMap(inputClass)
+
+        json.NewEncoder(w).Encode(outputClass)
+    }else{
+        fmt.Fprintf(w, "Send 'POST' method only")
     }
-    var inputClass {{$data.Name}}Request
-    err = json.Unmarshal(body, &inputClass)
-    if err != nil {
-    panic(err)
-    }
-
-    outputClass:={{$data.Name}}HandlerMap(inputClass)
-
-    json.NewEncoder(w).Encode(outputClass)
-
-    }
+}
 
 
     /*
