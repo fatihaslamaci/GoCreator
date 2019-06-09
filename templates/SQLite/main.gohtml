@@ -11,6 +11,7 @@ import (
 	"os"
 	"database/sql"
 	"{{.}}/gocreator"
+	"github.com/rs/cors"
 
 )
 
@@ -19,22 +20,23 @@ var db *sql.DB
 func main() {
 
 	os.MkdirAll("./sqldb", os.ModePerm)
-    	const dbpath = "./sqldb/gomaker.sqlite"
-    	db = gocreator.InitDB(dbpath)
-    	defer db.Close()
-		gocreator.CreateTable(db)
-		gocreator.AlterDb(db)
+    const dbpath = "./sqldb/gomaker.sqlite"
+    db = gocreator.InitDB(dbpath)
+    defer db.Close()
+	gocreator.CreateTable(db)
+	gocreator.AlterDb(db)
 
-		gocreator.HandleFuncAdd()
+	mux := http.NewServeMux()
 
-http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("111 Hello, you've requested: %s", time.Now())
-	fmt.Fprintf(w, "666 Hello, you've requested: %s\n", time.Now())
+	gocreator.HandleFuncAdd(mux)
 
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("111 Hello, you've requested: %s", time.Now())
+		fmt.Fprintf(w, "666 Hello, you've requested: %s\n", time.Now())
 	})
 
 	port:=":8000"
 	fmt.Printf("Server Started.  http://localhost%s/\n",port)
-
-	http.ListenAndServe(":8000", nil)
+	handler := cors.Default().Handler(mux)
+	http.ListenAndServe(":8000", handler)
 }

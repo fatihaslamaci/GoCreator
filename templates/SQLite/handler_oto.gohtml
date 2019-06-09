@@ -12,7 +12,7 @@ import (
 )
 
 
-func HandleFuncAdd() {
+func HandleFuncAdd(http *http.ServeMux) {
 {{ range $ii, $data := .EndPoints}}
     http.HandleFunc("/api/{{$data.Name}}", {{$data.Name}}Handler)
 {{ end }}
