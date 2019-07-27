@@ -16,14 +16,14 @@ func check(e error) {
 }
 
 var FieldMap = map[string]string{
-	"bool":      "NUMERIC",
+	"bool":      "BOOLEAN",
 	"string":    "TEXT",
 	"int32":     "INTEGER",
 	"int64":     "INTEGER",
 	"float32":   "REAL",
 	"float64":   "REAL",
 	"[]byte":    "BLOB",
-	"time.Time": "NUMERIC",
+	"time.Time": "DATETIME",
 }
 
 var FieldMapNull = map[string]string{
