@@ -13,7 +13,10 @@ Vue.component('TablesPage', {
     template: `<base-kart-page title="Tables"  :deffield="DefField" getcart="/api/GetTables" savecart="/api/saveTables">
 
     <template v-slot:FieldDialog="props">
+    <v-layout>
         <v-checkbox v-model="props.field.PrimaryKey" label="Primary Key"></v-checkbox>
+        <v-checkbox v-model="props.field.ForeignKey" label="Foreign Key "></v-checkbox>
+    </v-layout>    
         <v-text-field
                 label="Field Name :"
                 v-model="props.field.Name"
@@ -29,6 +32,14 @@ Vue.component('TablesPage', {
                 v-model="props.field.Dflt_value"
         ></v-text-field>
 
+        <template v-if="props.field.ForeignKey">
+            <v-text-field label="Foreign Table"
+                          v-model="props.field.Foreign Table Name"
+            ></v-text-field>
+            <v-text-field label="ForeignField"
+                          v-model="props.field.Foreign Table Field"
+            ></v-text-field>
+        </template>
 
         <template v-if="props.field.FieldType=='int32'">
         </template>
@@ -45,6 +56,11 @@ Vue.component('TablesPage', {
             <v-icon small>vpn_key</v-icon>
             <v-list-tile-content>&nbsp;{{props.field.Name}}</v-list-tile-content>
         </template>
+        <template v-else-if="props.field.ForeignKey==true">
+            <v-icon small>link</v-icon>
+            <v-list-tile-content>&nbsp;{{props.field.Name}}</v-list-tile-content>
+        </template>
+        
         <template v-else>
             <v-icon small></v-icon>
             <v-list-tile-content>&nbsp; &nbsp;&nbsp; &nbsp;{{props.field.Name}}</v-list-tile-content>

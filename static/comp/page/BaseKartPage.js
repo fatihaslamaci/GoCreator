@@ -180,9 +180,7 @@ Vue.component('BaseKartPage', {
                             </v-btn>
                             <v-toolbar-title>{{ props.item.Name }}</v-toolbar-title>
                             <v-spacer></v-spacer>
-                            
-                            
-                            
+
                             <v-btn icon>
                                 <v-icon @click="addField(props.item)">add</v-icon>
                             </v-btn>

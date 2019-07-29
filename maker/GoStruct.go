@@ -31,10 +31,13 @@ type TDataCart struct {
 
 type TDataField struct {
 	TBaseCartField
-	Dflt_value string `json:",omitempty"`
-	PrimaryKey bool   `json:",omitempty"`
-	Nullable   bool   `json:",omitempty"`
-	Size       int    `json:",omitempty,string"`
+	Dflt_value   string `json:",omitempty"`
+	PrimaryKey   bool   `json:",omitempty"`
+	Nullable     bool   `json:",omitempty"`
+	Size         int    `json:",omitempty,string"`
+	ForeignKey   bool   `json:",omitempty"`
+	ForeignTable string `json:",omitempty"`
+	ForeignField string `json:",omitempty"`
 }
 
 type TDataTable struct {
