@@ -2,15 +2,47 @@ Vue.component('TablesPage', {
     data: function () {
         return {
             DefField: [{
-                Name: "ID",
+                Name: "Id",
                 PrimaryKey: true,
                 FieldType: "int64",
-            }]
-
+            }],
+            tables:[]
         }
     },
 
-    template: `<base-kart-page title="Tables"  :deffield="DefField" getcart="/api/GetTables" savecart="/api/saveTables">
+    mounted() {
+        this.getTables();
+    },
+
+    methods: {
+
+        doSave(){
+            this.getTables();
+        },
+
+        getTables () {
+
+            var prm = {
+                ProjectId  : sessionStorage.projectId,
+            };
+            //this.loading = true;
+            axios
+                .post('/api/GetTables', prm, {})
+                .then(response => {
+                    this.tables  = response.data;
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+                .finally(() => {
+                    //this.loading = false;
+                })
+
+        },
+
+    },
+
+    template: `<base-kart-page title="Tables"  :deffield="DefField" getcart="/api/GetTables" savecart="/api/saveTables" v-on:on-save="doSave">
 
     <template v-slot:FieldDialog="props">
     <v-layout>
@@ -33,9 +65,10 @@ Vue.component('TablesPage', {
         ></v-text-field>
 
         <template v-if="props.field.ForeignKey">
-            <v-text-field label="Foreign Table Name"
-                          v-model="props.field.ForeignTable"
-            ></v-text-field>
+             <v-select :items="tables" label="Foreign Table Name" v-model="props.field.ForeignTable"
+                                  item-text="Name"
+                                  item-value="Name"
+             ></v-select>
             <v-text-field label="Foreign Table Field Name"
                           v-model="props.field.ForeignField"
             ></v-text-field>

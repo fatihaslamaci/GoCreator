@@ -79,6 +79,7 @@ Vue.component('BaseKartPage', {
                 .post(this.savecart, this.items, {headers: {projectId: sessionStorage.projectId}})
                 .then(response => {
                     this.items = response.data;
+                    this.$emit('on-save')
                 })
                 .catch((error) => {
                     console.log(error)
