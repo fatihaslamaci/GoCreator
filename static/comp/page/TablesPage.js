@@ -33,11 +33,11 @@ Vue.component('TablesPage', {
         ></v-text-field>
 
         <template v-if="props.field.ForeignKey">
-            <v-text-field label="Foreign Table"
-                          v-model="props.field.Foreign Table Name"
+            <v-text-field label="Foreign Table Name"
+                          v-model="props.field.ForeignTable"
             ></v-text-field>
-            <v-text-field label="ForeignField"
-                          v-model="props.field.Foreign Table Field"
+            <v-text-field label="Foreign Table Field Name"
+                          v-model="props.field.ForeignField"
             ></v-text-field>
         </template>
 
