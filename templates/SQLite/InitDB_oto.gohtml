@@ -27,6 +27,15 @@ CREATE TABLE IF NOT EXISTS {{$data.Name}}(
 {{ end }}
 {{ end }}
 
+{{ range $i, $e := $data.Fields }}
+{{ if $e.ForeignKey }}
+    {{ if $e.ForeignTable }}
+        ,FOREIGN KEY({{ $e.Name }}) REFERENCES  {{ $e.ForeignTable }}({{ $e.ForeignField }})
+    {{ end }}
+{{ end }}
+{{ end }}
+
+
 {{ range $i, $e := $data.TabloEkOzellikler }}
         ,{{$e.Ozellik}}
 {{ end }}
