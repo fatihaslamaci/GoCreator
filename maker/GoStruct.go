@@ -22,6 +22,7 @@ type TBaseCart struct {
 type TBaseCartField struct {
 	Name      string
 	FieldType string
+	IsArray   bool `json:",omitempty"`
 }
 
 type TDataCart struct {

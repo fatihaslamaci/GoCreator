@@ -1,5 +1,5 @@
 Vue.component('StructKart', {
-    props: ['value','title'],
+    props: ['value', 'title'],
     data: function () {
         return {
 
@@ -10,13 +10,49 @@ Vue.component('StructKart', {
             editItem: {},
             editItem2: {},
 
+            fieldTypeItems: ['string', 'int32', 'int64', 'float32', 'float64', 'bool', 'time.Time', 'byte'],
+
             defaultItem: {
                 Name: "",
-                Fields: []
+                Fields: [],
+                IsArray:false
             },
         }
     },
+    mounted() {
+        this.getProxyClass();
+
+    },
     methods: {
+        getProxyClass() {
+
+
+
+            var prm = {
+                ProjectId  : sessionStorage.projectId,
+            };
+            this.loading = true;
+            axios
+                .post('/api/getProxyClass', prm, {headers: {projectId: sessionStorage.projectId}})
+                .then(response => {
+                    response.data.forEach((item, index) => {
+                        this.fieldTypeItems.push(item.Name);
+                    });
+
+
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+                .finally(() => {
+                    //this.loading = false;
+                })
+
+
+
+        },
+
+
         addField(table) {
             this.insert = true;
             this.editItem.Name = "";
@@ -58,12 +94,18 @@ Vue.component('StructKart', {
             <v-card-title class="headline"> {{title}}</v-card-title>
             <v-card-text>
 
+                 <v-checkbox
+                    v-model="editItem.IsArray"
+                    label="is Array Field"
+                 ></v-checkbox>
+                
                 <v-text-field
-                        label="Field Name :"
+                        label="Field Name:"
                         v-model="editItem.Name"
                 ></v-text-field>
+                
                 <v-combobox
-                        :items="['string','int32','int64','float32','float64','bool','time.Time','[]byte']"
+                        :items="fieldTypeItems"
                         label="Field Type :"
                         v-model="editItem.FieldType"
                 ></v-combobox>
