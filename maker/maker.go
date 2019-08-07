@@ -15,6 +15,11 @@ func check(e error) {
 	}
 }
 
+type TProxyTemplateData struct {
+	EndPoint       TEndPointList
+	ProxyClassList []TProxyClass
+}
+
 var FieldMap = map[string]string{
 	"bool":      "BOOLEAN",
 	"string":    "TEXT",
@@ -173,8 +178,11 @@ func MakeProject(ProjectId string, templateDir string) TProject {
 
 	templateFileDir := "./templates/" + templateDir + "/"
 
-	//proxyclass := JsonProxyClassOku(PrgDir)
+	proxyclass := JsonProxyClassOku(PrgDir)
 	endpoint := JsonEndPointOku(PrgDir)
+
+	proxyTemplateData := TProxyTemplateData{ProxyClassList: proxyclass, EndPoint: endpoint}
+
 	TamplateFile := "main.gohtml"
 	HedefeKaydetEgerDosyaYoksa(filepath.Base(project.Path), (project.Path + "/main.go"), (templateFileDir + TamplateFile), TamplateFile)
 	if len(tables) > 0 {
@@ -190,7 +198,7 @@ func MakeProject(ProjectId string, templateDir string) TProject {
 	if len(endpoint.EndPoints) > 0 {
 
 		TamplateFile = "proxyclass_oto.gohtml"
-		HedefeKaydet(endpoint, (project.Path + "/gocreator/" + "proxyclass_oto.go"), (templateFileDir + TamplateFile), TamplateFile)
+		HedefeKaydet(proxyTemplateData, (project.Path + "/gocreator/" + "proxyclass_oto.go"), (templateFileDir + TamplateFile), TamplateFile)
 
 		TamplateFile = "handler_oto.gohtml"
 		HedefeKaydet(endpoint, (project.Path + "/gocreator/" + "handler_oto.go"), (templateFileDir + TamplateFile), TamplateFile)

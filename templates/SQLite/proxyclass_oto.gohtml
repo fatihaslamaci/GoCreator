@@ -7,14 +7,14 @@ package gocreator
 
 import (
 
-{{ range $ii, $data := .PacketNames }}
+{{ range $ii, $data := .EndPoint.PacketNames }}
     "{{$data}}"
 {{ end }}
 
 
 
 )
-{{ range $ii, $data := .EndPoints }}
+{{ range $ii, $data := .EndPoint.EndPoints }}
     type {{$data.Name}}Request struct {
     {{ range $i, $e := $data.Request.Fields }}  {{$e.Name}}   {{EndPointFieldType $e}}
     {{ end }}}
@@ -23,5 +23,13 @@ import (
     {{ range $i, $e := $data.Response.Fields }}  {{$e.Name}}   {{EndPointFieldType $e}}
     {{ end }}}
 
+
+{{ end }}
+
+
+{{ range $ii, $data := .ProxyClassList }}
+    type {{$data.Name}} struct {
+    {{ range $i, $e := $data.Fields }}  {{$e.Name}}   {{$e.FieldType}}
+    {{ end }}}
 
 {{ end }}
