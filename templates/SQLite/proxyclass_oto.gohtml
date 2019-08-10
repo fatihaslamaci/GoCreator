@@ -16,11 +16,11 @@ import (
 )
 {{ range $ii, $data := .EndPoint.EndPoints }}
     type {{$data.Name}}Request struct {
-    {{ range $i, $e := $data.Request.Fields }}  {{$e.Name}}   {{EndPointFieldType $e}}
+    {{ range $i, $e := $data.Request.Fields }}  {{$e.Name}}   {{if $e.IsArray}}[]{{ end }}{{EndPointFieldType $e}}
     {{ end }}}
 
     type {{$data.Name}}Response struct {
-    {{ range $i, $e := $data.Response.Fields }}  {{$e.Name}}   {{EndPointFieldType $e}}
+    {{ range $i, $e := $data.Response.Fields }}  {{$e.Name}}   {{if $e.IsArray}}[]{{ end }}{{EndPointFieldType $e}}
     {{ end }}}
 
 
@@ -29,7 +29,9 @@ import (
 
 {{ range $ii, $data := .ProxyClassList }}
     type {{$data.Name}} struct {
-    {{ range $i, $e := $data.Fields }}  {{$e.Name}}   {{$e.FieldType}}
+    {{ range $i, $e := $data.Fields }}
+
+        {{$e.Name}}  {{if $e.IsArray}}[]{{ end }}{{$e.FieldType}}
     {{ end }}}
 
 {{ end }}
