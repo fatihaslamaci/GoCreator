@@ -1,0 +1,51 @@
+import { Injectable } from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {environment} from '../../../environments/environment';
+import {catchError} from 'rxjs/operators';
+
+
+
+{{ range $ii, $data := .ProxyClassList }}
+    export class {{$data.Name}} {
+    {{ range $i, $e := $data.Fields }}
+        {{$e.Name}}: {{AngularFieldType $e}}{{if $e.IsArray}}[]{{ end }};
+    {{ end }}}
+
+{{ end }}
+
+{{ range $ii, $data := .EndPoint.EndPoints }}
+    export class {{$data.Name}}Request {
+    {{ range $i, $e := $data.Request.Fields }}  {{$e.Name}}: {{AngularEndPointFieldType $e}}{{if $e.IsArray}}[]{{ end }};
+    {{ end }}}
+
+    export class {{$data.Name}}Response {
+    {{ range $i, $e := $data.Response.Fields }}  {{$e.Name}}: {{AngularEndPointFieldType $e}}{{if $e.IsArray}}[]{{ end }};
+    {{ end }}}
+
+
+{{ end }}
+
+
+
+
+@Injectable({
+providedIn: 'root'
+})
+export class DataService {
+
+constructor(private http: HttpClient) { }
+
+{{ range $ii, $data := .EndPoint.EndPoints }}
+
+    {{$data.Name}}(request: {{$data.Name}}Request): Observable<{{$data.Name}}Response> {
+    return this.http.post<{{$data.Name}}Request>(environment.apiUrl + `{{$data.Name}}`, request)
+        .pipe(
+        catchError(null)
+        );
+    }
+
+{{ end }}
+
+
+}

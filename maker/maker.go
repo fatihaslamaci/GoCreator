@@ -31,6 +31,17 @@ var FieldMap = map[string]string{
 	"time.Time": "DATETIME",
 }
 
+var FieldMapAngular = map[string]string{
+	"bool":      "boolean",
+	"string":    "string",
+	"int32":     "Number",
+	"int64":     "Number",
+	"float32":   "Number",
+	"float64":   "Number",
+	"[]byte":    "any",
+	"time.Time": "any",
+}
+
 var FieldMapNull = map[string]string{
 	"bool":      "null.Bool",
 	"string":    "null.String",
@@ -65,6 +76,26 @@ func IdName(table TDataTable) string {
 
 	return r
 
+}
+
+//TBaseCartField
+func AngularFieldType(field TBaseCartField) string {
+	r := FieldMapAngular[field.FieldType]
+	if r == "" {
+		r = field.FieldType
+	}
+	return r
+}
+
+func AngularEndPointFieldType(field TEndPointField) string {
+
+	r := FieldMapAngular[field.FieldType]
+
+	if r == "" {
+		r = field.FieldType
+	}
+
+	return r
 }
 
 func StructFieldType(field TDataField) string {
@@ -117,12 +148,14 @@ func ImportFieldEndPoint(Kartlar []TEndPoint, fieldType string, importName strin
 
 func TemplateExecuteArray(data interface{}, tmpl string, TemplateName string) string {
 	funcMap := template.FuncMap{
-		"ToLover":             strings.ToLower,
-		"SQLiteDataType":      SQLiteDataType,
-		"IdName":              IdName,
-		"StructFieldType":     StructFieldType,
-		"EndPointFieldType":   EndPointFieldType,
-		"ImportFieldEndPoint": ImportFieldEndPoint,
+		"ToLover":                  strings.ToLower,
+		"SQLiteDataType":           SQLiteDataType,
+		"IdName":                   IdName,
+		"StructFieldType":          StructFieldType,
+		"EndPointFieldType":        EndPointFieldType,
+		"ImportFieldEndPoint":      ImportFieldEndPoint,
+		"AngularFieldType":         AngularFieldType,
+		"AngularEndPointFieldType": AngularEndPointFieldType,
 	}
 
 	t := template.Must(template.New(TemplateName).Funcs(funcMap).ParseFiles(tmpl))
@@ -209,6 +242,10 @@ func MakeProject(ProjectId string, templateDir string) TProject {
 			HedefeKaydetEgerDosyaYoksa(endpoint.EndPoints[i], HedefFileName, (templateFileDir + TamplateFile), TamplateFile)
 
 		}
+
+		TamplateFile = "angular_oto.tmpl"
+		HedefeKaydet(proxyTemplateData, (project.Path + "/gocreator/" + "proxyclass_oto.ts"), (templateFileDir + TamplateFile), TamplateFile)
+
 	}
 
 	query := JsonQueryOku(PrgDir)
