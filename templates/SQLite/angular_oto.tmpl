@@ -4,7 +4,10 @@ import {Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {catchError} from 'rxjs/operators';
 
-
+export class Status {
+  Value: Number;
+  Messages: string[];
+}
 
 {{ range $ii, $data := .ProxyClassList }}
     export class {{$data.Name}} {
@@ -20,6 +23,7 @@ import {catchError} from 'rxjs/operators';
     {{ end }}}
 
     export class {{$data.Name}}Response {
+    Status: Status;
     {{ range $i, $e := $data.Response.Fields }}  {{$e.Name}}: {{AngularEndPointFieldType $e}}{{if $e.IsArray}}[]{{ end }};
     {{ end }}}
 

@@ -14,12 +14,20 @@ import (
 
 
 )
+
+type Status struct {
+    Value int
+    Messages []string
+}
+
+
 {{ range $ii, $data := .EndPoint.EndPoints }}
     type {{$data.Name}}Request struct {
     {{ range $i, $e := $data.Request.Fields }}  {{$e.Name}}   {{if $e.IsArray}}[]{{ end }}{{EndPointFieldType $e}}
     {{ end }}}
 
     type {{$data.Name}}Response struct {
+    Status Status
     {{ range $i, $e := $data.Response.Fields }}  {{$e.Name}}   {{if $e.IsArray}}[]{{ end }}{{EndPointFieldType $e}}
     {{ end }}}
 
