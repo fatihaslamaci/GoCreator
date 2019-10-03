@@ -80,5 +80,6 @@ type TEndPointCart struct {
 
 type TEndPointField struct {
 	TBaseCartField
-	Body_Header int //0 :Body Read, 1 :Header Read
+	Body_Header int  //0 :Body Read, 1 :Header Read
+	IsRequired  bool `json:",omitempty"`
 }

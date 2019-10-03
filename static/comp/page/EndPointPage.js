@@ -156,7 +156,7 @@ Vue.component('EndPointPage', {
                     </v-layout>
                 </v-container>
                 <v-layout wrap>
-                    <struct-kart title="Request" :value="editedItem.Request"></struct-kart>
+                    <struct-kart isReguest="true" title="Request" :value="editedItem.Request"></struct-kart>
                     <struct-kart title="Response" :value="editedItem.Response"></struct-kart>
                 </v-layout>
             </v-card-text>

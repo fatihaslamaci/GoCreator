@@ -1,5 +1,5 @@
 Vue.component('StructKart', {
-    props: ['value', 'title'],
+    props: ['value', 'title', 'isReguest'],
     data: function () {
         return {
 
@@ -15,7 +15,8 @@ Vue.component('StructKart', {
             defaultItem: {
                 Name: "",
                 Fields: [],
-                IsArray:false
+                IsArray: false,
+                IsRequired: false
             },
         }
     },
@@ -27,9 +28,8 @@ Vue.component('StructKart', {
         getProxyClass() {
 
 
-
             var prm = {
-                ProjectId  : sessionStorage.projectId,
+                ProjectId: sessionStorage.projectId,
             };
             this.loading = true;
             axios
@@ -47,7 +47,6 @@ Vue.component('StructKart', {
                 .finally(() => {
                     //this.loading = false;
                 })
-
 
 
         },
@@ -94,22 +93,28 @@ Vue.component('StructKart', {
             <v-card-title class="headline"> {{title}}</v-card-title>
             <v-card-text>
 
-                 <v-checkbox
-                    v-model="editItem.IsArray"
-                    label="is Array Field"
-                 ></v-checkbox>
-                
+                <v-checkbox
+                        v-model="editItem.IsArray"
+                        label="is Array Field"
+                ></v-checkbox>
+
                 <v-text-field
                         label="Field Name:"
                         v-model="editItem.Name"
                 ></v-text-field>
-                
+
                 <v-combobox
                         :items="fieldTypeItems"
                         label="Field Type :"
                         v-model="editItem.FieldType"
                 ></v-combobox>
 
+                <template v-if="this.isReguest=='true'">
+                    <v-checkbox
+                            v-model="editItem.IsRequired"
+                            label="Required Field"
+                    ></v-checkbox>
+                </template>
 
             </v-card-text>
             <v-card-actions>

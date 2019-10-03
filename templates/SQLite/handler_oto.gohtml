@@ -33,7 +33,21 @@ func {{$data.Name}}Handler(w http.ResponseWriter, r *http.Request) {
             panic(err)
         }
 
-        outputClass:={{$data.Name}}HandlerMap(inputClass)
+        var outputClass {{$data.Name}}Response
+
+
+
+    {{ range $i, $e := $data.Request.Fields }}
+        {{if $e.IsRequired}}
+            if (inputClass.{{$e.Name}} == "") {
+                outputClass.Status.Messages = append(outputClass.Status.Messages, "{{$e.Name}} boş geçilemez")
+            }
+        {{ end }}
+    {{ end }}
+
+        if len(outputClass.Status.Messages)==0{
+            outputClass={{$data.Name}}HandlerMap(inputClass)
+        }
 
         json.NewEncoder(w).Encode(outputClass)
     }else{
